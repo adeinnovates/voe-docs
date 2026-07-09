@@ -57,6 +57,33 @@ function formatDisplayName(name: string): string {
  * Convert markdown text to HTML for API descriptions
  * Handles common patterns: headers, bold, italic, code, links, tables, lists
  */
+/**
+ * Sanitize a URL for use in an href/src attribute.
+ * Allows relative/anchor URLs and the http, https, mailto, and tel schemes.
+ * Anything else (javascript:, data:, vbscript:, …) is neutralised to '#'.
+ */
+function sanitizeUrl(url: string): string {
+  const trimmed = url.trim()
+
+  // Relative, anchor, query, or protocol-relative URLs are safe.
+  if (/^(\/|#|\?|\.\/|\.\.\/)/.test(trimmed) || trimmed.startsWith('//')) {
+    return trimmed
+  }
+
+  // If there's an explicit scheme, only allow a known-safe allowlist.
+  const schemeMatch = trimmed.match(/^([a-zA-Z][a-zA-Z0-9+.-]*):/)
+  if (schemeMatch) {
+    const scheme = schemeMatch[1].toLowerCase()
+    if (['http', 'https', 'mailto', 'tel'].includes(scheme)) {
+      return trimmed
+    }
+    return '#'
+  }
+
+  // No scheme → treat as a relative path.
+  return trimmed
+}
+
 function markdownToHtml(text: string | undefined): string | undefined {
   if (!text) return undefined
   
@@ -109,8 +136,12 @@ function markdownToHtml(text: string | undefined): string | undefined {
   html = html.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, '<em>$1</em>')
   html = html.replace(/(?<!_)_([^_\n]+)_(?!_)/g, '<em>$1</em>')
   
-  // Convert links [text](url)
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+  // Convert links [text](url) — sanitize the href (block javascript:/data:) and
+  // escape quotes so a crafted URL can't break out of the attribute.
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, textPart, urlPart) => {
+    const safeHref = sanitizeUrl(urlPart).replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+    return `<a href="${safeHref}" target="_blank" rel="noopener noreferrer">${textPart}</a>`
+  })
   
   // Convert unordered lists (- item)
   html = html.replace(/^- (.+)$/gm, '<li>$1</li>')

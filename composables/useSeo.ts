@@ -12,15 +12,17 @@
  * 
  * USAGE:
  * ```vue
- * useSeo({
- *   title: 'Page Title',
- *   description: 'Page description',
- *   image: '/og-image.png',
- *   type: 'article',
- *   publishedTime: '2026-01-15',
- *   author: 'Jane Doe',
- *   tags: ['guide', 'auth']
- * })
+ * // Static options:
+ * useSeo({ title: 'Page Title', description: 'Page description' })
+ *
+ * // Reactive options (recommended when the values depend on async data) —
+ * // pass a getter and call useSeo ONCE in setup; the head stays in sync
+ * // without re-invoking the composable:
+ * useSeo(() => ({
+ *   title: content.value?.title,
+ *   description: content.value?.description,
+ *   type: content.value?.layout === 'blog' ? 'article' : 'website',
+ * }))
  * ```
  */
 
@@ -41,64 +43,69 @@ interface SeoOptions {
 /**
  * SEO composable — injects OG, Twitter, and standard meta tags.
  */
-export function useSeo(options: SeoOptions = {}) {
+export function useSeo(input: SeoOptions | (() => SeoOptions) = {}) {
   const config = useRuntimeConfig()
   const route = useRoute()
-  
+
   const siteName = config.public.siteName || 'f0'
   const siteDescription = config.public.siteDescription || 'Documentation'
   const siteUrl = config.public.siteUrl || ''
-  
+
+  // Accept either a static options object or a reactive getter. Normalising to
+  // a getter lets every derived value be a `computed`, so useHead can be
+  // registered ONCE and stay reactive — no need to re-invoke useSeo when async
+  // content arrives (which previously caused duplicate head registrations).
+  const getOptions = typeof input === 'function' ? input : () => input
+
   // Build title
   const title = computed(() => {
+    const options = getOptions()
     if (options.title) {
       return `${options.title} | ${siteName}`
     }
     return siteName
   })
-  
+
   // Build description
-  const description = computed(() => {
-    return options.description || siteDescription
-  })
-  
+  const description = computed(() => getOptions().description || siteDescription)
+
   // Canonical URL
   const canonicalUrl = computed(() => {
     if (!siteUrl) return ''
     return `${siteUrl}${route.path}`
   })
-  
+
   // Resolve OG image: explicit → brand default
   const ogImage = computed(() => {
-    if (options.image) return options.image
     // Brand default is fetched by the layout; we can't access it here without
     // an extra fetch, so we leave it empty — the layout's useHead will inject
     // the brand og_image if available.
-    return ''
+    return getOptions().image || ''
   })
-  
+
   // Build meta array
   const meta = computed(() => {
+    const options = getOptions()
     const tags: Record<string, string>[] = [
       { name: 'description', content: description.value },
-      
+
       // Open Graph
       { property: 'og:title', content: title.value },
       { property: 'og:description', content: description.value },
       { property: 'og:type', content: options.type || 'website' },
       { property: 'og:site_name', content: siteName },
-      
+
       // Twitter Card
       { name: 'twitter:card', content: ogImage.value ? 'summary_large_image' : 'summary' },
       { name: 'twitter:title', content: title.value },
       { name: 'twitter:description', content: description.value },
     ]
-    
+
     // Canonical URL
     if (canonicalUrl.value) {
       tags.push({ property: 'og:url', content: canonicalUrl.value })
     }
-    
+
     // OG Image
     if (ogImage.value) {
       const imageUrl = ogImage.value.startsWith('http')
@@ -107,7 +114,7 @@ export function useSeo(options: SeoOptions = {}) {
       tags.push({ property: 'og:image', content: imageUrl })
       tags.push({ name: 'twitter:image', content: imageUrl })
     }
-    
+
     // Article-specific meta
     if (options.type === 'article') {
       if (options.publishedTime) {
@@ -122,24 +129,26 @@ export function useSeo(options: SeoOptions = {}) {
         }
       }
     }
-    
+
     // Robots
-    if (options.noIndex) {
+    if (getOptions().noIndex) {
       tags.push({ name: 'robots', content: 'noindex, nofollow' })
     }
-    
+
     return tags
   })
-  
-  // Set head
+
+  const link = computed(() =>
+    canonicalUrl.value ? [{ rel: 'canonical', href: canonicalUrl.value }] : []
+  )
+
+  // Register once with reactive refs so the head updates as inputs change.
   useHead({
-    title: title.value,
-    meta: meta.value,
-    link: canonicalUrl.value
-      ? [{ rel: 'canonical', href: canonicalUrl.value }]
-      : [],
+    title,
+    meta,
+    link,
   })
-  
+
   return {
     title,
     description,

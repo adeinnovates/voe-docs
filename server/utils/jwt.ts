@@ -1,5 +1,4 @@
 /**
-import { logger } from './logger'
  * =============================================================================
  * F0 - JWT (JSON WEB TOKEN) UTILITY
  * =============================================================================
@@ -26,6 +25,7 @@ import { logger } from './logger'
  */
 
 import jwt from 'jsonwebtoken'
+import { logger } from './logger'
 
 // =============================================================================
 // TYPE DEFINITIONS

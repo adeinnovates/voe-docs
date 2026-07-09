@@ -34,17 +34,22 @@
  * }
  */
 
-import { 
-  getRecentAuditLogs, 
-  getAuditLogsByEmail, 
+import {
+  getRecentAuditLogs,
+  getAuditLogsByEmail,
   getAuditLogsByIp,
   getRecentFailures,
   getSuspiciousIps,
   getAuditStats,
-  type AuditLogEntry 
+  type AuditLogEntry
 } from '../../utils/audit'
+import { assertAdmin } from '../../utils/admin'
 
 export default defineEventHandler(async (event) => {
+  // Authorization: audit logs contain unmasked emails + IPs. Admin only, and
+  // never reachable in public mode.
+  await assertAdmin(event)
+
   // Get query parameters
   const query = getQuery(event)
   

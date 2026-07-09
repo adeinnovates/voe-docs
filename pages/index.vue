@@ -13,12 +13,6 @@
 
 <template>
   <div class="home-page">
-    <!-- SEO -->
-    <Head>
-      <Title>{{ siteName }} - {{ isBlogMode ? 'Blog' : 'Documentation' }}</Title>
-      <Meta name="description" :content="siteDescription" />
-    </Head>
-    
     <!-- Blog Mode: Render BlogIndex -->
     <BlogIndex v-if="isBlogMode" path="/" />
     
@@ -103,10 +97,11 @@ watch(content, (newContent) => {
 // SEO
 // ---------------------------------------------------------------------------
 
-useSeo({
-  title: `${siteName} - ${isBlogMode.value ? 'Blog' : 'Documentation'}`,
+// Single, reactive head source (useSeo appends "| siteName" to the title).
+useSeo(() => ({
+  title: isBlogMode.value ? 'Blog' : 'Documentation',
   description: siteDescription,
-})
+}))
 </script>
 
 <style scoped>

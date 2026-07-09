@@ -1,6 +1,5 @@
 /**
  * =============================================================================
-import { logger } from '../../utils/logger'
  * F0 - BLOG TAGS API
  * =============================================================================
  * 
@@ -12,6 +11,7 @@ import { logger } from '../../utils/logger'
 
 import { readdir, readFile } from 'fs/promises'
 import { join, extname, basename } from 'path'
+import { logger } from '../../utils/logger'
 import { extractFrontmatter, isMarkdownFile } from '../../utils/markdown'
 
 interface TagInfo {

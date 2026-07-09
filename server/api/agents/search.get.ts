@@ -1,6 +1,5 @@
 /**
  * =============================================================================
-import { logger } from '../../utils/logger'
  * F0 - SEMANTIC SEARCH API FOR AI AGENTS
  * =============================================================================
  * 
@@ -52,6 +51,22 @@ import { logger } from '../../utils/logger'
 
 import { readdir, readFile, stat } from 'fs/promises'
 import { join, relative } from 'path'
+import { logger } from '../../utils/logger'
+
+/**
+ * Count non-overlapping occurrences of `needle` in `haystack`.
+ * Uses indexOf rather than a user-built RegExp to avoid regex injection / ReDoS.
+ */
+function countOccurrences(haystack: string, needle: string): number {
+  if (!needle) return 0
+  let count = 0
+  let index = haystack.indexOf(needle)
+  while (index !== -1) {
+    count++
+    index = haystack.indexOf(needle, index + needle.length)
+  }
+  return count
+}
 
 interface SearchResult {
   title: string
@@ -282,7 +297,7 @@ function calculateRelevance(item: ContentItem, queryTerms: string[]): number {
     }
     
     // Content match (base weight)
-    const contentMatches = (contentLower.match(new RegExp(term, 'g')) || []).length
+    const contentMatches = countOccurrences(contentLower, term)
     if (contentMatches > 0) {
       score += Math.min(contentMatches * 2, 10)
       matchedTerms++

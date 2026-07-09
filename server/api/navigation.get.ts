@@ -1,6 +1,5 @@
 /**
  * =============================================================================
-import { logger } from '../utils/logger'
  * F0 - NAVIGATION API ENDPOINT
  * =============================================================================
  * 
@@ -33,6 +32,7 @@ import { logger } from '../utils/logger'
  */
 
 import { buildNavigation, getSidebarForSection } from '../utils/navigation'
+import { logger } from '../utils/logger'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()

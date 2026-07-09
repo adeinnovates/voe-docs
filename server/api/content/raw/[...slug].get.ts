@@ -1,6 +1,5 @@
 /**
  * =============================================================================
-import { logger } from '../../../utils/logger'
  * F0 - RAW MARKDOWN API ENDPOINT
  * =============================================================================
  * 
@@ -29,6 +28,7 @@ import { logger } from '../../../utils/logger'
 import { readFile } from 'fs/promises'
 import { resolve, basename } from 'path'
 import { resolveContentPath } from '../../../utils/navigation'
+import { logger } from '../../../utils/logger'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()

@@ -1,5 +1,4 @@
 /**
-import { logger } from './logger'
  * =============================================================================
  * F0 - AUDIT LOGGING
  * =============================================================================
@@ -34,6 +33,7 @@ import { existsSync, mkdirSync } from 'fs'
 import { dirname } from 'path'
 import type { H3Event } from 'h3'
 import { getHeader } from 'h3'
+import { logger } from './logger'
 
 // =============================================================================
 // TYPE DEFINITIONS

@@ -1,6 +1,5 @@
 /**
  * =============================================================================
-import { logger } from '../../utils/logger'
  * F0 - ADMIN FILE UPLOAD API
  * =============================================================================
  * 
@@ -35,6 +34,8 @@ import { invalidateContentCache } from '../../utils/cache'
 import { invalidateConfigCache } from '../../utils/config'
 import { invalidateLlmsCache } from '../../utils/llms-cache'
 import { invalidateBrandCache } from '../../utils/brand'
+import { assertAdmin } from '../../utils/admin'
+import { logger } from '../../utils/logger'
 
 // =============================================================================
 // CONFIGURATION
@@ -111,16 +112,11 @@ function validateJsonFile(content: string): { valid: boolean; type?: string } {
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
-  
-  // Verify authentication (middleware should handle this, but double-check)
-  if (config.authMode === 'private' && !event.context.auth?.authenticated) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Unauthorized',
-      data: { message: 'Authentication required' },
-    })
-  }
-  
+
+  // Authorization: admin only, and never reachable in public mode.
+  // (In public mode there is no login, so anonymous writes must be rejected.)
+  const adminEmail = await assertAdmin(event)
+
   // Parse multipart form data
   const formData = await readMultipartFormData(event)
   
@@ -219,7 +215,7 @@ export default defineEventHandler(async (event) => {
     invalidateLlmsCache()
     invalidateBrandCache()
     
-    logger.info('File uploaded', { path: cleanPath, email: event.context.auth?.email || 'anonymous' })
+    logger.info('File uploaded', { path: cleanPath, email: adminEmail })
     
     return {
       success: true,

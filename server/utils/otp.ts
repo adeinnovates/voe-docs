@@ -1,5 +1,4 @@
 /**
-import { logger } from './logger'
  * =============================================================================
  * F0 - OTP (ONE-TIME PASSWORD) MANAGER
  * =============================================================================
@@ -26,6 +25,7 @@ import { logger } from './logger'
 
 import { randomInt, timingSafeEqual } from 'crypto'
 import { storage, otpKey, rateLimitKey, OTP_CONFIG } from './storage'
+import { logger } from './logger'
 
 // =============================================================================
 // TYPE DEFINITIONS

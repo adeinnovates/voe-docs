@@ -1,6 +1,5 @@
 /**
  * =============================================================================
-import { logger } from '../utils/logger'
  * F0 - RSS/ATOM FEED ROUTE
  * =============================================================================
  * 
@@ -12,6 +11,7 @@ import { logger } from '../utils/logger'
  */
 
 import { readdir, readFile, stat } from 'fs/promises'
+import { logger } from '../utils/logger'
 import { join, basename, extname } from 'path'
 import {
   extractFrontmatter,

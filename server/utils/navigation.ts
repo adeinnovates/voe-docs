@@ -217,6 +217,14 @@ async function parseNavMd(contentDir: string): Promise<TopNavItem[]> {
 // =============================================================================
 
 /**
+ * Escape RegExp metacharacters in a string so it can be safely embedded in a
+ * dynamically-constructed pattern.
+ */
+function escapeRegExp(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/**
  * Extract order from filename prefix (e.g., "01-getting-started.md" → 1)
  */
 function extractOrderFromFilename(filename: string): number | null {
@@ -542,16 +550,21 @@ export async function getContentMeta(
   const slugParts = slug.split('/')
   const fileName = slugParts.pop()!
   const dirPath = join(contentDir, ...slugParts)
-  
+
+  // Escape the (user-derived) filename before embedding it in a RegExp, so a
+  // slug containing regex metacharacters can't throw or cause catastrophic
+  // backtracking (ReDoS).
+  const fileNamePattern = escapeRegExp(fileName)
+
   try {
     const entries = await readdir(dirPath)
     for (const entry of entries) {
       // Match files like "01-getting-started.md" for slug "getting-started"
-      if (entry.match(new RegExp(`^\\d+-${fileName}\\.(md|json)$`))) {
+      if (entry.match(new RegExp(`^\\d+-${fileNamePattern}\\.(md|json)$`))) {
         possiblePaths.unshift(join(dirPath, entry))
       }
       // Match date-prefixed files like "2026-02-11-building-filesystem-cms.md"
-      if (entry.match(new RegExp(`^\\d{4}-\\d{2}-\\d{2}-${fileName}\\.(md|json)$`))) {
+      if (entry.match(new RegExp(`^\\d{4}-\\d{2}-\\d{2}-${fileNamePattern}\\.(md|json)$`))) {
         possiblePaths.unshift(join(dirPath, entry))
       }
     }

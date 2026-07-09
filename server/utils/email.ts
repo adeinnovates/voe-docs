@@ -1,5 +1,4 @@
 /**
-import { logger } from './logger'
  * =============================================================================
  * F0 - EMAIL UTILITY (AWS SES)
  * =============================================================================
@@ -24,6 +23,7 @@ import { logger } from './logger'
  */
 
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses'
+import { logger } from './logger'
 
 // =============================================================================
 // SES CLIENT SETUP

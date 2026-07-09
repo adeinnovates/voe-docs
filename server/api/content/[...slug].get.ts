@@ -1,6 +1,5 @@
 /**
  * =============================================================================
-import { logger } from '../../utils/logger'
  * F0 - CONTENT API ENDPOINT
  * =============================================================================
  * 
@@ -25,6 +24,7 @@ import { resolveContentPath } from '../../utils/navigation'
 import { parseApiSpec } from '../../utils/openapi-parser'
 import { resolveLayoutForPath, getConfigForPath } from '../../utils/config'
 import { getCachedContent } from '../../utils/cache'
+import { logger } from '../../utils/logger'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()

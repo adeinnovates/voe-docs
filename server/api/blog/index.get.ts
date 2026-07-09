@@ -1,6 +1,5 @@
 /**
  * =============================================================================
-import { logger } from '../../utils/logger'
  * F0 - BLOG INDEX API
  * =============================================================================
  * 
@@ -25,6 +24,7 @@ import {
   isMarkdownFile,
 } from '../../utils/markdown'
 import { resolveDirectoryConfig, type DirectoryConfig } from '../../utils/config'
+import { logger } from '../../utils/logger'
 
 // =============================================================================
 // TYPE DEFINITIONS

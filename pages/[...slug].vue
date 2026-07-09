@@ -154,7 +154,8 @@ watch([error, pending], async () => {
 // SEO
 // ---------------------------------------------------------------------------
 
-useSeo({
+// Reactive: registered once, stays in sync as content loads/changes.
+useSeo(() => ({
   title: content.value?.title,
   description: content.value?.blog?.excerpt || content.value?.description,
   image: content.value?.blog?.coverImage,
@@ -162,22 +163,7 @@ useSeo({
   publishedTime: content.value?.blog?.date,
   author: content.value?.blog?.author,
   tags: content.value?.blog?.tags,
-})
-
-// Update page title when content changes
-watch(content, (newContent) => {
-  if (newContent?.title) {
-    useSeo({
-      title: newContent.title,
-      description: newContent.blog?.excerpt || newContent.description,
-      image: newContent.blog?.coverImage,
-      type: newContent.layout === 'blog' ? 'article' : 'website',
-      publishedTime: newContent.blog?.date,
-      author: newContent.blog?.author,
-      tags: newContent.blog?.tags,
-    })
-  }
-})
+}))
 
 // ---------------------------------------------------------------------------
 // TOC INJECTION

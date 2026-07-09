@@ -91,22 +91,45 @@ export default defineEventHandler(async (event) => {
   // Get raw body for signature verification
   const rawBody = await readRawBody(event)
   
-  // Verify signature if secret is configured
-  if (webhookSecret) {
-    if (!verifySignature(rawBody || '', signature, webhookSecret)) {
-      logger.warn('Invalid webhook signature', { delivery: deliveryId })
-      throw createError({
-        statusCode: 401,
-        statusMessage: 'Unauthorized',
-        data: { message: 'Invalid webhook signature' },
-      })
-    }
-  } else {
-    logger.warn('No webhook secret configured')
+  // Fail closed: without a configured secret we cannot authenticate the caller,
+  // so we must reject rather than process an unauthenticated request. This
+  // endpoint invalidates every content cache, so leaving it open would let
+  // anyone trigger cache-busting.
+  if (!webhookSecret) {
+    logger.error('Webhook rejected: GITHUB_WEBHOOK_SECRET is not configured')
+    throw createError({
+      statusCode: 503,
+      statusMessage: 'Service Unavailable',
+      data: { message: 'Webhook is not configured' },
+    })
   }
-  
-  // Parse body
-  const body = JSON.parse(rawBody || '{}')
+
+  // Verify signature
+  if (!verifySignature(rawBody || '', signature, webhookSecret)) {
+    logger.warn('Invalid webhook signature', { delivery: deliveryId })
+    throw createError({
+      statusCode: 401,
+      statusMessage: 'Unauthorized',
+      data: { message: 'Invalid webhook signature' },
+    })
+  }
+
+  // Parse body — reject malformed JSON with a 400 rather than an uncaught 500.
+  let body: Record<string, unknown> & {
+    ref?: string
+    pusher?: { name?: string }
+    head_commit?: { id?: string }
+  }
+  try {
+    body = JSON.parse(rawBody || '{}')
+  } catch {
+    logger.warn('Webhook rejected: malformed JSON body', { delivery: deliveryId })
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Bad Request',
+      data: { message: 'Invalid JSON payload' },
+    })
+  }
   
   // Handle different event types
   switch (githubEvent) {

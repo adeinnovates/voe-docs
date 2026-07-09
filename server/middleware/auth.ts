@@ -1,34 +1,39 @@
 /**
  * =============================================================================
-import { logger } from '../utils/logger'
  * F0 - AUTHENTICATION MIDDLEWARE
  * =============================================================================
- * 
+ *
  * This middleware enforces authentication based on AUTH_MODE configuration.
- * 
+ *
  * AUTH MODES:
  * - 'public':  No authentication required (all routes accessible)
  * - 'private': All routes require valid JWT except:
  *   - /login
  *   - /api/auth/*
- *   - /llms.txt (configurable)
- * 
+ *   - /_health, /_ready
+ *   - /api/webhook (authenticated by its own HMAC signature, not a JWT)
+ *
+ *   NOTE: In private mode the documentation itself is private, so the AI/SEO
+ *   endpoints (/llms.txt, /sitemap.xml, /feed.xml) are intentionally NOT exempt
+ *   — exposing them would leak the full content of a private site.
+ *
  * CONSTRAINT COMPLIANCE:
  * - C-SEC-PRIVATE-NOT-PUBLIC-005: /private never accessible via HTTP
- * 
+ *
  * HOW IT WORKS:
  * 1. Check AUTH_MODE - if 'public', allow all
  * 2. Check if route is exempt (login, auth API)
  * 3. Extract JWT from Authorization header or cookie
  * 4. Verify token and attach user info to event context
  * 5. Return 401 if unauthorized
- * 
+ *
  * SECURITY:
  * - All token validation failures are logged with IP/timestamp
  */
 
 import { verifyToken, type JwtPayload } from '../utils/jwt'
 import { auditLog, getClientIp } from '../utils/audit'
+import { logger } from '../utils/logger'
 
 // =============================================================================
 // CONFIGURATION
@@ -43,6 +48,10 @@ const PUBLIC_ROUTES = [
   '/api/auth/verify-otp',
   '/_health',
   '/_ready',
+  // GitHub webhook authenticates itself via HMAC signature (see webhook.post.ts).
+  // GitHub cannot present a JWT, so it must bypass the JWT gate. Fails closed
+  // when GITHUB_WEBHOOK_SECRET is unset.
+  '/api/webhook',
 ]
 
 /**

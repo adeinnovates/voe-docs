@@ -25,9 +25,23 @@
 
 import { readdir, readFile, stat } from 'fs/promises'
 import { join, relative } from 'path'
-import { extractFrontmatter, markdownToPlainText, isMarkdownFile } from '../utils/markdown'
 import { getCachedContent } from '../utils/cache'
 import { logger } from '../utils/logger'
+
+/**
+ * Count non-overlapping occurrences of `needle` in `haystack`.
+ * Uses indexOf rather than a user-built RegExp to avoid regex injection / ReDoS.
+ */
+function countOccurrences(haystack: string, needle: string): number {
+  if (!needle) return 0
+  let count = 0
+  let index = haystack.indexOf(needle)
+  while (index !== -1) {
+    count++
+    index = haystack.indexOf(needle, index + needle.length)
+  }
+  return count
+}
 
 interface SearchResult {
   title: string
@@ -241,7 +255,7 @@ function searchContent(items: ContentItem[], query: string): SearchResult[] {
       }
       
       // Content match
-      const contentMatches = (contentLower.match(new RegExp(term, 'g')) || []).length
+      const contentMatches = countOccurrences(contentLower, term)
       if (contentMatches > 0) {
         score += Math.min(contentMatches, 5) // Cap at 5 matches
         matchedTerms++

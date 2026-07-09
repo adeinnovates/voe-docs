@@ -96,15 +96,16 @@ const siteName = config.public.siteName || 'f0'
 const { topNav, isActive } = useNavigation()
 const { isAuthenticated, logout } = useAuth()
 const { openSearch } = useSearch()
-const { theme } = useTheme()
+const { resolvedTheme } = useTheme()
 
 // Fetch brand configuration
 const { data: brand } = await useFetch('/api/brand', { key: 'brand' })
 
-// Computed logo based on current theme
+// Computed logo based on the ACTUAL applied theme (resolvedTheme), not the
+// preference — otherwise 'system' + dark would never use the dark logo.
 const currentLogo = computed(() => {
   if (!brand.value) return ''
-  if (theme.value === 'dark' && brand.value.logoDark) {
+  if (resolvedTheme.value === 'dark' && brand.value.logoDark) {
     return brand.value.logoDark
   }
   return brand.value.logo || ''

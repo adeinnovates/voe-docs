@@ -1,15 +1,14 @@
 /**
-import { logger } from './logger'
  * =============================================================================
  * F0 - ALLOWLIST CHECKER
  * =============================================================================
- * 
+ *
  * This module manages email allowlist checking for the authentication system.
- * 
+ *
  * CONSTRAINT COMPLIANCE:
  * - C-SEC-OTP-ALLOWLIST-ONLY-006: Only allowlisted emails can authenticate
  * - C-SEC-PRIVATE-NOT-PUBLIC-005: allowlist.json stored in /private
- * 
+ *
  * ALLOWLIST FORMAT (allowlist.json):
  * {
  *   "emails": [
@@ -18,15 +17,19 @@ import { logger } from './logger'
  *   ],
  *   "domains": [
  *     "@company.com"    // Allows all emails from this domain
- *   ]
+ *   ],
+ *   "admins": [
+ *     "admin@company.com"   // Optional: restricts /api/admin/* to these emails.
+ *   ]                       // If omitted, any allowlisted user is treated as admin.
  * }
- * 
+ *
  * The allowlist is cached in memory and reloaded when the file changes
  * or when manually invalidated.
  */
 
 import { readFile, stat } from 'fs/promises'
 import { join } from 'path'
+import { logger } from './logger'
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -38,9 +41,14 @@ import { join } from 'path'
 export interface AllowlistConfig {
   // Specific email addresses allowed
   emails?: string[]
-  
+
   // Domain patterns (e.g., "@company.com" allows all from that domain)
   domains?: string[]
+
+  // Optional: emails permitted to access /api/admin/* endpoints.
+  // If absent/empty, every authenticated (allowlisted) user is treated as admin,
+  // preserving the historical behaviour of single-tenant private deployments.
+  admins?: string[]
 }
 
 // =============================================================================
@@ -100,6 +108,11 @@ async function loadAllowlist(privateDir: string): Promise<AllowlistConfig> {
         domain = domain.toLowerCase().trim()
         return domain.startsWith('@') ? domain : `@${domain}`
       })
+    }
+
+    // Normalize admins to lowercase
+    if (config.admins) {
+      config.admins = config.admins.map(email => email.toLowerCase().trim())
     }
     
     // Update cache
@@ -167,6 +180,48 @@ export async function isEmailAllowed(
   } catch (error) {
     logger.error('Error checking email allowlist', { error: error instanceof Error ? error.message : String(error) })
     // Fail closed - if we can't verify, deny access
+    return false
+  }
+}
+
+/**
+ * Check if an email is permitted to access admin endpoints.
+ *
+ * Rules:
+ * - The email must first be allowlisted for authentication at all.
+ * - If the allowlist declares a non-empty `admins` array, the email must be a
+ *   member of it.
+ * - If no `admins` array is configured, any allowlisted user is an admin. This
+ *   preserves the behaviour of existing single-tenant private deployments.
+ *
+ * Fails closed on any error (never grants admin on failure).
+ *
+ * @param email - Email address to check (typically from a verified JWT)
+ * @param privateDir - Path to private directory
+ */
+export async function isEmailAdmin(
+  email: string,
+  privateDir: string
+): Promise<boolean> {
+  const normalizedEmail = email.toLowerCase().trim()
+
+  // Must be an authenticatable user in the first place.
+  if (!(await isEmailAllowed(normalizedEmail, privateDir))) {
+    return false
+  }
+
+  try {
+    const allowlist = await loadAllowlist(privateDir)
+
+    // No explicit admin list → any allowlisted user is an admin.
+    if (!allowlist.admins || allowlist.admins.length === 0) {
+      return true
+    }
+
+    return allowlist.admins.includes(normalizedEmail)
+  } catch (error) {
+    logger.error('Error checking admin allowlist', { error: error instanceof Error ? error.message : String(error) })
+    // Fail closed
     return false
   }
 }
