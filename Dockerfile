@@ -84,8 +84,14 @@ ENV HOST=0.0.0.0
 ENV PORT=3000
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
+# Use 127.0.0.1, NOT localhost: the server binds IPv4 (HOST=0.0.0.0), but
+# inside Alpine `localhost` resolves to the IPv6 loopback [::1] first, so
+# `wget http://localhost:3000` connects to [::1]:3000 where nothing is
+# listening and gets "connection refused" — which fails the healthcheck and
+# makes Coolify roll back a container that is actually healthy. Hitting the
+# dedicated /_health liveness route (auth-exempt, <5ms) over IPv4 is the fix.
+HEALTHCHECK --interval=30s --timeout=3s --start-period=15s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:3000/_health || exit 1
 
 # Start the application
 CMD ["node", ".output/server/index.mjs"]
