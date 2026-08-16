@@ -5,7 +5,7 @@ description: One workspace is one memory. Principals get access through grants, 
 
 # Workspaces and principals
 
-**One workspace is one memory.** Everything captured for a user lands in their workspace: its own raw store, its own page repository, its own index partition, its own grants. Nothing crosses workspaces — row-level security enforces the boundary at the database, not in application code.
+**One workspace is one memory.** Everything captured for a user lands in their workspace: its own raw store, its own page repository, its own index, its own grants. Nothing crosses workspaces; row-level security enforces that at the database, not in application code.
 
 A **principal** is whoever is asking: a person (`email:dele@example.com`), a connected assistant (`agent:claude-desktop`), or the internal service principal. Principals hold **grants**, and a bearer token is only ever as capable as the live grant behind it — capability is re-derived from the grant on every request, so revocation and expiry take effect at the next call, not the next login.
 

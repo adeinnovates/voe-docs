@@ -5,14 +5,14 @@ description: The bearer-token HTTP transport and its session rules.
 
 # HTTP MCP
 
-Where the deployment exposes it (`GET /v1/config` publishes the URL as `mcpHttpUrl`), clients connect over streamable HTTP with a bearer header. On the hosted UAT cell that URL is:
+Where the deployment exposes it (`GET /v1/config` publishes the URL as `mcpHttpUrl`), clients connect over streamable HTTP with a bearer header. A deployed cell might publish:
 
 ```
-https://mcp-uat.runvoe.com/
+https://mcp.your-voe-cell.example/
 Authorization: Bearer tok_…
 ```
 
-This endpoint serves any client that can attach that header itself: Claude Code (`claude mcp add --transport http --header`), SDK agents, and gateways. The two big chat apps cannot, today: Claude's custom-connector screen attaches fixed headers only through a slow-rollout beta (an org admin enters the bearer as a request header), and ChatGPT's custom connectors offer OAuth or no authentication — there is no token field at all. Claude Desktop reaches this endpoint through the [`mcp-remote` bridge](/mcp/claude-desktop) instead; ChatGPT has to wait for OAuth. The [compatibility matrix](/mcp/compatibility-matrix) carries the current state per client.
+This endpoint serves any client that can attach that header itself: Claude Code (`claude mcp add --transport http --header`), SDK agents, and gateways. The two big chat apps cannot use this bearer flow directly today: Claude's custom-connector screen and ChatGPT custom connectors expect OAuth or no authentication in the normal flow. Claude Desktop reaches this endpoint through the [`mcp-remote` bridge](/mcp/claude-desktop); ChatGPT waits for OAuth. The [compatibility matrix](/mcp/compatibility-matrix) carries the current state per client.
 
 ## Session rules
 

@@ -11,7 +11,7 @@ description: The variables a cell reads, grouped by what they configure.
 |---|---|
 | `VOE_PUBLIC_BASE_URL` | The cell's public origin — links, setup URLs |
 | `VOE_INBOUND_EMAIL_DOMAIN` | The domain provisioned addresses live under |
-| `VOE_MCP_HTTP_URL` | Published to clients via `/v1/config` (e.g. `https://mcp-uat.runvoe.com/`) |
+| `VOE_MCP_HTTP_URL` | Published to clients via `/v1/config` (e.g. `https://mcp.your-voe-cell.example/`) |
 
 ## Database
 
@@ -28,7 +28,7 @@ description: The variables a cell reads, grouped by what they configure.
 
 `ANTHROPIC_API_KEY` for the platform default; per-workspace provider config (Anthropic, OpenAI, OpenAI-compatible base URLs) is stored encrypted and overrides it.
 
-## Operator plane
+## Operator access
 
 | Variable | Purpose |
 |---|---|

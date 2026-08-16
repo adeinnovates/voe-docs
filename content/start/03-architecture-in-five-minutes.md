@@ -17,16 +17,16 @@ flowchart LR
   subgraph REC["The record"]
     RAW["Raw store<br/>original bytes, content-addressed"]
     PAGES["Pages<br/>plain markdown files, git-versioned"]
-    IDX["Index<br/>edges · chunks · gaps<br/>rebuildable from files"]
+    IDX["Index<br/>edges · passages · gaps<br/>rebuildable from files"]
   end
   subgraph OUT["Read surfaces"]
-    CTS["search · context · think"]
+    READ["search · context · think"]
     MCP["MCP tools"]
     API["HTTP API"]
     DASH["Dashboard"]
   end
-  IN --> RAW --> PAGES --> IDX --> CTS
-  CTS --> MCP & API & DASH
+  IN --> RAW --> PAGES --> IDX --> READ
+  READ --> MCP & API & DASH
 ::
 
 **Three layers, strictly ordered.**

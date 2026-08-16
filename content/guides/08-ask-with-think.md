@@ -16,7 +16,7 @@ Body: `{"query": "…", "mode": "annotate" | "strict"}`. Default `annotate`. Ser
 ```bash
 curl -s -N -X POST "$VOE/v1/think" \
   -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
-  -d '{"query":"Where do we stand with Meridian?"}'
+  -d '{"query":"Where does Meridian stand?"}'
 ```
 
 ## Event order

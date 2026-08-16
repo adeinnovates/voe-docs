@@ -22,7 +22,7 @@ The body becomes a page; the first heading becomes its title; `[[wikilinks]]` be
 
 ## Structured envelopes
 
-`POST /ingest` with `Content-Type: message/json` accepts a full envelope (channel, sender, thread, attachments by raw ref) — the path adapters use. For app events, markdown is usually enough.
+`POST /ingest` with `Content-Type: application/json` accepts a full envelope (channel, sender, thread, attachments by raw ref) — the path adapters use. For app events, markdown is usually enough.
 
 ## Evidence behavior
 

@@ -3,7 +3,7 @@
   "info": {
     "title": "Voe API",
     "version": "1.0",
-    "description": "The builder surface of a Voe cell. Every route below is workspace-scoped by bearer token; effective capability is the lower of the token's scope and the live grant's ceiling, re-derived on every request."
+    "description": "The common builder surface of a Voe cell. Workspace routes use bearer tokens; effective capability is the lower of the token's scope and the live grant's ceiling, re-derived on every request."
   },
   "servers": [
     {
@@ -51,11 +51,11 @@
       "post": {
         "summary": "Capture markdown or an envelope",
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Captured"
           }
         },
-        "description": "Scope: `write`. `Content-Type: text/markdown` captures the body as a page. `message/json` accepts a full capture envelope. Raw input is stored first; rate-limited per workspace."
+        "description": "Scope: `write`. `Content-Type: text/markdown` captures the body as a page. `application/json` accepts a full capture envelope. Raw input is stored first; rate-limited per workspace."
       }
     },
     "/v1/search": {
@@ -577,7 +577,7 @@
         "description": "Scope: `read`."
       },
       "post": {
-        "summary": "Subscribe a private read-only ICS/iCal URL",
+        "summary": "Subscribe a provider-issued read-only ICS/iCal URL",
         "responses": {
           "200": {
             "description": "OK"

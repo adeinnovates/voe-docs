@@ -14,7 +14,7 @@ Present tense means shipped. Anything not shipped is marked plainly.
 | Email address provisioning | Available — dedicated addresses, single or subdomain patterns |
 | SMS and phone numbers | Available — regional availability varies by provider |
 | Voice and voicemail | Available — missed calls and voicemail transcripts |
-| Calendar feeds | Available — private read-only ICS/iCal subscriptions, encrypted at rest |
+| Calendar feeds | Available — provider-issued read-only ICS/iCal subscriptions, encrypted at rest |
 | Raw-first capture | Available — original bytes kept before any processing |
 | Attachments | Available — stored, read, retried; raw preview and download |
 | Search | Available — hybrid vector + keyword + graph + title, per-hit evidence |

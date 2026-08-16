@@ -5,7 +5,7 @@ description: Write grants, create, patch, preconditions, decisions, and rejectio
 
 # Checked writes
 
-The record's integrity never depends on which model is writing. Every agent write — including the owner's own trusted assistant — goes through the same gate.
+The record's integrity never depends on which model is writing. Every agent write — including the owner's own assistant — goes through the same gate.
 
 ## Write grants
 

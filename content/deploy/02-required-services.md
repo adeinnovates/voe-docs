@@ -9,7 +9,7 @@ description: What runs inside the container, and the two external dependencies.
 
 | Service | Job |
 |---|---|
-| Postgres 16 + pgvector | Index, grants, review state — chunks partitioned per workspace |
+| Postgres 16 + pgvector | Index, grants, review state, and workspace-scoped search |
 | API server | HTTP surface + dashboard + SSE |
 | MCP stdio/HTTP servers | Assistant transports |
 | SMTP receiver | Inbound mail on port 25 |

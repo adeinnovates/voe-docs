@@ -27,4 +27,4 @@ The response carries the assistant's `tok_…` once. The connection wrote the gr
 
 Read scope by default; write only while a live write grant covers the call. Every tool call revalidates against the live grant, so a revoked assistant stops at its next call — there is no session grace.
 
-Next: [Claude Desktop](/mcp/claude-desktop) · [Claude Code](/mcp/claude-code) · [HTTP MCP](/mcp/http-mcp) — the hosted UAT endpoint is `https://mcp-uat.runvoe.com/`.
+Next: [Claude Desktop](/mcp/claude-desktop) · [Claude Code](/mcp/claude-code) · [HTTP MCP](/mcp/http-mcp).

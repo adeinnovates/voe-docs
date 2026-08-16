@@ -32,7 +32,7 @@ Desktop's config file speaks stdio only — a `"type": "http"` block is Claude C
   "mcpServers": {
     "voe": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://mcp-uat.runvoe.com/", "--header", "Authorization:${VOE_AUTH}", "--transport", "http-only"],
+      "args": ["-y", "mcp-remote", "https://mcp.your-voe-cell.example/", "--header", "Authorization:${VOE_AUTH}", "--transport", "http-only"],
       "env": { "VOE_AUTH": "Bearer tok_your_assistant_token" }
     }
   }
@@ -41,4 +41,4 @@ Desktop's config file speaks stdio only — a `"type": "http"` block is Claude C
 
 The header value rides in through `env` because Desktop's argument parsing breaks on spaces inside `args`. `--transport http-only` matches the server, which speaks streamable HTTP without the SSE half.
 
-Claude's **Add custom connector** screen (Desktop, web, and mobile) is a different door: it takes the server URL but authenticates by OAuth or not at all. A fixed-bearer server like Voe's fits it only through the request-headers beta — an organization admin enters `Bearer tok_…` as an `Authorization` request header when adding the connector — and that beta is rolling out slowly, so treat the config-file paths above as the supported Desktop routes today. Voe's own OAuth sign-in, which would make the connector screen work first-class, is later.
+Claude's **Add custom connector** screen (Desktop, web, and mobile) is a different door: it takes the server URL, but the normal flow authenticates by OAuth or no authentication. Voe's fixed-bearer endpoint does not fit that screen today. Use the config-file paths above for Desktop; Voe OAuth sign-in, which would make the connector screen work directly, is later.

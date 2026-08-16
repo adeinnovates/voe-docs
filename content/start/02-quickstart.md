@@ -1,13 +1,13 @@
 ---
 title: "Quickstart: Give An Agent Real-World Memory"
-description: Capture a seed record, search it, build context, ask with think, and connect MCP — one token, a few minutes.
+description: Capture a seed record, search it, build context, ask with think, then connect an assistant over MCP.
 ---
 
 # Quickstart: give an agent real-world memory
 
 **What this is for.** Run the whole loop once — capture, search, context, think, MCP — before learning every concept.
 
-**Before you start.** You need a workspace bearer token (`tok_…`). Get one from whoever runs your Voe cell: an operator provisions a workspace and sends a setup link, and claiming that link mints your token. Export it:
+**Before you start.** You need an owner or admin workspace token (`tok_…`). Get one from whoever runs your Voe cell: an operator provisions a workspace and sends a setup link, and claiming that link mints your token. Export it:
 
 ```bash
 export VOE=https://your-voe-cell.example
@@ -46,12 +46,22 @@ Sections come back token-budgeted with citations, plus a gap report naming what 
 ```bash
 curl -s -N -X POST "$VOE/v1/think" \
   -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
-  -d '{"query":"What did we agree with Meridian?"}'
+  -d '{"query":"What did Meridian agree to?"}'
 ```
 
 Server-sent events stream back: `sources` first, then `text`, then a mandatory `gaps` report. Every factual sentence cites a source from the `sources` list; a sentence the mechanical checker cannot tie to one arrives with a `citation-warning`.
 
 ## 5. Connect the same workspace over MCP
+
+Create an assistant connection. This writes the assistant's grant and key together; the returned key is shown once.
+
+```bash
+curl -s -X POST "$VOE/v1/agent-connections" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"label":"Quickstart Assistant"}'
+```
+
+Put the returned assistant token, not the owner token, into the MCP client:
 
 ```json
 {
@@ -59,13 +69,13 @@ Server-sent events stream back: `sources` first, then `text`, then a mandatory `
     "voe": {
       "command": "bun",
       "args": ["run", "apps/mcp/src/stdio.ts"],
-      "env": { "VOE_TOKEN": "tok_your_workspace_token" }
+      "env": { "VOE_TOKEN": "tok_your_assistant_token" }
     }
   }
 }
 ```
 
-Your assistant now holds the same memory: `search`, `get_context`, `think`, and the rest of the [tool list](/mcp/tool-reference). Over MCP, `think` defaults to strict grounding — ungrounded sentences are withheld, not delivered.
+Your assistant now holds the same memory through its own `agent:` principal: `search`, `get_context`, `think`, and the rest of the [tool list](/mcp/tool-reference). Over MCP, `think` defaults to strict grounding — ungrounded sentences are withheld, not delivered.
 
 ## 6. Inspect citations and gaps
 

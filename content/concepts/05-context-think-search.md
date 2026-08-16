@@ -15,7 +15,7 @@ One engine, three read surfaces. Choose by who does the reasoning.
 
 ## search
 
-Hybrid retrieval: vector similarity and keyword rank fused, then boosted by graph adjacency (results connected to other results rank up) and title match. Tier-safe by default — suspicious senders are excluded, unknown senders downweighted — with explicit overrides. `explain=true` returns the full scoring breakdown per hit.
+Hybrid retrieval: vector similarity and keyword rank fused, then boosted by graph adjacency (results connected to other results rank up) and title match. Tier-aware by default — suspicious senders are excluded, unknown senders downweighted — with explicit overrides. `explain=true` returns the full scoring breakdown per hit.
 
 ## context
 
@@ -30,7 +30,7 @@ An empty memory answers honestly: *"I do not hold a record that answers that yet
 ## Defaults that matter
 
 - `includeDerived=false` everywhere by default; opt in to OCR/transcript text.
-- Tier-safe reads by default; `tier=all` opts into suspicious and full-weight unknown.
+- Tier-aware reads by default; `tier=all` opts into suspicious and full-weight unknown.
 - Strict mode for machine callers; annotate with in-place warnings for human surfaces.
 
 Guides: [Search](/guides/search-the-memory) · [Context](/guides/build-a-context-bundle) · [Think](/guides/ask-with-think)

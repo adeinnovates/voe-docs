@@ -19,7 +19,7 @@ The files are canonical. You can read the whole memory with `cat`.
 
 ## 3. Index
 
-Postgres holds what queries need: page rows, **edges** (the graph), **chunks** (embedded and keyword-indexed passages, partitioned per workspace), **gaps**, and review state. The index is fully derived: `reindex` rebuilds it from the files and reports `driftDetected` if the result disagrees with what was there — the record audits its own index.
+Postgres holds what queries need: page rows, **edges** (the graph), searchable passages, **gaps**, and review state. The index is fully derived: it can be rebuilt from the files, and the rebuild reports if the index no longer matches the record.
 
 ## Why this shape
 

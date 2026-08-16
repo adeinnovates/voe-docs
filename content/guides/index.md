@@ -1,6 +1,6 @@
 ---
 title: Guides
-description: Task-shaped pages — set up sources, read the memory, connect assistants, write safely, share.
+description: Task-shaped pages — set up sources, read the memory, connect assistants, write with checks, share.
 ---
 
 # Guides

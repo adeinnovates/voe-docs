@@ -22,4 +22,4 @@ Attachments are read out-of-band by workers, never inline with capture:
 
 ## Limits
 
-Extraction output is capped per attachment (oversized results fail explicitly rather than flooding the index), and chunk indexes for attachments live in a reserved range so they never collide with the page body's own chunks. Transcription draws on the account's repair budget.
+Extraction output is capped per attachment; oversized results fail explicitly rather than flooding the index. Transcription draws on the account's repair budget.

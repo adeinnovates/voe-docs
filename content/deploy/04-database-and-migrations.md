@@ -14,12 +14,12 @@ description: Two roles, immutable migration files, and the standing reconcile.
 
 Numbered SQL files, applied in order, recorded with checksums. An applied file is immutable — editing one is a checksum error, not a re-run. The migrator runs at every boot and is idempotent.
 
-Heavy per-workspace work (like the chunks partition backfill) runs **outside** the single migration transaction, one short transaction per workspace, recorded only when complete — so a crash resumes instead of wedging.
+Heavy reconcile work runs **outside** the single migration transaction, in short recorded steps — so a crash resumes instead of wedging.
 
 ## The standing reconcile
 
-Every migrate run also heals structural drift: any workspace whose chunk rows sit in the default partition gets its own partition created and its rows moved. Between deploys, strays surface as a `/healthz` warn — visible, never silent.
+Every migrate run also checks derived database shape and repairs known drift. Between deploys, repairable drift surfaces through `/healthz` as attention — visible, never silent.
 
 ## Rebuildability
 
-The index is derived. `reindex` rebuilds pages, edges, and chunks from the file record and reports drift if the result disagrees — the recovery path is also the audit.
+The index is derived. `reindex` rebuilds pages, edges, and searchable passages from the file record and reports disagreement — the recovery path is also the audit.

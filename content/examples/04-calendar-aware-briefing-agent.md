@@ -5,7 +5,7 @@ description: A morning brief grounded in events the memory actually holds.
 
 # Calendar-aware briefing agent
 
-**Flows in:** a private read-only calendar feed, synced on schedule; mail for the people involved.
+**Flows in:** a provider-issued read-only calendar feed, synced on schedule; mail for the people involved.
 
 **You call:** `search` scoped to event pages for today's window, then `think`:
 

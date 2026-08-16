@@ -29,4 +29,4 @@ data: {"gaps":{"missingEntities":[],"unreadableAttachments":[]}}
 
 ## Client notes
 
-Use `curl -N` or any SSE/fetch-reader client; buffer on the blank-line frame boundary, not on read chunks. Do not resolve citations against anything but this response's `sources` — that allowlist is what makes a bracketed slug evidence rather than decoration.
+Use `curl -N` or any SSE/fetch-reader client; buffer on the blank-line frame separator, not on read chunks. Do not resolve citations against anything but this response's `sources` — that allowlist is what makes a bracketed slug evidence rather than decoration.

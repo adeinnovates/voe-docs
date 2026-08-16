@@ -19,4 +19,4 @@ Inbound SMTP lands in an encrypted on-disk queue (`VOE_MAIL_SIDECAR_QUEUE_KEY`) 
 
 ## Observing it
 
-The doctor (`/healthz` checks) covers outbox lag, dead letters, calendar feed failures, and parser calibration drift. Worker failures are visible states, not silent stalls.
+The doctor (`/healthz` checks) covers outbox lag, dead letters, calendar feed failures, and worker health. Worker failures are visible states, not silent stalls.

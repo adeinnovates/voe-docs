@@ -19,4 +19,4 @@ The CLI's backup command packages both consistently; restore rehearsals should u
 
 ## What makes this credible
 
-The layering is the guarantee: raw bytes are the truth, files are the record, the index is derived. Every layer above raw can be rebuilt from below, and the rebuild audits itself (`driftDetected`). Test restores on a schedule; a backup that has never restored is a hope, not a backup.
+The layering is the promise: raw bytes are the source, files are the record, the index is derived. Every layer above raw can be rebuilt from below, and the rebuild reports disagreement. Test restores on a schedule; a backup that has never restored is a hope, not a backup.

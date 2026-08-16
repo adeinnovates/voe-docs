@@ -15,7 +15,7 @@ docker run -d --name voe \
   voe:latest
 ```
 
-Startup order inside the container: Postgres, then migrations (`voe-migrate` retries until clean — including the standing partition reconcile), then the services. The container is healthy when `GET /healthz` answers.
+Startup order inside the container: Postgres, then migrations (`voe-migrate` retries until clean — including the standing reconcile), then the services. The container is healthy when `GET /healthz` answers.
 
 Ports: `8080` API + dashboard, `8081` MCP HTTP (where exposed), `25` SMTP intake.
 

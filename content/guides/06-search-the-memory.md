@@ -25,7 +25,7 @@ curl -s "$VOE/v1/search?q=meridian+wire+details&limit=5&explain=true" \
   "results": [{
     "slug": "messages/2026/08/15/email-9637e986",
     "type": "message",
-    "snippet": "…the account we are using for the wire…",
+    "snippet": "...the account used for the wire...",
     "score": 0.041,
     "evidence": {
       "vector": 3, "keyword": 1,

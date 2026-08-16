@@ -12,7 +12,7 @@ Information enters Voe through **addressed** or **deliberately subscribed** sour
 | Email | The user forwards mail to a provisioned Voe address (`name@in.yourdomain`), or senders write to it directly |
 | SMS | A provisioned number receives texts |
 | Voice | The same number takes calls; a missed call becomes a stub, a voicemail becomes a transcript page that supersedes it |
-| Calendar | A private read-only ICS/iCal URL, synced on a schedule and on demand |
+| Calendar | A provider-issued read-only ICS/iCal URL, synced on a schedule and on demand |
 | App capture | `POST /ingest` with markdown, or the MCP `capture` tool — for events, notes, incidents, tool output |
 
 ## What capture guarantees
