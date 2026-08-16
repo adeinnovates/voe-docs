@@ -12,7 +12,7 @@ https://mcp-uat.runvoe.com/
 Authorization: Bearer tok_…
 ```
 
-This is the endpoint Claude Desktop's remote-server support and ChatGPT's custom connectors point at.
+This endpoint serves any client that can attach that header itself: Claude Code (`claude mcp add --transport http --header`), SDK agents, and gateways. The two big chat apps cannot, today: Claude's custom-connector screen attaches fixed headers only through a slow-rollout beta (an org admin enters the bearer as a request header), and ChatGPT's custom connectors offer OAuth or no authentication — there is no token field at all. Claude Desktop reaches this endpoint through the [`mcp-remote` bridge](/mcp/claude-desktop) instead; ChatGPT has to wait for OAuth. The [compatibility matrix](/mcp/compatibility-matrix) carries the current state per client.
 
 ## Session rules
 
