@@ -13,7 +13,7 @@ Voe's MCP server exposes the same engine contract as the HTTP API — search, co
 
 - **stdio** — a local subprocess with `VOE_TOKEN` in its environment. The current path for Claude Desktop and Claude Code.
 - **HTTP** — bearer-token authenticated, where the deployment exposes it. Sessions are bound to the exact key that opened them.
-- **OAuth** — later. Bearer tokens are the shipped flow.
+- **OAuth** — for the Claude and ChatGPT connectors, which take an OAuth server or nothing. The cell runs its own; a connector token is a projection of an agent connection. Built and tested, pending final acceptance against the live clients. See [OAuth connections](/mcp/oauth-connections).
 
 ## Grounding posture
 

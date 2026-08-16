@@ -9,7 +9,7 @@ description: Assistant client compatibility, bearer-token MCP, deployment notes,
 
 - **stdio** — works with any client that can spawn a local process and pass an environment variable. This is the current path for Claude Desktop and Claude Code.
 - **HTTP** — bearer-token authenticated, session-bound. Works where the deployment exposes the MCP HTTP endpoint and the client supports custom headers. A session belongs to the exact key that opened it; a different key must open its own session.
-- **OAuth / browser sign-in** — not the current shipped flow. Marked later.
+- **OAuth / browser sign-in** — the path for the Claude and ChatGPT connectors, which take an OAuth server or nothing. The cell runs its own; a connector token is a projection of an agent connection. Built and tested, with acceptance against the live clients the remaining step. See [OAuth connections](/mcp/oauth-connections).
 
 ## Client notes
 

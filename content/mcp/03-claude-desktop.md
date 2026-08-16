@@ -41,4 +41,4 @@ Desktop's config file speaks stdio only — a `"type": "http"` block is Claude C
 
 The header value rides in through `env` because Desktop's argument parsing breaks on spaces inside `args`. `--transport http-only` matches the server, which speaks streamable HTTP without the SSE half.
 
-Claude's **Add custom connector** screen (Desktop, web, and mobile) is a different door: it takes the server URL, but the normal flow authenticates by OAuth or no authentication. Voe's fixed-bearer endpoint does not fit that screen today. Use the config-file paths above for Desktop; Voe OAuth sign-in, which would make the connector screen work directly, is later.
+Claude's **Add custom connector** screen (Desktop, web, and mobile) is a different door: it takes the server URL and authenticates by OAuth, not a header. The cell runs its own OAuth server for exactly this, so the screen can work with a URL and a browser approval — see [OAuth connections](/mcp/oauth-connections). That path is built and tested, with final acceptance against the live client still pending, so the config-file paths above remain the proven route for Desktop today.

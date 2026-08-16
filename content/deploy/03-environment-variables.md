@@ -9,9 +9,9 @@ description: The variables a cell reads, grouped by what they configure.
 
 | Variable | Purpose |
 |---|---|
-| `VOE_PUBLIC_BASE_URL` | The cell's public origin — links, setup URLs |
+| `VOE_PUBLIC_BASE_URL` | The cell's public origin — links, setup URLs, and the [OAuth](/mcp/oauth-connections) issuer |
 | `VOE_INBOUND_EMAIL_DOMAIN` | The domain provisioned addresses live under |
-| `VOE_MCP_HTTP_URL` | Published to clients via `/v1/config` (e.g. `https://mcp.your-voe-cell.example/`) |
+| `VOE_MCP_HTTP_URL` | Published to clients via `/v1/config` (e.g. `https://mcp.your-voe-cell.example/`); also the [OAuth](/mcp/oauth-connections) resource every access token is bound to |
 
 ## Database
 

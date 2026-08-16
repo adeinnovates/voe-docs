@@ -25,7 +25,7 @@ Present tense means shipped. Anything not shipped is marked plainly.
 | Checked writes | Available — write grants, `create`, `patch`, recorded decisions |
 | Invite links | Available — the normal member/guest sharing path |
 | Support access | Available — operator principals only, tenant-granted, time-boxed |
-| OAuth MCP sign-in | Later — bearer tokens are the current flow |
+| OAuth MCP sign-in | Built, pending final client acceptance — the cell's own authorization server for the Claude and ChatGPT connectors |
 | Framework adapter packages | Later |
 | Embedded web components | Later |
 | Broad SaaS connector catalog | Not planned as such — Voe receives addressed or subscribed sources |

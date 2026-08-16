@@ -47,7 +47,7 @@ Support is an operator principal with no tenant read path by default. A tenant-g
 
 ## How do Claude and ChatGPT connect today?
 
-Claude Desktop works through config-file MCP or the `mcp-remote` bridge. Claude Code can use stdio or HTTP with an `Authorization` header. ChatGPT custom connectors need OAuth, so direct ChatGPT connector support is later. Any app that can make HTTPS requests can use the API today.
+Claude Desktop works through config-file MCP or the `mcp-remote` bridge. Claude Code can use stdio or HTTP with an `Authorization` header. The Claude and ChatGPT connector screens take an OAuth server, so the cell runs its own — a URL and a browser approval, no key to paste ([OAuth connections](/mcp/oauth-connections)); that path is built and tested, with acceptance against the live clients the remaining step. Any app that can make HTTPS requests can use the API today.
 
 ## Is MCP required?
 

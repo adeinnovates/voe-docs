@@ -12,7 +12,7 @@ https://mcp.your-voe-cell.example/
 Authorization: Bearer tok_…
 ```
 
-This endpoint serves any client that can attach that header itself: Claude Code (`claude mcp add --transport http --header`), SDK agents, and gateways. The two big chat apps cannot use this bearer flow directly today: Claude's custom-connector screen and ChatGPT custom connectors expect OAuth or no authentication in the normal flow. Claude Desktop reaches this endpoint through the [`mcp-remote` bridge](/mcp/claude-desktop); ChatGPT waits for OAuth. The [compatibility matrix](/mcp/compatibility-matrix) carries the current state per client.
+This endpoint serves any client that can attach that header itself: Claude Code (`claude mcp add --transport http --header`), SDK agents, and gateways. The two big chat apps do not attach a bearer — their connector screens take an OAuth server or nothing — so they reach this same endpoint over [OAuth](/mcp/oauth-connections), where an access token is a projection of the same connection a bearer would open. Claude Desktop can also bridge to it through [`mcp-remote`](/mcp/claude-desktop). The [compatibility matrix](/mcp/compatibility-matrix) carries the current state per client.
 
 ## Session rules
 
@@ -28,4 +28,4 @@ This endpoint serves any client that can attach that header itself: Claude Code 
 | `401` "no longer connected" | Key resolves but its grant is gone |
 | `401` "different key" | Session id presented with a different bearer |
 
-OAuth/browser sign-in is later; bearer is the shipped flow.
+An [OAuth](/mcp/oauth-connections) session binds to the connection rather than the exact token, so a rotated access token continues the same session while another connection's token is refused. Bearer is the shipped header flow; OAuth is the connector flow.
