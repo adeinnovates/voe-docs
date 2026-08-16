@@ -83,15 +83,17 @@ ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-# Health check
-# Use 127.0.0.1, NOT localhost: the server binds IPv4 (HOST=0.0.0.0), but
-# inside Alpine `localhost` resolves to the IPv6 loopback [::1] first, so
-# `wget http://localhost:3000` connects to [::1]:3000 where nothing is
-# listening and gets "connection refused" — which fails the healthcheck and
-# makes Coolify roll back a container that is actually healthy. Hitting the
-# dedicated /_health liveness route (auth-exempt, <5ms) over IPv4 is the fix.
-HEALTHCHECK --interval=30s --timeout=3s --start-period=15s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:3000/_health || exit 1
+# Health check — intentionally omitted.
+# Coolify's probe hit `localhost` inside the container, which resolves to the
+# IPv6 loopback [::1]; the server binds IPv4 (HOST=0.0.0.0), so every probe got
+# "connection refused" and Coolify rolled back a container that was healthy.
+# Shipping without a container HEALTHCHECK lets the deploy succeed.
+#
+# To add one back, do it against IPv4 and the dedicated liveness route — in
+# Coolify's UI (Host 127.0.0.1 · Port 3000 · Path /_health · GET · expect 200)
+# or here (`HEALTHCHECK ... CMD wget -q --spider http://127.0.0.1:3000/_health`).
+# /_health is auth-exempt and answers in <5ms. The static-hosting move in
+# DEPLOYMENT-SPEC.md removes this concern entirely.
 
 # Start the application
 CMD ["node", ".output/server/index.mjs"]
