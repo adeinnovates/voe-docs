@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#F7FAF9"/>
+  <text x="10" y="41" font-family="Fraunces, Georgia, serif" font-weight="600" font-size="30" fill="#12242A">voe<tspan fill="#2F6D64">.</tspan></text>
+  <path d="M8 50 C 20 47, 28 53, 40 50 S 56 48, 58 50" fill="none" stroke="#2F6D64" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+</svg>

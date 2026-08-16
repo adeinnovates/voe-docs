@@ -1,0 +1,161 @@
+/* Voe brand for f0. Still water, careful ink.
+   Three voices: Fraunces speaks for the product (h1, h2), Instrument Sans for the interface,
+   Spline Sans Mono for code and evidence values only. Never mono for headings, labels, or nav.
+   Written against f0's documented variables plus conservative element selectors; after first render,
+   tighten to f0's real class names instead of reaching for !important. */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400&display=swap");
+
+:root{
+  --voe-deepwater:#12242A; --voe-mist:#ECF1EF; --voe-foam:#F7FAF9;
+  --voe-tide:#2F6D64; --voe-tide-wash:#E2EDEA; --voe-buoy:#A66A1F; --voe-buoy-wash:#F5EBDB;
+  --voe-ink:#12242A; --voe-ink-soft:#4A5B60; --voe-ink-faint:#8A9A9E; --voe-line:#D9E1DF;
+  --voe-serif:"Fraunces",Georgia,serif; --voe-sans:"Instrument Sans",system-ui,sans-serif; --voe-mono:"Spline Sans Mono",ui-monospace,monospace;
+
+  /* f0 tokens */
+  --color-accent:var(--voe-tide);
+  --color-bg-primary:var(--voe-foam);
+  --color-text-primary:var(--voe-ink);
+}
+
+/* ---- f0's real token set, tightened after first render. -----------------
+   Doubled :root beats the compiled bundle on specificity, not order, and
+   without a single !important. Light first, then dark re-mapped to "under
+   the water". Links use --color-text-link in f0, not --color-accent. */
+:root:root{
+  --color-accent:var(--voe-tide);
+  --color-accent-light:var(--voe-tide-wash);
+  --color-accent-dark:#285C54;
+  --color-text-link:var(--voe-tide);
+  --color-text-link-hover:#285C54;
+  --color-bg-primary:var(--voe-foam);
+  --color-bg-secondary:#FFFFFF;
+  --color-bg-tertiary:var(--voe-tide-wash);
+  --color-bg-hover:var(--voe-tide-wash);
+  --color-bg-code:#FFFFFF;
+  --color-text-primary:var(--voe-ink);
+  --color-text-secondary:var(--voe-ink-soft);
+  --color-text-tertiary:var(--voe-ink-faint);
+  --color-text-muted:var(--voe-ink-faint);
+  --color-border-primary:var(--voe-line);
+  --color-border-secondary:var(--voe-line);
+  --color-warning-bg:var(--voe-buoy-wash);
+  --color-success-bg:var(--voe-tide-wash);
+}
+:root:root[data-theme="dark"]{
+  --color-accent:#7FB5AC;
+  --color-accent-light:rgba(47,109,100,.28);
+  --color-accent-dark:#9CC8C0;
+  --color-text-link:#7FB5AC;
+  --color-text-link-hover:#9CC8C0;
+  --color-bg-primary:var(--voe-deepwater);
+  --color-bg-secondary:#16303A;
+  --color-bg-tertiary:rgba(236,241,239,.06);
+  --color-bg-hover:rgba(236,241,239,.08);
+  --color-bg-code:rgba(236,241,239,.05);
+  --color-text-primary:var(--voe-mist);
+  --color-text-secondary:rgba(236,241,239,.72);
+  --color-text-tertiary:rgba(236,241,239,.5);
+  --color-text-muted:rgba(236,241,239,.5);
+  --color-border-primary:rgba(236,241,239,.16);
+  --color-border-secondary:rgba(236,241,239,.12);
+  --color-warning-bg:rgba(166,106,31,.18);
+  --color-success-bg:rgba(47,109,100,.22);
+}
+[data-theme="dark"]{
+  /* Under the water: the site page ends in this palette, so dark docs land in the same world. */
+  --color-accent:var(--voe-tide);
+  --color-bg-primary:var(--voe-deepwater);
+  --color-text-primary:var(--voe-mist);
+  --voe-ink:var(--voe-mist);
+  --voe-ink-soft:rgba(236,241,239,.72);
+  --voe-ink-faint:rgba(236,241,239,.5);
+  --voe-line:rgba(236,241,239,.16);
+  --voe-tide-wash:rgba(236,241,239,.10);
+  --voe-buoy-wash:rgba(166,106,31,.18);
+}
+
+/* Type */
+html{-webkit-font-smoothing:antialiased}
+body{font-family:var(--voe-sans);color:var(--voe-ink);background:var(--color-bg-primary);line-height:1.6}
+h1,h2{font-family:var(--voe-serif);font-weight:600;letter-spacing:-.01em;line-height:1.12;color:var(--voe-ink)}
+h1{font-size:2.1rem;margin-bottom:.4em}
+h2{font-size:1.5rem;font-weight:400;margin-top:2.2em}
+h2 em{font-style:italic;font-weight:300}
+h3,h4{font-family:var(--voe-sans);font-weight:600;letter-spacing:.01em}
+p,li{color:var(--voe-ink);max-width:70ch}
+a{color:var(--voe-tide);text-decoration:none;border-bottom:1px solid transparent}
+a:hover{border-bottom-color:currentColor}
+hr{border:0;border-top:1px solid var(--voe-line)}
+small,.muted{color:var(--voe-ink-faint)}
+
+/* Code and evidence: the only mono */
+code,kbd,pre,samp{font-family:var(--voe-mono);font-size:.86em}
+:not(pre)>code{background:var(--voe-tide-wash);color:var(--voe-ink);padding:.12em .4em;border-radius:5px}
+pre{background:#fff;border:1px solid var(--voe-line);border-radius:10px;padding:14px 16px;line-height:1.55;overflow:auto}
+[data-theme="dark"] pre{background:rgba(236,241,239,.05)}
+pre code{background:none;padding:0}
+
+/* Tables: hairlines, no zebra */
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th{font-family:var(--voe-sans);font-weight:600;text-align:left;color:var(--voe-ink-soft);letter-spacing:.02em}
+th,td{padding:10px 12px 10px 0;border-bottom:1px solid var(--voe-line);vertical-align:top}
+
+/* Callouts: warning is the held register (Buoy amber); info is tide-wash; success is neutral on purpose */
+.callout,[class*="callout"]{border-left:3px solid var(--voe-line);background:transparent;padding:12px 16px;border-radius:0 8px 8px 0;margin:1.2em 0}
+.callout-info,[class*="callout-info"],[class*="info"]{border-left-color:var(--voe-tide);background:var(--voe-tide-wash)}
+.callout-warning,[class*="callout-warning"],[class*="warning"]{border-left-color:var(--voe-buoy);background:var(--voe-buoy-wash)}
+.callout-error,[class*="callout-error"],[class*="error"]{border-left-color:var(--voe-buoy);background:var(--voe-buoy-wash)}
+.callout-success,[class*="callout-success"],[class*="success"]{border-left-color:var(--voe-tide);background:var(--voe-tide-wash)}
+
+/* API endpoint blocks: method badge stays, everything else quiet */
+[class*="api-endpoint"],[class*="endpoint"]{border:1px solid var(--voe-line);border-radius:10px;padding:14px 16px;background:transparent}
+[class*="method"]{font-family:var(--voe-mono);font-size:.72rem;letter-spacing:.06em;border-radius:5px;padding:2px 7px}
+
+/* Nav and sidebar: interface voice, hairlines, no fills */
+nav a,aside a,[class*="sidebar"] a{font-family:var(--voe-sans);color:var(--voe-ink-soft)}
+nav a:hover,aside a:hover,[class*="sidebar"] a:hover{color:var(--voe-ink);border-bottom-color:transparent}
+[class*="sidebar"] .active,[class*="sidebar"] [aria-current="page"]{color:var(--voe-ink);font-weight:600}
+header,[class*="header"]{border-bottom:1px solid var(--voe-line);background:var(--color-bg-primary)}
+
+/* Restraint: no card grids, no colored section fills, no drop shadows on content */
+[class*="card"]{box-shadow:none;border:1px solid var(--voe-line);border-radius:10px;background:transparent}
+
+/* Mermaid: keep the system diagram in brand */
+.mermaid .node rect,.mermaid .node polygon{fill:#fff;stroke:var(--voe-line)}
+.mermaid .edgePath path{stroke:var(--voe-tide)}
+.mermaid .label,.mermaid text{font-family:var(--voe-sans);fill:var(--voe-ink)}
+[data-theme="dark"] .mermaid .node rect{fill:rgba(236,241,239,.05);stroke:var(--voe-line)}
+
+/* Focus and reduced motion */
+:focus-visible{outline:2px solid var(--voe-tide);outline-offset:3px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---- Post-first-render fixes ------------------------------------------- */
+
+/* The homepage (and any page outside a section) gets an empty left rail:
+   the layout always mounts the sidebar. When it holds no items, drop it and
+   let the flex row give the width back to content. */
+aside.sidebar:not(:has(.sidebar-item)){display:none}
+
+/* The 404 card's button inherited an unreadable fill. Tideglass on Mist,
+   like every primary action in the product. */
+.btn-primary,a.btn-primary{background:var(--voe-tide);color:#ECF1EF;border:1px solid var(--voe-tide);border-radius:8px;padding:.55rem 1.1rem;font-family:var(--voe-sans);font-weight:500}
+.btn-primary:hover,a.btn-primary:hover{background:#285C54;border-color:#285C54;color:#ECF1EF}
+
+/* Mermaid in the brand: still water, not stock purple. Mermaid injects an
+   ID-prefixed stylesheet inside its own SVG, so this is the one earned use
+   of !important in the file — nothing else can outrank an ID selector the
+   library regenerates on every render. */
+svg[id^="mermaid"] .node rect,svg[id^="mermaid"] .node polygon,svg[id^="mermaid"] .node circle,
+svg[id^="mermaid"] rect.basic,.mermaid .node rect{
+  fill:var(--voe-tide-wash)!important;stroke:var(--voe-line)!important;
+}
+svg[id^="mermaid"] .edgePaths path{stroke:var(--voe-ink-soft)!important;fill:none!important}
+svg[id^="mermaid"] .marker{fill:var(--voe-ink-soft)!important;stroke:var(--voe-ink-soft)!important}
+svg[id^="mermaid"] .nodeLabel,svg[id^="mermaid"] .nodeLabel *,svg[id^="mermaid"] text{
+  color:var(--voe-ink)!important;fill:var(--voe-ink)!important;font-family:var(--voe-sans)!important
+}
+svg[id^="mermaid"] .edgeLabel,svg[id^="mermaid"] .edgeLabel *{background:var(--color-bg-primary)!important;color:var(--voe-ink-soft)!important}
+svg[id^="mermaid"] .cluster rect{fill:transparent!important;stroke:var(--voe-line)!important}
+[data-theme="dark"] svg[id^="mermaid"] .node rect,[data-theme="dark"] .mermaid .node rect{fill:rgba(47,109,100,.25)!important;stroke:rgba(236,241,239,.2)!important}

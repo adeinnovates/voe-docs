@@ -1,0 +1,43 @@
+---
+title: Build A Context Bundle
+description: GET /v1/context — entities, query, token budget, dropped candidates, gaps.
+---
+
+# Build a context bundle
+
+**For:** feeding your own model cited, budgeted context. **Scope:** `read`.
+
+:::api GET /v1/context
+Token-budgeted context bundle
+
+`query` and/or `entities` (comma-separated slugs); `tokens` budget (default 8000); `includeDerived`, `tier` as in search.
+:::
+
+```bash
+curl -s "$VOE/v1/context?entities=people/amara-obi&query=wire+details&tokens=3000" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+## Response shape
+
+```json
+{
+  "sections": [{
+    "slug": "people/amara-obi", "type": "person", "reason": "entity",
+    "content": "…page body…", "estimatedTokens": 310, "grade": "record",
+    "citation": { "slug": "people/amara-obi", "sourceKind": "page", "proof": { "rawRef": null } }
+  }],
+  "tokenBudget": 3000, "estimatedTokensUsed": 2731,
+  "truncated": true,
+  "droppedCandidates": [{ "slug": "messages/…", "reason": "budget" }],
+  "gaps": { "missingEntities": [], "staleEntities": [], "unreadableAttachments": [] }
+}
+```
+
+Packing order: requested entities' own pages, then their timeline highlights, then search results for the query — highest value first, because the budget can run out. Candidates that do not fit are **dropped whole, never truncated mid-passage**, and named in `droppedCandidates`.
+
+## Using it well
+
+Pass `sections[].content` to your model with the citations; render `gaps` to the user. If `truncated` is true and the answer feels thin, raise `tokens` — the bundle never silently under-fills without saying so.
+
+**Next:** [Ask with think](/guides/ask-with-think)

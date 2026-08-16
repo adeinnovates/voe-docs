@@ -1,20 +1,16 @@
 ---
 title: Guides
-description: Learn how to use f0 with these comprehensive guides
+description: Task-shaped pages — set up sources, read the memory, connect assistants, write safely, share.
 ---
 
 # Guides
 
-Welcome to the f0 guides. Here you'll find everything you need to get started and make the most of your documentation platform.
+Each guide is one task: purpose, a minimal working example, the response shape, and how it fails.
 
-## Getting Started
+**Sources in:** [provision a workspace](/guides/provision-a-workspace-per-user) · [email](/guides/route-email-into-voe) · [SMS and voice](/guides/add-sms-and-voice) · [calendar](/guides/subscribe-a-calendar-feed) · [app events](/guides/capture-app-events)
 
-New to f0? Start here:
+**Reads out:** [search](/guides/search-the-memory) · [context](/guides/build-a-context-bundle) · [think](/guides/ask-with-think)
 
-- [Getting Started](/guides/getting-started) — Installation and basic setup
+**Agents:** [connect over MCP](/guides/connect-over-mcp) · [let an agent write](/guides/let-an-agent-write)
 
-## Authentication
-
-Learn how to protect your documentation:
-
-- [Authentication Overview](/guides/authentication/overview) — Understanding auth modes and OTP flow
+**Evidence and people:** [attachments](/guides/handle-attachments) · [evidence UI](/guides/build-an-evidence-ui) · [review held sources](/guides/review-held-sources) · [share a workspace](/guides/share-a-workspace)

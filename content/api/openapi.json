@@ -1,361 +1,1221 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "f0 API",
-    "description": "Internal API for the f0 documentation platform. This API handles content retrieval, navigation, and authentication.",
-    "version": "1.0.0",
-    "contact": {
-      "name": "API Support",
-      "email": "support@example.com"
-    }
+    "title": "Voe API",
+    "version": "1.0",
+    "description": "The builder surface of a Voe cell. Every route below is workspace-scoped by bearer token; effective capability is the lower of the token's scope and the live grant's ceiling, re-derived on every request."
   },
   "servers": [
     {
-      "url": "http://localhost:3000",
-      "description": "Development server"
+      "url": "https://your-voe-cell.example"
     }
   ],
-  "tags": [
-    {
-      "name": "Content",
-      "description": "Content retrieval endpoints"
-    },
-    {
-      "name": "Navigation",
-      "description": "Navigation structure endpoints"
-    },
-    {
-      "name": "Authentication",
-      "description": "Authentication endpoints (private mode only)"
-    }
-  ],
-  "paths": {
-    "/api/content/{slug}": {
-      "get": {
-        "tags": ["Content"],
-        "summary": "Get content by slug",
-        "description": "Retrieves parsed content for a given URL slug. Returns markdown as HTML or API spec as structured data.",
-        "operationId": "getContent",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "description": "URL path segments (e.g., 'guides/getting-started')",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Content retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContentResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Content not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/navigation": {
-      "get": {
-        "tags": ["Navigation"],
-        "summary": "Get navigation structure",
-        "description": "Returns the complete navigation structure including top nav and sidebar items.",
-        "operationId": "getNavigation",
-        "responses": {
-          "200": {
-            "description": "Navigation retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NavigationResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/auth/request-otp": {
-      "post": {
-        "tags": ["Authentication"],
-        "summary": "Request OTP",
-        "description": "Sends a one-time password to the specified email address. Only works in private mode.",
-        "operationId": "requestOtp",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["email"],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "example": "user@example.com"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OTP sent successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Verification code sent to your email"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Email not in allowlist"
-          },
-          "429": {
-            "description": "Rate limited - too many requests"
-          }
-        }
-      }
-    },
-    "/api/auth/verify-otp": {
-      "post": {
-        "tags": ["Authentication"],
-        "summary": "Verify OTP",
-        "description": "Verifies the OTP and returns a JWT token on success.",
-        "operationId": "verifyOtp",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["email", "code"],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  },
-                  "code": {
-                    "type": "string",
-                    "pattern": "^[0-9]{8}$",
-                    "example": "12345678"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Authentication successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    },
-                    "token": {
-                      "type": "string",
-                      "description": "JWT token valid for 72 hours"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Invalid or expired OTP"
-          }
-        }
-      }
-    },
-    "/llms.txt": {
-      "get": {
-        "tags": ["Content"],
-        "summary": "Get LLM-optimized content",
-        "description": "Returns all documentation as a single plain text file optimized for LLM consumption. Strips all UI elements and formatting.",
-        "operationId": "getLlmsText",
-        "responses": {
-          "200": {
-            "description": "Plain text documentation",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
   "components": {
-    "schemas": {
-      "ContentResponse": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["markdown", "openapi", "postman"]
-          },
-          "title": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "html": {
-            "type": "string",
-            "description": "Rendered HTML (for markdown)"
-          },
-          "toc": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TocItem"
-            }
-          },
-          "spec": {
-            "type": "object",
-            "description": "Parsed API spec (for openapi/postman)"
-          }
-        }
-      },
-      "TocItem": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "text": {
-            "type": "string"
-          },
-          "level": {
-            "type": "integer"
-          },
-          "children": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TocItem"
-            }
-          }
-        }
-      },
-      "NavigationResponse": {
-        "type": "object",
-        "properties": {
-          "topNav": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TopNavItem"
-            }
-          },
-          "sidebar": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/SidebarItem"
-              }
-            }
-          }
-        }
-      },
-      "TopNavItem": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "path": {
-            "type": "string"
-          },
-          "isExternal": {
-            "type": "boolean"
-          }
-        }
-      },
-      "SidebarItem": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "path": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": ["file", "folder"]
-          },
-          "order": {
-            "type": "integer"
-          },
-          "children": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SidebarItem"
-            }
-          }
-        }
-      },
-      "Error": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "type": "integer"
-          },
-          "statusMessage": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "securitySchemes": {
-      "bearerAuth": {
+      "bearer": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "description": "JWT token obtained from /api/auth/verify-otp"
+        "bearerFormat": "tok_\u2026"
       }
     }
   },
   "security": [
     {
-      "bearerAuth": []
+      "bearer": []
     }
-  ]
+  ],
+  "paths": {
+    "/v1/account": {
+      "get": {
+        "summary": "Current principal and workspace",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`."
+      }
+    },
+    "/v1/workspace-summary": {
+      "get": {
+        "summary": "Workspace name, counts, and shape",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`."
+      }
+    },
+    "/ingest": {
+      "post": {
+        "summary": "Capture markdown or an envelope",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `write`. `Content-Type: text/markdown` captures the body as a page. `message/json` accepts a full capture envelope. Raw input is stored first; rate-limited per workspace."
+      }
+    },
+    "/v1/search": {
+      "get": {
+        "summary": "Hybrid search with per-hit evidence",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The query."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Max hits, default 20."
+          },
+          {
+            "name": "explain",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Include the scoring breakdown."
+          },
+          {
+            "name": "includeDerived",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Include OCR/transcript text (derived grade)."
+          },
+          {
+            "name": "tier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "`all` includes suspicious senders and full-weight unknowns."
+          }
+        ]
+      }
+    },
+    "/v1/context": {
+      "get": {
+        "summary": "Token-budgeted context bundle with citations and gaps",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Query-backed retrieval."
+          },
+          {
+            "name": "entities",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated entity slugs to lead the bundle."
+          },
+          {
+            "name": "tokens",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Budget, default 8000."
+          },
+          {
+            "name": "includeDerived",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "As in search."
+          },
+          {
+            "name": "tier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "As in search."
+          }
+        ]
+      }
+    },
+    "/v1/think": {
+      "post": {
+        "summary": "Streamed cited synthesis (SSE)",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`. Events: sources, text, citation-warning|withheld, gaps (always last). Strict withholds ungrounded sentences and does not stream.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "query"
+                ],
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "annotate",
+                      "strict"
+                    ],
+                    "default": "annotate"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/graph/query": {
+      "get": {
+        "summary": "Bounded graph walk from start slugs",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated start slugs."
+          },
+          {
+            "name": "edgeTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter edge types."
+          },
+          {
+            "name": "depth",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Hop cap."
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "`out`, `in`, or `both` (default out)."
+          }
+        ]
+      }
+    },
+    "/v1/entities/roster": {
+      "get": {
+        "summary": "Entities of a type, sortable",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "person, company, thread, \u2026"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "name (default) or recency"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "1\u2013500, default 200"
+          }
+        ]
+      }
+    },
+    "/v1/entities/{slug}/timeline": {
+      "get": {
+        "summary": "Everything connected to one entity, in time order",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/pages/{slug}": {
+      "get": {
+        "summary": "One page with body and provenance",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Checked amend under write authority",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `write`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "type": "string"
+                  },
+                  "frontmatter": {
+                    "type": "object"
+                  },
+                  "baseBodySha256": {
+                    "type": "string",
+                    "description": "Current body hash precondition \u2014 stale is refused."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/pages": {
+      "post": {
+        "summary": "Checked create under write authority",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `write`. Authority check, secret scan, then an atomic record+index write. Denials carry the decision's reason.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "slug",
+                  "type",
+                  "body"
+                ],
+                "properties": {
+                  "slug": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "body": {
+                    "type": "string"
+                  },
+                  "frontmatter": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/attachments": {
+      "get": {
+        "summary": "Attachments with reading states",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`."
+      }
+    },
+    "/v1/attachments/{id}/raw": {
+      "get": {
+        "summary": "Original attachment bytes",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/attachments/{id}/retry": {
+      "post": {
+        "summary": "Requeue a failed reading",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/addresses": {
+      "get": {
+        "summary": "Inbound addresses and numbers with last-heard",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`."
+      },
+      "post": {
+        "summary": "Provision an address or number",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "kind"
+                ],
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "email_local",
+                      "email_subdomain",
+                      "phone"
+                    ]
+                  },
+                  "pattern": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "areaCode": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/addresses/{id}": {
+      "delete": {
+        "summary": "Release an address; the record stays",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/number-regions": {
+      "get": {
+        "summary": "Where numbers are available",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`."
+      }
+    },
+    "/v1/calendar-feeds": {
+      "get": {
+        "summary": "Feeds with honest last-sync status",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`."
+      },
+      "post": {
+        "summary": "Subscribe a private read-only ICS/iCal URL",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "url"
+                ],
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/calendar-feeds/{id}/sync": {
+      "post": {
+        "summary": "Sync now; concurrent callers get in_progress",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/calendar-feeds/{id}": {
+      "delete": {
+        "summary": "Unsubscribe; captured events remain",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/quarantine": {
+      "get": {
+        "summary": "Held sources awaiting review",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`."
+      }
+    },
+    "/v1/quarantine/{id}/{action}": {
+      "post": {
+        "summary": "promote (admit + teach) or discard",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          },
+          {
+            "name": "action",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "`promote` or `discard`."
+          }
+        ]
+      }
+    },
+    "/v1/identity-merges": {
+      "get": {
+        "summary": "Identity merge proposals with evidence",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`."
+      }
+    },
+    "/v1/gaps": {
+      "get": {
+        "summary": "Standing gap rows for review",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`."
+      }
+    },
+    "/v1/grants": {
+      "get": {
+        "summary": "Who can reach this workspace, at what role",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`."
+      },
+      "post": {
+        "summary": "Support access only \u2014 operator principals, time-boxed",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`. People are invited (grant-invitations); assistants are connected (agent-connections). Any other role answers 400 naming the right door.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "principal",
+                  "role"
+                ],
+                "properties": {
+                  "principal": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "support"
+                    ]
+                  },
+                  "expiresInHours": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/grants/{principal}": {
+      "delete": {
+        "summary": "Revoke access; effective next request",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "parameters": [
+          {
+            "name": "principal",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/grant-invitations": {
+      "get": {
+        "summary": "Invitations with lifecycle state",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`."
+      },
+      "post": {
+        "summary": "Invite a person; the grant is written on acceptance",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`. Returns the invite link token once; only its hash is stored. Re-inviting replaces the open invitation.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "invitedEmail",
+                  "role"
+                ],
+                "properties": {
+                  "invitedEmail": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "owner",
+                      "member",
+                      "guest"
+                    ]
+                  },
+                  "grantExpiresAt": {
+                    "type": "string",
+                    "description": "Required for guests."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/grant-invitations/{id}": {
+      "delete": {
+        "summary": "Cancel a pending invitation",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/grant-invitations/resolve": {
+      "post": {
+        "summary": "Read an invitation by token without accepting",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Public. Looking is not accepting.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "inviteToken"
+                ],
+                "properties": {
+                  "inviteToken": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/grant-invitations/accept": {
+      "post": {
+        "summary": "Accept with a verified session",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Public + recovery session header. The accepting email comes from the verified session, never the body, and must match the invited address.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "inviteToken"
+                ],
+                "properties": {
+                  "inviteToken": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/agent-connections": {
+      "get": {
+        "summary": "Connected assistants",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`."
+      },
+      "post": {
+        "summary": "Connect an assistant \u2014 grant and key in one transaction",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "label"
+                ],
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "writeAuthority": {
+                    "type": "object",
+                    "properties": {
+                      "pageTypes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "prefixes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "tier": {
+                        "type": "string"
+                      },
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "create",
+                          "annotate",
+                          "both"
+                        ]
+                      },
+                      "expiresInSeconds": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/agent-connections/{principal}": {
+      "delete": {
+        "summary": "Disconnect: grant, key, and write authority go together",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "parameters": [
+          {
+            "name": "principal",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/write-grants": {
+      "get": {
+        "summary": "Active write authorities",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`."
+      },
+      "post": {
+        "summary": "Grant scoped, expiring write authority to a connected assistant",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "principal",
+                  "pageTypes",
+                  "prefixes",
+                  "tier",
+                  "mode",
+                  "expiresInSeconds"
+                ],
+                "properties": {
+                  "principal": {
+                    "type": "string"
+                  },
+                  "pageTypes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "prefixes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "tier": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string"
+                  },
+                  "expiresInSeconds": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/write-grants/{id}": {
+      "delete": {
+        "summary": "Revoke write authority early",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/tokens": {
+      "get": {
+        "summary": "Issued token metadata \u2014 never plaintext",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`."
+      },
+      "post": {
+        "summary": "Mint a key for a granted person, capped at the role's ceiling",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "principal",
+                  "scope"
+                ],
+                "properties": {
+                  "principal": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "enum": [
+                      "read",
+                      "write",
+                      "admin"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tokens/{id}": {
+      "delete": {
+        "summary": "Revoke a key",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/statements/current": {
+      "get": {
+        "summary": "The running month's capture statement",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`."
+      }
+    },
+    "/v1/statements/sealed": {
+      "get": {
+        "summary": "Sealed monthly statements \u2014 immutable once sealed",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`."
+      }
+    },
+    "/v1/trace/{ref}": {
+      "get": {
+        "summary": "Reconstruct one message's end-to-end journey",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "ref",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/healthz": {
+      "get": {
+        "summary": "ok, attention (a person is owed), or degraded (a fault)",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Public. Only faults degrade; held mail is attention, never failure."
+      }
+    }
+  }
 }

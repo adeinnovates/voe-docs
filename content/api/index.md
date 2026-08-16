@@ -1,16 +1,13 @@
 ---
-title: API Reference
-description: Complete API documentation for f0
+title: API
+description: Bearer-token HTTP API — authentication, errors, streaming, and the full endpoint reference.
 ---
 
-# API Reference
+# API
 
-f0 provides a REST API for accessing documentation content programmatically.
+Every route is workspace-scoped by bearer token; capability is the lower of the token's scope and the live grant, on every request.
 
-## Available Specifications
-
-- [f0 API](/api/openapi) — Internal API documentation (OpenAPI 3.0)
-
-## Quick Access
-
-For AI agents and LLMs, access the complete documentation at `/llms.txt`.
+- [Authentication](/api/authentication) — tokens, scopes, roles, the ceiling rule.
+- [Errors](/api/errors) — one shape, honest refusals.
+- [Streaming](/api/streaming) — the SSE contract on `/v1/think`.
+- [Endpoint reference](/api/openapi) — the full surface, terse and complete.
