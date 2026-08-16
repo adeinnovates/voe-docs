@@ -83,17 +83,22 @@ ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-# Health check — intentionally omitted.
-# Coolify's probe hit `localhost` inside the container, which resolves to the
-# IPv6 loopback [::1]; the server binds IPv4 (HOST=0.0.0.0), so every probe got
-# "connection refused" and Coolify rolled back a container that was healthy.
-# Shipping without a container HEALTHCHECK lets the deploy succeed.
-#
-# To add one back, do it against IPv4 and the dedicated liveness route — in
-# Coolify's UI (Host 127.0.0.1 · Port 3000 · Path /_health · GET · expect 200)
-# or here (`HEALTHCHECK ... CMD wget -q --spider http://127.0.0.1:3000/_health`).
-# /_health is auth-exempt and answers in <5ms. The static-hosting move in
-# DEPLOYMENT-SPEC.md removes this concern entirely.
+# Health check — a REAL, passing probe (not omitted, not a comment).
+# Two things this gets right, both learned the hard way:
+#  1. IPv4, not `localhost`. The server binds IPv4 (HOST=0.0.0.0); inside the
+#     container `localhost` resolves to the IPv6 loopback [::1], where nothing
+#     listens, so a `localhost` probe gets "connection refused". Hit 127.0.0.1.
+#  2. It must actually exist and pass. A container with no HEALTHCHECK has no
+#     `.State.Health`, and Coolify's post-deploy `docker inspect
+#     '{{.State.Health.Status}}'` then fails with "map has no entry for key
+#     Health" and rolls the deploy back. (Merely *commenting out* the directive
+#     didn't help — Coolify greps the Dockerfile for the word HEALTHCHECK and
+#     tried to read a status that wasn't there.) A real, green probe gives it a
+#     status to read.
+# /_health is auth-exempt and answers in <5ms. Uses GET (-O /dev/null) rather
+# than --spider so a HEAD-averse route still returns 200.
+HEALTHCHECK --interval=30s --timeout=3s --start-period=15s --retries=3 \
+  CMD wget -q -O /dev/null http://127.0.0.1:3000/_health || exit 1
 
 # Start the application
 CMD ["node", ".output/server/index.mjs"]
