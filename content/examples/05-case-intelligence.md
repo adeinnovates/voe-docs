@@ -39,14 +39,14 @@ Chronology and current-state reconstruction; the people and companies and how th
 
 One distinction the case depends on:
 
-```text
-MEMORY        What happened, and what is it evidence of?
-INTELLIGENCE  What does it mean?
-AGENCY        What should we do?
-AUTHORITY     Are we allowed to write or act?
-```
+| Layer | The question it answers |
+|---|---|
+| Memory | What happened, and what is it evidence of? |
+| Intelligence | What does it mean? |
+| Agency | What should we do? |
+| Authority | Are we allowed to write or act? |
 
-Voe holds the first line only. An agent's conclusion is not memory: it enters through [checked writeback](/examples/checked-writeback), lands marked as derived, names the agent that wrote it, and never becomes record-grade because a model was confident. A reviewer can ask which assertions rest only on derived material and get an answer, because grade travels with every claim and worst-grade wins.
+Voe holds the first row only. An agent's conclusion is not memory: it enters through [checked writeback](/examples/checked-writeback), lands marked as derived, names the agent that wrote it, and never becomes record-grade because a model was confident. A reviewer can ask which assertions rest only on derived material and get an answer, because grade travels with every claim and worst-grade wins.
 
 ## What you own
 

@@ -13,29 +13,15 @@ description: Voe makes the limits of memory machine-readable, so an agent knows 
 
 **The path:**
 
-```text
-question
-   |
-   v
-context assembly
-   |
-   v
-evidence?
-   |
-   +-- no  -> refuse before the model call
-   |
-   +-- yes -> model call
-               |
-               v
-          grounding check
-               |
-               v
-        strict withholding
-               |
-               v
-             answer
-               +
-        query-scoped gap note
+```mermaid
+flowchart TD
+  Q[question] --> C[context assembly]
+  C --> E{evidence?}
+  E -- no --> R[refuse before the model call]
+  E -- yes --> M[model call]
+  M --> G[grounding check]
+  G --> W[strict withholding]
+  W --> A[answer, with a query-scoped gap note]
 ```
 
 **Three behaviors to render:**
