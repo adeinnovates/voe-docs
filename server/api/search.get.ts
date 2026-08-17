@@ -23,10 +23,11 @@
  * }
  */
 
-import { readdir, readFile, stat } from 'fs/promises'
+import { readdir, readFile } from 'fs/promises'
 import { join, relative } from 'path'
 import { getCachedContent } from '../utils/cache'
 import { logger } from '../utils/logger'
+import { isPrivateFrontmatter } from '../utils/markdown'
 
 /**
  * Count non-overlapping occurrences of `needle` in `haystack`.
@@ -106,12 +107,14 @@ async function buildContentIndex(contentDir: string): Promise<ContentItem[]> {
             
             try {
               const cached = await getCachedContent(fullFilePath)
+              if (isPrivateFrontmatter(cached.frontmatter)) continue
               title = cached.title
               plainContent = cached.plainText
             } catch {
               // Fallback to lightweight extraction if cache fails
               const content = await readFile(fullPath, 'utf-8')
               const { frontmatter, content: mdContent } = extractFrontmatterSimple(content)
+              if (isPrivateFrontmatter(frontmatter)) continue
               title = frontmatter?.title as string || ''
               if (!title) {
                 const h1Match = mdContent.match(/^#\s+(.+)$/m)

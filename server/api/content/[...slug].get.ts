@@ -19,7 +19,7 @@
  */
 
 import { basename } from 'path'
-import { isMarkdownFile, isJsonSpecFile, extractFrontmatter, generateExcerpt, calculateReadingTime, extractDateFromFilename } from '../../utils/markdown'
+import { isMarkdownFile, isJsonSpecFile, extractFrontmatter, generateExcerpt, calculateReadingTime, extractDateFromFilename, isPrivateFrontmatter } from '../../utils/markdown'
 import { resolveContentPath } from '../../utils/navigation'
 import { parseApiSpec } from '../../utils/openapi-parser'
 import { resolveLayoutForPath, getConfigForPath } from '../../utils/config'
@@ -56,6 +56,13 @@ export default defineEventHandler(async (event) => {
     if (isMarkdownFile(filePath)) {
       // Use mtime-based cache - stat() + Map lookup on hit, full pipeline on miss
       const cached = await getCachedContent(filePath)
+      if (isPrivateFrontmatter(cached.frontmatter)) {
+        throw createError({
+          statusCode: 404,
+          statusMessage: 'Not Found',
+          data: { message: `Content not found: ${contentSlug}` },
+        })
+      }
       
       // Determine layout
       const layout = resolveLayoutForPath(config.contentDir, contentSlug)

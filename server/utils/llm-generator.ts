@@ -34,10 +34,9 @@
  * - YouTube/media converted to text references
  */
 
-import { readdir, readFile, stat } from 'fs/promises'
-import { join, relative, extname, basename } from 'path'
-import { buildNavigation, type TopNavItem, type SidebarItem } from './navigation'
-import { markdownToPlainText, isMarkdownFile, isJsonSpecFile, extractFrontmatter, extractDateFromFilename, extractFrontmatterSafe } from './markdown'
+import { readdir, readFile } from 'fs/promises'
+import { join, relative } from 'path'
+import { markdownToPlainText, isMarkdownFile, isJsonSpecFile, extractFrontmatter, extractDateFromFilename, isPrivateFrontmatter } from './markdown'
 import { parseApiSpec, apiSpecToPlainText } from './openapi-parser'
 import { resolveLayoutForPath } from './config'
 import { logger } from './logger'
@@ -120,6 +119,8 @@ async function collectContent(
         // Process markdown file - skip on failure rather than crashing
         try {
           const rawContent = await readFile(entryPath, 'utf-8')
+          const { frontmatter, content: bodyContent } = extractFrontmatter(rawContent)
+          if (isPrivateFrontmatter(frontmatter)) continue
           
           // Use safe plain text extraction
           let plainText: string
@@ -134,13 +135,12 @@ async function collectContent(
         
         // Extract title from frontmatter or H1
         let title = entry.name.replace(/^\d+-/, '').replace(/\.md$/, '')
-        const titleMatch = rawContent.match(/^#\s+(.+)$/m)
+        const titleMatch = bodyContent.match(/^#\s+(.+)$/m)
         if (titleMatch) {
           title = titleMatch[1]
         }
-        const fmMatch = rawContent.match(/^---\n[\s\S]*?title:\s*["']?([^"'\n]+)["']?[\s\S]*?\n---/m)
-        if (fmMatch) {
-          title = fmMatch[1]
+        if (typeof frontmatter.title === 'string') {
+          title = frontmatter.title
         }
         
         // Extract order
@@ -165,7 +165,6 @@ async function collectContent(
             try {
               const layout = resolveLayoutForPath(contentDir, entryUrlPath)
               if (layout === 'blog') {
-                const { frontmatter } = extractFrontmatter(rawContent)
                 let date = ''
                 if (frontmatter.date) {
                   const d = frontmatter.date

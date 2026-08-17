@@ -14,9 +14,9 @@
  * Cached using content-hash invalidation (same as /llms.txt).
  */
 
-import { readdir, stat } from 'fs/promises'
+import { readdir, readFile, stat } from 'fs/promises'
 import { join, resolve, extname } from 'path'
-import { isMarkdownFile, isJsonSpecFile } from '../utils/markdown'
+import { isMarkdownFile, isJsonSpecFile, isPrivateMarkdown } from '../utils/markdown'
 import { resolveLayoutForPath } from '../utils/config'
 import { logger } from '../utils/logger'
 import { createHash } from 'crypto'
@@ -64,6 +64,15 @@ async function collectPages(
         const children = await collectPages(fullPath, contentDir, childUrl)
         entries.push(...children)
       } else if (isMarkdownFile(entry.name) || isJsonSpecFile(entry.name)) {
+        if (isMarkdownFile(entry.name)) {
+          try {
+            const content = await readFile(fullPath, 'utf-8')
+            if (isPrivateMarkdown(content)) continue
+          } catch {
+            continue
+          }
+        }
+
         // Build URL path
         const slug = entry.name
           .replace(/^\d{4}-\d{2}-\d{2}-/, '')  // Strip date prefix

@@ -33,7 +33,7 @@ flowchart LR
 
 1. **Evidence.** Every inbound item lands as original bytes before parsing. This is what citations ultimately resolve to.
 2. **Record.** From the raw material Voe writes pages: plain files with provenance. The files are canonical; everything downstream is derived from them.
-3. **Index.** Voe maintains the query surfaces needed for search, relationships, gaps, and review. A reindex rebuilds them from the record and reports drift if it cannot.
+3. **Index.** Voe maintains the query surfaces needed for search, relationships, gaps, and review. If those surfaces need rebuilding, Voe rebuilds them from the record and reports disagreement if it cannot.
 
 **Access.** Every read is scoped to the caller's workspace grants. A bearer token maps to a principal; the principal's live grant decides what the token can actually do, on every request.
 

@@ -32,7 +32,7 @@
 import { readdir, readFile, stat } from 'fs/promises'
 import { join, resolve } from 'path'
 import { logger } from '../utils/logger'
-import { markdownToPlainText, isMarkdownFile, extractFrontmatterSafe } from '../utils/markdown'
+import { markdownToPlainText, isMarkdownFile, isPrivateMarkdown } from '../utils/markdown'
 
 // =============================================================================
 // TYPES
@@ -91,13 +91,16 @@ async function scanSections(contentDir: string): Promise<Map<string, SectionInfo
           totalPages += childStats.pages
           totalTokens += childStats.tokens
         } else if (isMarkdownFile(entry.name)) {
-          totalPages++
           try {
             const content = await readFile(fullPath, 'utf-8')
+            if (isPrivateMarkdown(content)) continue
+
             // Rough token estimate: ~4 chars per token for English
             const plainText = markdownToPlainText(content)
+            totalPages++
             totalTokens += Math.ceil(plainText.length / 4)
           } catch {
+            totalPages++
             totalTokens += 250 // Fallback estimate
           }
         }
@@ -140,11 +143,14 @@ async function scanSections(contentDir: string): Promise<Map<string, SectionInfo
       if (entry.name.startsWith('.') || entry.name.startsWith('_')) continue
       if (entry.name === 'nav.md') continue
       if (isMarkdownFile(entry.name)) {
-        rootPages++
         try {
           const content = await readFile(join(contentDir, entry.name), 'utf-8')
+          if (isPrivateMarkdown(content)) continue
+
+          rootPages++
           rootTokens += Math.ceil(markdownToPlainText(content).length / 4)
         } catch {
+          rootPages++
           rootTokens += 250
         }
       }

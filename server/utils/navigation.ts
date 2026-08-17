@@ -36,8 +36,8 @@
  */
 
 import { readdir, readFile, stat } from 'fs/promises'
-import { join, basename, extname, relative } from 'path'
-import { parseMarkdown, isMarkdownFile, isJsonSpecFile } from './markdown'
+import { join, basename, extname } from 'path'
+import { isMarkdownFile, isJsonSpecFile, isPrivateFrontmatter } from './markdown'
 import { logger } from './logger'
 import yaml from 'yaml'
 
@@ -253,17 +253,9 @@ function cleanFilename(filename: string): string {
 }
 
 /**
- * Ensure path always starts with /
- */
-function ensureLeadingSlash(path: string): string {
-  if (!path) return '/'
-  return path.startsWith('/') ? path : `/${path}`
-}
-
-/**
  * Get title from markdown file (frontmatter > h1 > filename)
  */
-async function getTitleFromMarkdown(filePath: string): Promise<{ title: string; order: number | null }> {
+async function getTitleFromMarkdown(filePath: string): Promise<{ title: string; order: number | null; private: boolean }> {
   try {
     const content = await readFile(filePath, 'utf-8')
     
@@ -275,6 +267,7 @@ async function getTitleFromMarkdown(filePath: string): Promise<{ title: string; 
         return {
           title: frontmatter.title || cleanFilename(filePath),
           order: typeof frontmatter.order === 'number' ? frontmatter.order : null,
+          private: isPrivateFrontmatter(frontmatter || {}),
         }
       } catch {
         // Frontmatter parse failed, continue to H1 extraction
@@ -284,13 +277,13 @@ async function getTitleFromMarkdown(filePath: string): Promise<{ title: string; 
     // Extract first H1
     const h1Match = content.match(/^#\s+(.+)$/m)
     if (h1Match) {
-      return { title: h1Match[1].trim(), order: null }
+      return { title: h1Match[1].trim(), order: null, private: false }
     }
     
     // Fallback to filename
-    return { title: cleanFilename(filePath), order: null }
+    return { title: cleanFilename(filePath), order: null, private: false }
   } catch {
-    return { title: cleanFilename(filePath), order: null }
+    return { title: cleanFilename(filePath), order: null, private: false }
   }
 }
 
@@ -390,7 +383,9 @@ async function scanDirectory(
         }
       } else if (isMarkdownFile(entry.name)) {
         // Parse markdown file for metadata
-        const { title, order: frontmatterOrder } = await getTitleFromMarkdown(entryPath)
+        const { title, order: frontmatterOrder, private: isPrivate } = await getTitleFromMarkdown(entryPath)
+        if (isPrivate) continue
+
         const filenameOrder = extractOrderFromFilename(entry.name)
         
         items.push({
@@ -458,6 +453,15 @@ export async function buildNavigation(contentDir: string): Promise<Navigation> {
     const rootItems = await scanDirectory(contentDir, '', contentDir)
     sidebar.set('/', rootItems)
   } else {
+    sidebar.set('/', topNav
+      .filter(item => !item.isExternal && item.path !== '/')
+      .map((item, index) => ({
+        title: item.title,
+        path: item.path,
+        type: 'file' as const,
+        order: index,
+      })))
+
     // Build sidebar for each section
     for (const navItem of topNav) {
       if (navItem.isExternal) continue

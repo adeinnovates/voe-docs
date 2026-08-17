@@ -724,43 +724,6 @@
           }
         },
         "description": "Scope: `admin`."
-      },
-      "post": {
-        "summary": "Support access only - operator principals, time-boxed",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "description": "Scope: `admin`. People are invited (grant-invitations); assistants are connected (agent-connections). Any other role answers 400 naming the right door.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "principal",
-                  "role"
-                ],
-                "properties": {
-                  "principal": {
-                    "type": "string"
-                  },
-                  "role": {
-                    "type": "string",
-                    "enum": [
-                      "support"
-                    ]
-                  },
-                  "expiresInHours": {
-                    "type": "number"
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/v1/grants/{principal}": {

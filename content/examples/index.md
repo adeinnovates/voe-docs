@@ -1,13 +1,34 @@
 ---
 title: Examples
-description: Eight working shapes - what flows in, what you call, what the agent sees, what the user can inspect.
+description: What you can build on Voe, and the patterns underneath.
 ---
 
 # Examples
 
-Each example names what flows into Voe, what the builder calls, what the agent sees, what evidence the user can inspect, and what gaps are surfaced.
+Voe handles capture, memory, context, and evidence. You build what that memory makes possible.
 
-- [Meeting prep agent](/examples/meeting-prep-agent) · [Relationship briefing agent](/examples/relationship-briefing-agent)
-- [Inbox-aware CRM](/examples/inbox-aware-crm) · [Calendar-aware briefing agent](/examples/calendar-aware-briefing-agent)
-- [Voicemail-aware support triage](/examples/voicemail-aware-support-triage) · [Evidence viewer](/examples/evidence-viewer)
-- [Checked writeback workflow](/examples/checked-writeback-workflow) · [Workspace sharing flow](/examples/workspace-sharing-flow)
+The first half is products you could build without first building the memory infrastructure yourself. The second half is the patterns underneath them: how the primitives compose, one lesson at a time.
+
+## What you can build
+
+- [Executive intelligence](/examples/executive-intelligence) - a chief-of-staff that walks in already caught up.
+- [Relationship intelligence](/examples/relationship-intelligence) - answers about your network without grooming a second copy of it.
+- [Revenue intelligence](/examples/revenue-intelligence) - a deal's real history, not just its CRM row.
+- [Customer intelligence and support](/examples/customer-intelligence) - the whole customer, across tickets, calls, and account events.
+- [Case intelligence](/examples/case-intelligence) - a case worked for months, evidence never collapsed into conclusion.
+- [Personal AI](/examples/personal-ai) - durable memory the assistant reads but does not own.
+
+## Patterns
+
+Building something more specialized? These show how the primitives compose.
+
+- [Evidence-backed answers](/examples/evidence-backed-answers) - provenance travels the whole stack.
+- [Temporal "what changed?"](/examples/temporal-what-changed) - chronology, supersession, current state.
+- [Trust-aware retrieval](/examples/trust-aware-retrieval) - trust gates admission, before ranking.
+- [Evidence-grade propagation](/examples/evidence-grade-propagation) - having a document and knowing what it says are different claims.
+- [Honest refusal and bounded reasoning](/examples/honest-refusal) - the limits of memory, made machine-readable.
+- [Checked agent writeback](/examples/checked-writeback) - generation and record are different trust domains.
+- [Shared memory, multiple principals](/examples/shared-memory) - shared evidence, never a shared credential.
+- [Multi-channel context assembly](/examples/multi-channel-context) - four channels, one bounded context.
+
+Every example uses one recurring world - Amara Obi, Dele, Meridian, Northbank, Harbor 12 - and touches only what ships today.

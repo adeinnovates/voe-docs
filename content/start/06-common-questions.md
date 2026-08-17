@@ -39,11 +39,7 @@ Yes, with write authority. An agent write needs a live grant, an allowed write t
 
 ## How are roles, grants, and tokens different?
 
-Roles describe the product relationship: owner, member, guest, agent, or support. Grants attach capability to a principal inside a workspace. Tokens are credentials; every request gets the lower capability of the token scope and the live grant.
-
-## What is the support path?
-
-Support is an operator principal with no tenant read path by default. A tenant-granted, expiring support grant is the bridge, and it is logged like any other grant.
+Roles describe the product relationship: owner, member, guest, or agent. Grants attach capability to a principal inside a workspace. Tokens are credentials; every request gets the lower capability of the token scope and the live grant.
 
 ## How do Claude and ChatGPT connect today?
 
@@ -55,9 +51,9 @@ No. MCP is a convenience layer for assistant clients. The HTTP API exposes the s
 
 ## What leaves a cell?
 
-Capture, search, context, grants, review, and the graph run without a model provider. Model providers receive retrieval content only for features that use a model, such as `think`, repair, enrichment, or transcription. Per-workspace provider keys keep that traffic on the tenant's chosen provider config.
+Capture, search, context, grants, review, and the graph run without a model connection. Model-backed features receive only the context needed for that request, and only when the workspace invokes them.
 
-## Does search require a model provider?
+## Does search require a model connection?
 
 No. `search` and `context` work without a model key. `think` needs a configured model because it synthesizes an answer over the context bundle.
 
@@ -67,8 +63,8 @@ The attachment remains part of the record, but its readable state is explicit: s
 
 ## Can one workspace serve multiple consumers?
 
-Yes. Every consumer is a principal: a person, guest, agent, support principal, or service. Grants decide what each principal can read or write, and revocation applies on the next request.
+Yes. Every consumer is a principal: a person, guest, agent, or service integration. Grants decide what each principal can read or write, and revocation applies on the next request.
 
-## Where does a new builder start?
+## What is the shortest builder path?
 
-Read [Mental model](/start/mental-model), then run [Quickstart](/start/quickstart). After that, use [What ships today](/start/what-ships-today) and [Status and compatibility](/start/status-and-compatibility) before choosing API or MCP.
+[Mental model](/start/mental-model) explains the product shape. [Quickstart](/start/quickstart) runs the first loop. [What ships today](/start/what-ships-today) and [Status and compatibility](/start/status-and-compatibility) name the current surface before API or MCP integration.

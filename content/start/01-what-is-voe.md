@@ -21,7 +21,7 @@ Voe is not the agent, and it has no hands. It hears, remembers, and answers. It 
 - Voe has no hands. It never sends messages, on any channel, for any reason.
 - Voe holds no logins. Addressed channels and read-only, revocable calendar-feed URLs only.
 - Writes need a signed, expiring grant - even for the owner's own assistant. Workspace access is never write authority.
-- The record is plain files, replayable: reindexing rebuilds the query surfaces and reports drift if it cannot.
+- The record is replayable: query surfaces can be rebuilt from the record, and disagreement is reported rather than hidden.
 
 ## Where to go next
 

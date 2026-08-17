@@ -13,13 +13,13 @@ description: Assistant client compatibility, bearer-token MCP, deployment notes,
 
 ## Client notes
 
-Client support varies. The API path works anywhere that can make authenticated HTTPS requests. MCP is a convenience layer for assistant clients.
+Client compatibility varies. The API path works anywhere that can make authenticated HTTPS requests. MCP is a convenience layer for assistant clients.
 
 ## Known limits
 
 - Memory starts at capture. There is no historical import in v1; the record grows from the first routed message.
 - Number availability is regional. SMS and voice depend on provider coverage per country.
-- `think` requires a configured model provider on the cell; `search` and `context` do not.
+- `think` requires model-backed synthesis on the cell; `search` and `context` do not.
 - Strict mode buffers. `think` in strict mode returns after checking, so it does not stream token-by-token.
 
 ## Health

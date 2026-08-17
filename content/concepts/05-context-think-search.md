@@ -15,7 +15,7 @@ One engine, three read surfaces. Choose by who does the reasoning.
 
 ## search
 
-`search` returns ranked hits with evidence for each result. Ranking considers meaning, keywords, titles, source tier, and related records. Suspicious senders are excluded by default, unknown senders are treated cautiously, and explicit options can widen the search. `explain=true` returns a readable reason for each hit.
+`search` returns ranked hits with evidence for each result. Ranking uses meaning, keywords, titles, source tier, and related records. Suspicious senders are excluded by default, unknown senders are treated cautiously, and explicit options can widen the search. `explain=true` returns a readable reason for each hit.
 
 ## context
 

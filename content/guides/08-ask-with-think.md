@@ -5,7 +5,7 @@ description: POST /v1/think - streaming events, sources, citation warnings, the 
 
 # Ask with think
 
-**For:** letting Voe synthesize a cited answer. **Scope:** `read`. **Requires:** a model provider configured on the cell.
+**For:** letting Voe synthesize a cited answer. **Scope:** `read`. **Requires:** model-backed synthesis on the cell.
 
 :::api POST /v1/think
 Streamed cited synthesis

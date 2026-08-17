@@ -9,9 +9,9 @@ These are deployment guarantees, not positioning claims.
 
 **What enters.** Only addressed traffic (mail to provisioned addresses, texts and calls to provisioned numbers), deliberately subscribed calendar feeds, and authenticated captures. There are no provider logins to leak because none are held; calendar URLs are stored encrypted and are revocable at the provider.
 
-**What never leaves.** Voe originates no outbound messages on any channel. Model providers receive retrieval content only when a workspace uses `think` or repair; a workspace's provider config keeps that traffic on keys the tenant chose.
+**What never leaves.** Voe originates no outbound messages on any channel. Model-backed features receive only the context needed for that request, and only when the workspace invokes them.
 
-**Who sees what.** Every read is resolved against live workspace grants. Operators hold no read path into tenant content; the single bridge is a tenant-granted, time-boxed `support` grant, logged like any grant. `/healthz` reports access-control drift.
+**Who sees what.** Every read is resolved against live workspace grants. Temporary assistance, where enabled, is explicit, time-boxed, and logged like any grant. `/healthz` reports access-control drift.
 
 **Secrets.** Bodies are scanned before write; a credential-bearing agent write is rejected. Tokens, invitation links, and setup links are stored in non-recoverable form. Recovery flows prove control of an inbox before minting anything.
 

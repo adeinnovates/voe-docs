@@ -7,7 +7,9 @@ description: Capture a seed record, search it, build context, ask with think, th
 
 **What this is for.** Run the whole loop once - capture, search, context, think, MCP - before learning every concept.
 
-**Before you start.** You need an owner or admin workspace token (`tok_…`). Get one from whoever runs your Voe cell: an operator provisions a workspace and sends a setup link, and claiming that link mints your token. Export it:
+The first loop is intentionally narrow: capture one thing, search it, build context, ask about it, then connect one assistant.
+
+**Before you start.** Use an owner or admin workspace token (`tok_…`) from a claimed workspace. Export it:
 
 ```bash
 export VOE=https://your-voe-cell.example

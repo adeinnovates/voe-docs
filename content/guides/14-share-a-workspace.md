@@ -1,6 +1,6 @@
 ---
 title: Share A Workspace
-description: Invite links, pending and accepted grants, revocation, support access.
+description: Invite links, pending and accepted grants, and revocation.
 ---
 
 # Share a workspace
@@ -29,8 +29,8 @@ The link lands on `/invite`, which names the workspace, role, and end date **bef
 
 `GET /v1/grant-invitations` shows pending / accepted / expired / revoked. Cancel a pending one (`DELETE /v1/grant-invitations/:id`) and the link goes dead having granted nothing. Revoke an accepted person's access with `DELETE /v1/grants/:principal` - effective at their next request.
 
-## Support access
+## Owner control
 
-The one direct grant: `POST /v1/grants` serves only `role: support`, only for named operator principals, only time-boxed. That is the single bridge between the operator plane and tenant content, and the tenant holds the key.
+People are invited. Assistants are connected. Active access is visible to the owner and revocation lands on the next request.
 
 **Next:** [Grants](/concepts/grants)

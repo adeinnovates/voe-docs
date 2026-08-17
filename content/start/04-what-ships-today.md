@@ -1,6 +1,6 @@
 ---
 title: What Ships Today
-description: "The capability matrix: available now, later, or not in v1."
+description: "The capability matrix: available now, planned, or not in v1."
 ---
 
 # What ships today
@@ -9,7 +9,7 @@ Present tense means shipped. Anything not shipped is marked plainly.
 
 | Capability | Status |
 |---|---|
-| Workspace creation and bootstrap | Available - operator provisioning and server-side bootstrap paths |
+| Workspace creation and bootstrap | Available - setup-link bootstrap and server-side creation paths |
 | Invitation and claim handoff | Available - setup links for new owners; invite links for members and guests |
 | Email address provisioning | Available - dedicated addresses, single or subdomain patterns |
 | SMS and phone numbers | Available - regional availability varies by provider |
@@ -20,11 +20,11 @@ Present tense means shipped. Anything not shipped is marked plainly.
 | Search | Available - ranked results with per-hit evidence |
 | Context bundles | Available - token-budgeted sections with citations and gaps |
 | Think | Available - streamed cited synthesis with a mandatory gap report |
+| Memory statements | Available - live current month, immutable sealed months, pull-only |
 | MCP over stdio | Available |
 | MCP over HTTP (bearer token) | Available where the deployment exposes it |
 | Checked writes | Available - write grants, `create`, `patch`, recorded decisions |
 | Invite links | Available - the normal member/guest sharing path |
-| Support access | Available - operator principals only, tenant-granted, time-boxed |
 | OAuth MCP sign-in | Available where the deployment exposes the OAuth MCP path and the client accepts it |
 | Framework adapter packages | Later |
 | Embedded web components | Later |

@@ -7,6 +7,8 @@ description: Bearer-token HTTP API - authentication, errors, streaming, and the 
 
 Workspace routes are scoped by bearer token; capability is the lower of the token's scope and the live grant, on every request.
 
+Use the API when your product owns the workflow. Use MCP when an assistant needs the same memory as tools. Both read the same workspace record.
+
 - [Authentication](/api/authentication) - tokens, scopes, roles, the ceiling rule.
 - [Errors](/api/errors) - one shape, honest refusals.
 - [Streaming](/api/streaming) - the SSE contract on `/v1/think`.

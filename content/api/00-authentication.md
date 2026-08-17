@@ -17,9 +17,9 @@ A token binds one **principal** to one **workspace** at a **scope** (`read`, `wr
 
 Scope is a request; the live grant is the fact. On every request, effective capability is the **lower** of the token's scope and the ceiling of the principal's live workspace grant:
 
-- owner → `admin` · member → `read` · guest → `read` (until its end date) · agent → `read`, or `write` while a live write grant exists · support → `read`, time-boxed.
+- owner → `admin` · member → `read` · guest → `read` until its end date · agent → `read`, or `write` while a live write grant exists.
 
-Consequences you can rely on:
+Consequences:
 
 - A revoked or expired grant refuses the token at the **next request** - sessions are never grandfathered.
 - An agent whose write authority lapses **keeps reading** and receives a distinct `403` on writes: the connection survives, the write does not.

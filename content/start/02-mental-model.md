@@ -20,6 +20,15 @@ flowchart LR
 
 The order matters: the world comes in, Voe keeps the record, memory is derived from the record, and agents read from that memory.
 
+## Four rules
+
+These rules carry through the API, MCP, and dashboard:
+
+1. **Raw first.** Original material precedes interpretation.
+2. **Evidence travels.** What Voe says can resolve back toward what arrived.
+3. **Gaps stay visible.** Missing, unreadable, stale, or uncertain material is named.
+4. **Reading does not imply writing.** Workspace access and write authority are separate.
+
 ## 1. The world comes in
 
 Material enters through addressed or deliberately subscribed sources: mail to provisioned addresses, texts and calls to provisioned numbers, provider-issued read-only calendar feeds, and authenticated capture from apps. Voe does not need mailbox OAuth or account scraping to hear what is addressed to it.

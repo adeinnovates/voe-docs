@@ -26,9 +26,10 @@
  */
 
 import { readFile } from 'fs/promises'
-import { resolve, basename } from 'path'
+import { basename } from 'path'
 import { resolveContentPath } from '../../../utils/navigation'
 import { logger } from '../../../utils/logger'
+import { isPrivateMarkdown } from '../../../utils/markdown'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
@@ -61,6 +62,13 @@ export default defineEventHandler(async (event) => {
     
     // Read raw content
     const content = await readFile(filePath, 'utf-8')
+    if (isPrivateMarkdown(content)) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Not Found',
+        data: { message: `Markdown content not found: ${contentSlug}` },
+      })
+    }
     
     // Extract title for headers
     let title = ''

@@ -1,17 +1,17 @@
 ---
 title: Workspaces And Principals
-description: One workspace is one memory. Principals get access through grants, on two distinct planes.
+description: One workspace is one memory. Principals get access through live grants.
 ---
 
 # Workspaces and principals
 
 **One workspace is one memory.** Everything captured for a user lands in their workspace: its own raw store, its own page record, its own index, its own grants. Nothing crosses workspaces; workspace access controls enforce that on every read and write.
 
-A **principal** is whoever is asking: a person (`email:dele@example.com`), a connected assistant (`agent:claude-desktop`), or the service principal. Principals hold **grants**, and a bearer token is only ever as capable as the live grant behind it. Revocation and expiry take effect at the next call, not the next login.
+A **principal** is whoever is asking: a person (`email:dele@example.com`), a connected assistant (`agent:claude-desktop`), or a service integration. Principals hold **grants**, and a bearer token is only ever as capable as the live grant behind it. Revocation and expiry take effect at the next call, not the next login.
 
-## The two access planes
+## Workspace access
 
-**Workspace plane.** Roles in `workspace_grants` define what a principal can do inside one workspace:
+Roles define what a principal can do inside one workspace:
 
 | Role | Reads | Writes | Administers |
 |---|---|---|---|
@@ -19,14 +19,11 @@ A **principal** is whoever is asking: a person (`email:dele@example.com`), a con
 | member | everything | nothing directly | nothing |
 | guest | everything, until an end date | nothing | nothing |
 | agent | what its person reads | only under a live write grant | nothing |
-| support | tenant content only under an explicit, time-boxed grant | nothing | nothing |
-
-**Operator plane.** Operator principals administer platform shape - tenants, plans, cells - and hold no workspace grants and no read path into tenant content, by construction. The only bridge is `support`: an operator principal enters one workspace only when that tenant explicitly grants it, time-boxed and logged like any other grant.
 
 ## How principals arrive
 
 - **People are invited.** An owner creates an invitation; the grant is written when the person accepts with a verified email - never when an address is typed. See [Share a workspace](/guides/share-a-workspace).
 - **Assistants are connected.** A connection writes the agent's grant and key together, so an assistant can never exist as a bare token that reads nothing. See [Connect over MCP](/guides/connect-over-mcp).
-- **Support is granted by name.** Only an enabled operator principal can hold it, and only with an end date.
+- **Service integrations use issued credentials.** Service access is scoped to the workspace and remains bounded by the live grant.
 
 Next: [Grants](/concepts/grants) · [Checked writes](/concepts/checked-writes)

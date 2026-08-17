@@ -19,6 +19,12 @@ Every search hit and context section carries:
 
 A page and its readable attachments surface as **separate hits with separate citations** - a twenty-page PDF is its own evidence, not a snippet of its parent email.
 
+## Worst wins
+
+Grade follows the weakest source in a claim. If a result depends on OCR, transcription, or synthesis, it stays `derived` anywhere it travels. A downstream summary cannot present derived material as `record` just because it reused it.
+
+This is why grade is always visible in Voe responses. The reader sees whether a claim came from captured text or from a derived step.
+
 ## The citation check
 
 `think` instructs the model to cite, then checks the answer against the bundle. After synthesis, factual sentences must cite a source actually present in the bundle:

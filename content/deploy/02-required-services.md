@@ -1,25 +1,23 @@
 ---
 title: Required Services
-description: What runs inside the container, and the two external dependencies.
+description: What a Voe cell provides to builders, and when external providers are involved.
 ---
 
 # Required services
 
-## Inside the container (supervised)
+## What the cell provides
 
 | Service | Job |
 |---|---|
-| Postgres 16 | Index, grants, review state, and workspace-scoped search |
-| API server | HTTP surface + dashboard + SSE |
-| MCP stdio/HTTP servers | Assistant transports |
-| SMTP receiver | Inbound mail on port 25 |
-| Inbound mail sidecar | Encrypted queue between receiver and pipeline (`VOE_MAIL_SIDECAR_QUEUE_KEY` required in production) |
-| Job workers | Attachment extraction, calendar sync, enrichment, outbox dispatch |
-| Migrator | Runs migrations to completion at boot, then exits |
+| Dashboard and API | Workspace setup, capture, search, context, think, evidence, grants |
+| MCP access | Assistant reads and optional checked writes |
+| Addressed capture | Mail, calendar, app events, SMS, voice, and attachments where enabled |
+| Background reading | Attachment reading, calendar refresh, and voice transcripts where enabled |
+| Review surfaces | Held sources, gaps, and source admission states |
 
-## External dependencies
+## External providers
 
-- **Twilio** - only if numbers/SMS/voice are enabled: webhook delivery for inbound messages, calls, and recordings.
-- **A model provider** - only for `think`, repair, and enrichment. Search, context, capture, and the dashboard run without one. Anthropic by default; per-workspace bring-your-own-key is supported.
+- Telephony is only needed when SMS or voice capture is enabled.
+- A model connection is only needed for synthesis and voice transcripts. Capture, search, context, evidence, grants, and review still work without synthesis.
 
-Nothing else: no Redis, no object store, no external queue. The filesystem and Postgres carry the state.
+The public contract is simple: Voe receives addressed sources, remembers them with evidence, and serves cited context to consumers with live workspace grants.

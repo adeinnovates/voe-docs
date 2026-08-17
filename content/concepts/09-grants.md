@@ -10,6 +10,8 @@ Two separate questions, two separate answers:
 1. **Who may reach this workspace, and as what?** → workspace grants (roles).
 2. **What may an agent write?** → write grants (authority). Having the first never implies the second.
 
+Workspace access is not write authority. A reader can search, build context, and ask from memory; it cannot add or amend records unless a live write grant allows that exact kind of write.
+
 ## Roles and their ceilings
 
 A token carries a scope (`read`, `write`, `admin`), but scope is a request, not a fact. On every call, effective capability is the **lower** of the token's scope and the live grant's ceiling:
@@ -20,7 +22,6 @@ A token carries a scope (`read`, `write`, `admin`), but scope is a request, not 
 | member | read |
 | guest | read, until its end date |
 | agent | read - write only while a live write grant exists |
-| support | read, operator principals only, time-boxed |
 
 Revoke a grant and its tokens are refused at the next request. Let an agent's write grant lapse and the agent keeps reading - its role always promised that - but writes stop with a distinct message. A key carrying more than its role allows is refused as the anomaly it is.
 
@@ -28,10 +29,6 @@ Revoke a grant and its tokens are refused at the next request. Let an agent's wr
 
 - **People**: invitations. The grant is written on acceptance with a verified email, not when an address is typed. Guests require an end date - a guest is a member with an expiry, not a partial view.
 - **Assistants**: connections. `POST /v1/agent-connections` creates workspace access and a one-time key together; revoking removes both plus any write authority. An assistant is always listed, always disconnectable.
-- **Support**: the one direct grant. `POST /v1/grants` serves only `role: support`, only for enabled operator principals, only with an expiry.
-
-## The two planes
-
-Workspace roles govern life inside one workspace. Operator principals govern platform shape (tenants, plans, cells) and hold **no read path into tenant content** - the planes meet only at `support`, and only by the tenant's explicit, temporary grant. See [Workspaces and principals](/concepts/workspaces-and-principals).
+- **Service integrations**: issued credentials. Service access is scoped to the workspace and checked like any other grant.
 
 Next: [Checked writes](/concepts/checked-writes) · [Share a workspace](/guides/share-a-workspace)

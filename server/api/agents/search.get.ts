@@ -49,9 +49,10 @@
  * - Filtered: GET /api/agents/search?q=setup&section=Guides
  */
 
-import { readdir, readFile, stat } from 'fs/promises'
+import { readdir, readFile } from 'fs/promises'
 import { join, relative } from 'path'
 import { logger } from '../../utils/logger'
+import { isPrivateFrontmatter } from '../../utils/markdown'
 
 /**
  * Count non-overlapping occurrences of `needle` in `haystack`.
@@ -137,6 +138,7 @@ async function buildContentIndex(contentDir: string): Promise<ContentItem[]> {
           try {
             const rawContent = await readFile(fullPath, 'utf-8')
             const { frontmatter, content: mdContent } = extractFrontmatter(rawContent)
+            if (isPrivateFrontmatter(frontmatter)) continue
             
             // Build URL path
             const relativePath = relative(contentDir, fullPath)

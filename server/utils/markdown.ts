@@ -51,6 +51,8 @@ export interface MarkdownFrontmatter {
   description?: string
   order?: number
   draft?: boolean
+  private?: boolean | string
+  visibility?: string
   // Allow arbitrary additional fields
   [key: string]: unknown
 }
@@ -856,6 +858,23 @@ export function extractFrontmatter(content: string): {
     logger.warn('Failed to parse frontmatter, treating as content')
     return { frontmatter: {}, content }
   }
+}
+
+/**
+ * Page-level privacy marker used by public emitters.
+ */
+export function isPrivateFrontmatter(frontmatter: MarkdownFrontmatter): boolean {
+  const privateValue = frontmatter.private
+  const visibility = typeof frontmatter.visibility === 'string'
+    ? frontmatter.visibility.toLowerCase()
+    : ''
+
+  return privateValue === true || privateValue === 'true' || visibility === 'private'
+}
+
+export function isPrivateMarkdown(content: string): boolean {
+  const { frontmatter } = extractFrontmatter(content)
+  return isPrivateFrontmatter(frontmatter)
 }
 
 /**
