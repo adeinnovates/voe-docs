@@ -157,7 +157,9 @@ watch([error, pending], async () => {
 // Reactive: registered once, stays in sync as content loads/changes.
 useSeo(() => ({
   title: content.value?.title,
-  description: content.value?.blog?.excerpt || content.value?.description,
+  // The content API nests the page description under `frontmatter`; without
+  // this the meta description fell back to the site default on every page.
+  description: content.value?.blog?.excerpt || content.value?.description || content.value?.frontmatter?.description,
   image: content.value?.blog?.coverImage,
   type: content.value?.layout === 'blog' ? 'article' : 'website',
   publishedTime: content.value?.blog?.date,

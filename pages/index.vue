@@ -98,9 +98,12 @@ watch(content, (newContent) => {
 // ---------------------------------------------------------------------------
 
 // Single, reactive head source (useSeo appends "| siteName" to the title).
+// Use home.md's own frontmatter for title/description so the homepage unfurl
+// is the real headline, not a generic "Documentation" label. The content API
+// returns title at the top level and description under `frontmatter`.
 useSeo(() => ({
-  title: isBlogMode.value ? 'Blog' : 'Documentation',
-  description: siteDescription,
+  title: content.value?.title || (isBlogMode.value ? 'Blog' : 'Documentation'),
+  description: content.value?.frontmatter?.description || content.value?.description || siteDescription,
 }))
 </script>
 
