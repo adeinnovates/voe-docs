@@ -1,8 +1,7 @@
-/* Voe brand for f0. Still water, careful ink.
+/* Voe brand. Still water, careful ink.
    Three voices: Fraunces speaks for the product (h1, h2), Instrument Sans for the interface,
    Spline Sans Mono for code and evidence values only. Never mono for headings, labels, or nav.
-   Written against f0's documented variables plus conservative element selectors; after first render,
-   tighten to f0's real class names instead of reaching for !important. */
+   Written against the base theme variables plus conservative element selectors. */
 
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400&display=swap");
 
@@ -12,16 +11,16 @@
   --voe-ink:#12242A; --voe-ink-soft:#4A5B60; --voe-ink-faint:#8A9A9E; --voe-line:#D9E1DF;
   --voe-serif:"Fraunces",Georgia,serif; --voe-sans:"Instrument Sans",system-ui,sans-serif; --voe-mono:"Spline Sans Mono",ui-monospace,monospace;
 
-  /* f0 tokens */
+  /* Base theme tokens */
   --color-accent:var(--voe-tide);
   --color-bg-primary:var(--voe-foam);
   --color-text-primary:var(--voe-ink);
 }
 
-/* ---- f0's real token set, tightened after first render. -----------------
+/* ---- Base theme token set. ----------------------------------------------
    Doubled :root beats the compiled bundle on specificity, not order, and
    without a single !important. Light first, then dark re-mapped to "under
-   the water". Links use --color-text-link in f0, not --color-accent. */
+   the water". Links use --color-text-link, not --color-accent. */
 :root:root{
   --color-accent:var(--voe-tide);
   --color-accent-light:var(--voe-tide-wash);
@@ -145,7 +144,7 @@ aside.sidebar:not(:has(.sidebar-item)){display:none}
 
 /* Mermaid in the brand: still water, not stock purple. Mermaid injects an
    ID-prefixed stylesheet inside its own SVG, so this is the one earned use
-   of !important in the file — nothing else can outrank an ID selector the
+   of !important in the file - nothing else can outrank an ID selector the
    library regenerates on every render. */
 svg[id^="mermaid"] .node rect,svg[id^="mermaid"] .node polygon,svg[id^="mermaid"] .node circle,
 svg[id^="mermaid"] rect.basic,.mermaid .node rect{

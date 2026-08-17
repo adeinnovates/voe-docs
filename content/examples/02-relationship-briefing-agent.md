@@ -1,11 +1,11 @@
 ---
 title: Relationship Briefing Agent
-description: One person's whole history — timeline, graph, and a think answer.
+description: One person's whole history - timeline, graph, and a think answer.
 ---
 
 # Relationship briefing agent
 
-**Flows in:** mail, texts, voicemail — the channels this person actually uses.
+**Flows in:** mail, texts, voicemail - the channels this person actually uses.
 **You call:**
 
 ```bash
@@ -19,4 +19,4 @@ curl -s -N -X POST "$VOE/v1/think" -H "Authorization: Bearer $TOKEN" \
 
 **The user can inspect:** citations per sentence; the sender's tier on each source (a `verified` contact reads differently than an `unknown`).
 
-**Gaps surfaced:** a thread whose earlier message was never forwarded in shows up as a missing-thread gap — the brief says "a reply references mail the memory never received" instead of guessing.
+**Gaps surfaced:** a thread whose earlier message was never forwarded in shows up as a missing-thread gap - the brief says "a reply references mail the memory never received" instead of guessing.

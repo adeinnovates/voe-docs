@@ -48,7 +48,7 @@
       </div>
     </header>
     
-    <!-- Post body — same MarkdownRenderer as docs, but strip the H1 since we render our own header -->
+    <!-- Post body - same MarkdownRenderer as docs, but strip the H1 since we render our own header -->
     <div class="blog-post-body">
       <ContentMarkdownRenderer
         :html="bodyHtml"

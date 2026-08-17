@@ -25,7 +25,7 @@ interface SearchState {
 // Debounce timer
 let searchTimeout: ReturnType<typeof setTimeout> | null = null
 
-// Global listener flag — only register once per app lifetime
+// Global listener flag - only register once per app lifetime
 let globalListenerRegistered = false
 
 export function useSearch() {
@@ -100,7 +100,7 @@ export function useSearch() {
   }
   
   /**
-   * Register global keyboard shortcuts — safe to call multiple times,
+   * Register global keyboard shortcuts - safe to call multiple times,
    * only registers once per client session. No cleanup needed since
    * the listener persists for the app lifetime.
    */

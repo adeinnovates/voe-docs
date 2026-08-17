@@ -26,7 +26,7 @@
         :siteName="siteName"
       />
 
-      <!-- Simple Header (default — no hero image) -->
+      <!-- Simple Header (default - no hero image) -->
       <header v-else class="blog-header">
         <h1>{{ data.config.title || 'Blog' }}</h1>
         <p v-if="data.config.description">{{ data.config.description }}</p>

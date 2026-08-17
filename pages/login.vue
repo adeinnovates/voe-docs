@@ -1,6 +1,6 @@
 <!--
   =============================================================================
-  F0 - LOGIN PAGE
+  VOE DOCS - LOGIN PAGE
   =============================================================================
   
   OTP-based authentication flow:
@@ -97,7 +97,7 @@
     
     <!-- Footer -->
     <p class="login-footer">
-      Protected documentation powered by f0
+      Protected Voe documentation
     </p>
   </div>
 </template>
@@ -117,7 +117,7 @@ definePageMeta({
 // ---------------------------------------------------------------------------
 
 const config = useRuntimeConfig()
-const siteName = config.public.siteName || 'f0'
+const siteName = config.public.siteName || 'Voe Docs'
 const route = useRoute()
 const router = useRouter()
 const { login } = useAuth()

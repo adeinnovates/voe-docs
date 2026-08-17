@@ -21,20 +21,20 @@ Scope is a request; the live grant is the fact. On every request, effective capa
 
 Consequences you can rely on:
 
-- A revoked or expired grant refuses the token at the **next request** — sessions are never grandfathered.
+- A revoked or expired grant refuses the token at the **next request** - sessions are never grandfathered.
 - An agent whose write authority lapses **keeps reading** and receives a distinct `403` on writes: the connection survives, the write does not.
 - A key carrying more scope than its role allows is refused as an anomaly, not honored.
 
 ## Getting tokens
 
 - **People** claim a setup or invite link and mint their own key. `POST /v1/tokens` mints additional keys for granted people, capped at the role's ceiling.
-- **Assistants** get their key from `POST /v1/agent-connections` — grant and key in one transaction. Raw minting for `agent:` principals is refused by design.
+- **Assistants** get their key from `POST /v1/agent-connections`. Workspace access and key issuance happen together. Raw minting for `agent:` principals is refused by design.
 
 ## Failure shapes
 
 | Status | Meaning |
 |---|---|
-| `401` | The key is not valid here — unknown, revoked, or another workspace's |
+| `401` | The key is not valid here - unknown, revoked, or another workspace's |
 | `403` | The key is real but its grant is gone, expired, or below the route's scope; the message says which |
 
-Errors are JSON: `{ "status": "error", "message": "…", "error": "…" }` — the message is written for the person holding the key.
+Errors are JSON: `{ "status": "error", "message": "…", "error": "…" }` - the message is written for the person holding the key.

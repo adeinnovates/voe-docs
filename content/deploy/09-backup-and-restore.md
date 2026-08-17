@@ -7,16 +7,16 @@ description: What to back up, and the two recovery paths.
 
 ## What to back up
 
-1. **`/data`** — raw store, page repositories, WAL archive. This is the evidence and the record.
-2. **Postgres** — base backups plus the archived WAL for point-in-time recovery (`archive_mode=on` ships enabled, segments land in `/data/wal-archive`).
+1. **`/data`** - raw store, page record, and recovery archive. This is the evidence and the record.
+2. **Postgres** - base backups plus the archived recovery stream for point-in-time recovery.
 
-The CLI's backup command packages both consistently; restore rehearsals should use it rather than ad-hoc copies.
+The CLI's backup command packages both consistently.
 
 ## Two recovery paths
 
-- **Database lost, files intact:** restore Postgres to the nearest point, then `reindex` — the index rebuilds from the files and reports drift. Worst case with no database at all: replay from raw material; the record is designed to be reproducible.
+- **Database lost, files intact:** restore Postgres to the nearest point, then `reindex`. The index rebuilds from the files and reports drift. Worst case with no database at all: replay from raw material; the record is designed to be reproducible.
 - **Full restore:** `/data` snapshot + PITR to a chosen moment.
 
-## What makes this credible
+## Recovery guarantee
 
-The layering is the promise: raw bytes are the source, files are the record, the index is derived. Every layer above raw can be rebuilt from below, and the rebuild reports disagreement. Test restores on a schedule; a backup that has never restored is a hope, not a backup.
+The layering is the promise: raw bytes are the source, files are the record, the index is derived. Every layer above raw can be rebuilt from below, and the rebuild reports disagreement. Scheduled restore rehearsals prove that a backup can actually restore.

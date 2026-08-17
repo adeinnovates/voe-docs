@@ -15,7 +15,7 @@
  *
  *   NOTE: In private mode the documentation itself is private, so the AI/SEO
  *   endpoints (/llms.txt, /sitemap.xml, /feed.xml) are intentionally NOT exempt
- *   — exposing them would leak the full content of a private site.
+ *   - exposing them would leak the full content of a private site.
  *
  * CONSTRAINT COMPLIANCE:
  * - C-SEC-PRIVATE-NOT-PUBLIC-005: /private never accessible via HTTP

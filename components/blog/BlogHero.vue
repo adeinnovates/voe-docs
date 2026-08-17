@@ -8,7 +8,7 @@
   that overrides all layout constraints. On unmount, the style is removed
   and the normal 3-column layout returns.
   
-  This approach guarantees specificity wins — the injected rules use
+  This approach guarantees specificity wins - the injected rules use
   !important and target every selector that constrains .main-content.
 -->
 
@@ -41,7 +41,7 @@ const heroStyle = computed(() => ({
 }))
 
 // ---------------------------------------------------------------------------
-// LAYOUT OVERRIDE — Injected <style> tag
+// LAYOUT OVERRIDE - Injected <style> tag
 // ---------------------------------------------------------------------------
 // We inject a <style> tag that forces full-bleed layout by hiding the
 // sidebar/TOC and removing all margin/max-width constraints on .main-content.

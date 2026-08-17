@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
     const status = event.node.res.statusCode
 
     // Add Server-Timing header
-    // Must be set before finish, but we're in the finish handler —
+    // Must be set before finish, but we're in the finish handler -
     // the header was already set via the appendHeader below.
 
     // Log slow requests

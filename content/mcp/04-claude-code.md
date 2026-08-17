@@ -24,6 +24,6 @@ Or in `.mcp.json` at the project root:
 }
 ```
 
-A coding agent with Voe attached can pull real-world context into work: `search` for the thread that motivated a change, `get_context` on the people involved, `capture` a decision record when the work lands — and, under a [write grant](/guides/let-an-agent-write), write structured notes into its granted prefix.
+A coding agent with Voe attached can pull real-world context into work: `search` for the thread that motivated a change, `get_context` on the people involved, `capture` a decision record when the work lands - and, under a [write grant](/guides/let-an-agent-write), write structured notes into its granted prefix.
 
 The stdio process is long-lived, and authorization is not startup-frozen: every tool call re-resolves the key against the live grant, so disconnection or write-authority expiry takes effect mid-session.

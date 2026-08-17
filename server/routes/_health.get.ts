@@ -6,7 +6,7 @@
  * GET /_health
  * 
  * Returns 200 if the Node process is alive and can serve requests.
- * This is a liveness probe — it answers "is the process running?"
+ * This is a liveness probe - it answers "is the process running?"
  * 
  * Use for:
  * - Coolify health checks (configure: /_health, port 3000, HTTP scheme)

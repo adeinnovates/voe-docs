@@ -7,13 +7,13 @@ description: Assistant client compatibility, bearer-token MCP, deployment notes,
 
 ## MCP transports
 
-- **stdio** — works with any client that can spawn a local process and pass an environment variable. This is the current path for Claude Desktop and Claude Code.
-- **HTTP** — bearer-token authenticated, session-bound. Works where the deployment exposes the MCP HTTP endpoint and the client supports custom headers. A session belongs to the exact key that opened it; a different key must open its own session.
-- **OAuth / browser sign-in** — the path for the Claude and ChatGPT connectors, which take an OAuth server or nothing. The cell runs its own; a connector token is a projection of an agent connection. Built and tested, with acceptance against the live clients the remaining step. See [OAuth connections](/mcp/oauth-connections).
+- **stdio** - works with any client that can spawn a local process and pass an environment variable. This is the current path for Claude Desktop and Claude Code.
+- **HTTP** - bearer-token authenticated, session-bound. Works where the deployment exposes the MCP HTTP endpoint and the client supports custom headers. A session belongs to the exact key that opened it; a different key must open its own session.
+- **OAuth / browser sign-in** - the path for Claude and ChatGPT connector flows where the deployment exposes the Voe OAuth MCP path. A connector token maps back to an agent connection. See [OAuth connections](/mcp/oauth-connections).
 
 ## Client notes
 
-Client support varies. The API path works anywhere that can make authenticated HTTPS requests — when in doubt, integrate against [the API](/api/authentication) and treat MCP as a convenience layer for assistant clients.
+Client support varies. The API path works anywhere that can make authenticated HTTPS requests. MCP is a convenience layer for assistant clients.
 
 ## Known limits
 
@@ -24,4 +24,4 @@ Client support varies. The API path works anywhere that can make authenticated H
 
 ## Health
 
-Every cell answers `GET /healthz` with `ok`, `attention` (something needs a person — for example held mail), or `degraded` (a real fault). Only faults degrade the service.
+Every cell answers `GET /healthz` with `ok`, `attention` (something needs a person - for example held mail), or `degraded` (a real fault). Only faults degrade the service.

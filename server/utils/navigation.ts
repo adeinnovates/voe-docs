@@ -94,7 +94,7 @@ export interface ContentMeta {
 /**
  * Cache for navigation data.
  * Invalidation uses nav.md mtime + directory structure hash.
- * No TTL — content changes when files change, period.
+ * No TTL - content changes when files change, period.
  */
 let navigationCache: Navigation | null = null
 let contentMetaCache: Map<string, ContentMeta> = new Map()
@@ -145,7 +145,7 @@ async function isNavCacheValid(contentDir: string): Promise<boolean> {
     const navStats = await stat(join(contentDir, 'nav.md'))
     if (navStats.mtimeMs !== cachedNavMtime) return false
   } catch {
-    // nav.md doesn't exist — if we cached with mtime 0, still valid
+    // nav.md doesn't exist - if we cached with mtime 0, still valid
     if (cachedNavMtime !== 0) return false
   }
 
@@ -551,7 +551,7 @@ export async function getContentMeta(
   const fileName = slugParts.pop()!
   const dirPath = join(contentDir, ...slugParts)
 
-  // Escape the (user-derived) filename before embedding it in a RegExp, so a
+  // Escape the (user-derived) filename before putting it in a RegExp, so a
   // slug containing regex metacharacters can't throw or cause catastrophic
   // backtracking (ReDoS).
   const fileNamePattern = escapeRegExp(fileName)

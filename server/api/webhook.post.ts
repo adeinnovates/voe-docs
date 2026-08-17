@@ -114,7 +114,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Parse body — reject malformed JSON with a 400 rather than an uncaught 500.
+  // Parse body - reject malformed JSON with a 400 rather than an uncaught 500.
   let body: Record<string, unknown> & {
     ref?: string
     pusher?: { name?: string }

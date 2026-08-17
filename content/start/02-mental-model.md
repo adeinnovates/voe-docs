@@ -28,7 +28,7 @@ This makes capture part of the product, not a pre-step. An agent cannot retrieve
 
 ## 2. The record comes first
 
-Original material is kept before extraction. Pages, edges, attachment text, summaries, and searchable passages are derived from that record.
+Original material is kept before extraction. Pages, relationships, attachment text, summaries, and searchable passages are derived from that record.
 
 That gives builders a simple rule: memory is useful only when a reader can inspect why it believes a thing. Voe answers with citations because the original material remains available as evidence.
 
@@ -40,7 +40,7 @@ That is why a useful answer can say more than "here are five nearby passages." I
 
 ## 4. Context is the bridge
 
-`search` finds matching records. `context` packs the records an agent should see. `think` produces a cited answer from that packed context.
+`search` finds matching records. `context` packs records for an agent. `think` produces a cited answer from that packed context.
 
 The important primitive for builders is `context`: it turns the larger memory into a bounded, source-carrying bundle that any model or agent can use.
 

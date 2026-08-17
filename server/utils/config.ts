@@ -5,7 +5,7 @@
  * 
  * Reads and caches `_config.md` files that declare layout type and settings
  * for content directories. Supports per-directory configuration with no
- * cascading — each directory manages its own layout.
+ * cascading - each directory manages its own layout.
  * 
  * RESOLUTION PRIORITY:
  * 1. _config.md in the directory → use its layout value

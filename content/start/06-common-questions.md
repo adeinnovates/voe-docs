@@ -7,9 +7,9 @@ description: Builder answers about capture, evidence, MCP, grants, writes, and d
 
 ## Is Voe an agent?
 
-No. Voe is the memory layer an agent reads from. It hears, remembers, searches, packs context, answers when asked, and cites the record. It does not send, reply, book, post, or perform actions.
+No. Voe is the memory an agent reads from. It hears, remembers, searches, packs context, answers when asked, and cites the record. It does not send, reply, book, post, or perform actions.
 
-## What should a builder build on top of Voe?
+## What can a builder build on top of Voe?
 
 Build the agent, workflow, app, or assistant experience. Voe supplies intake, memory, retrieval, context packing, cited answers, gaps, grants, and checked writes.
 
@@ -23,11 +23,11 @@ No. Voe receives what is addressed to it and fetches calendar feeds the user sub
 
 ## What is the record?
 
-The record is the source material Voe received, kept before processing. Pages, graph edges, searchable passages, summaries, and extracted attachment text are derived from it.
+The record is the source material Voe received, kept before processing. Pages, relationships, searchable passages, summaries, and extracted attachment text are derived from it.
 
 ## How is memory different from evidence?
 
-Memory is the organized workspace state: people, threads, timeline, relationships, source state, gaps, and records. Evidence is the material a reader can inspect to check a claim: original bytes, page text, attachment text, transcript text, hashes, and citations.
+Memory is the organized workspace state: people, threads, timeline, relationships, source state, gaps, and records. Evidence is the material a reader can inspect to check a claim: original bytes, page text, attachment text, transcript text, and citations.
 
 ## What happens when Voe does not know?
 
@@ -47,7 +47,7 @@ Support is an operator principal with no tenant read path by default. A tenant-g
 
 ## How do Claude and ChatGPT connect today?
 
-Claude Desktop works through config-file MCP or the `mcp-remote` bridge. Claude Code can use stdio or HTTP with an `Authorization` header. The Claude and ChatGPT connector screens take an OAuth server, so the cell runs its own — a URL and a browser approval, no key to paste ([OAuth connections](/mcp/oauth-connections)); that path is built and tested, with acceptance against the live clients the remaining step. Any app that can make HTTPS requests can use the API today.
+Claude Desktop works through config-file MCP or the `mcp-remote` bridge. Claude Code can use stdio or HTTP with an `Authorization` header. Claude and ChatGPT connector screens use OAuth where the deployment exposes the Voe OAuth MCP path: a URL and browser approval, no key to paste. Any app that can make HTTPS requests can use the API today.
 
 ## Is MCP required?
 
@@ -69,6 +69,6 @@ The attachment remains part of the record, but its readable state is explicit: s
 
 Yes. Every consumer is a principal: a person, guest, agent, support principal, or service. Grants decide what each principal can read or write, and revocation applies on the next request.
 
-## Where should a new builder start?
+## Where does a new builder start?
 
 Read [Mental model](/start/mental-model), then run [Quickstart](/start/quickstart). After that, use [What ships today](/start/what-ships-today) and [Status and compatibility](/start/status-and-compatibility) before choosing API or MCP.

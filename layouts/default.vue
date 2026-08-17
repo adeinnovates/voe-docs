@@ -55,7 +55,7 @@
       </footer>
     </main>
     
-    <!-- Table of Contents (right sidebar) — client-only to avoid hydration mismatch -->
+    <!-- Table of Contents (right sidebar) - client-only to avoid hydration mismatch -->
     <ClientOnly>
       <LayoutTableOfContents 
         v-if="showToc"

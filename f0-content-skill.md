@@ -1,6 +1,6 @@
-# SKILL.md — f0 Content Authoring
+# SKILL.md - f0 Content Authoring
 
-> This skill teaches Claude how to create, structure, and manage content for **f0** (formerly LiteDocs), a filesystem-based documentation platform built on Nuxt.js. f0 renders one source file three ways: Visual UI (Vue), SEO (SSR HTML), and AI/LLM context (`/llms.txt`).
+> This skill teaches Claude how to create, structure, and manage content for this filesystem-based documentation platform built on Nuxt.js. The system renders one source file three ways: Visual UI (Vue), SEO (SSR HTML), and AI/LLM context (`/llms.txt`).
 
 ---
 
@@ -8,7 +8,7 @@
 
 There is no database. No admin panel for content. The directory structure under `/content` defines the entire site. Every file you create, rename, or move changes the live documentation. Navigation, hierarchy, and routing are all derived from the filesystem.
 
-Content changes are detected automatically via filesystem mtime comparison — no manual cache purging, no TTL expiry, no restart required.
+Content changes are detected automatically via filesystem mtime comparison - no manual cache purging, no TTL expiry, no restart required.
 
 ---
 
@@ -52,23 +52,23 @@ Content changes are detected automatically via filesystem mtime comparison — n
 1. **Top-level folders** under `/content` become navigation tabs (linked via `nav.md`).
 2. **Nested folders** create sidebar groups that are collapsible.
 3. **Files** become pages. The filename (minus extension and numeric prefix) becomes the URL slug.
-4. **`/private`** directory is the secure zone — never publicly accessible via URL.
+4. **`/private`** directory is the secure zone - never publicly accessible via URL.
 5. **`nav.md`** is the single source of truth for the top navigation bar.
-6. **`_brand.md`** controls white-label branding — logos, colors, footer, favicon.
+6. **`_brand.md`** controls white-label branding - logos, colors, footer, favicon.
 7. **`_config.md`** files in any directory set layout and behavior for that subtree.
 8. **Files prefixed with `_`** are configuration-only and never rendered as pages.
 9. **`assets/`** directory serves static files through the image processing pipeline.
-10. **`.cache/`** is auto-generated for processed image variants — add to `.gitignore`.
+10. **`.cache/`** is auto-generated for processed image variants - add to `.gitignore`.
 
 ---
 
 ## File Types
 
-### Markdown (`.md`) — Primary Content
+### Markdown (`.md`) - Primary Content
 
 All documentation pages are standard Markdown files with optional YAML frontmatter.
 
-### JSON (`.json`) — API Specifications
+### JSON (`.json`) - API Specifications
 
 OpenAPI/Swagger specs or Postman Collections placed in the `/api` directory are auto-rendered into browsable API documentation.
 
@@ -82,7 +82,7 @@ OpenAPI/Swagger specs or Postman Collections placed in the `/api` directory are 
 
 ---
 
-## nav.md — Top Navigation Configuration
+## nav.md - Top Navigation Configuration
 
 The `nav.md` file controls the top navigation bar. It uses a simple Markdown list of links.
 
@@ -103,9 +103,9 @@ The `nav.md` file controls the top navigation bar. It uses a simple Markdown lis
 
 ---
 
-## _brand.md — White-Label Configuration
+## _brand.md - White-Label Configuration
 
-The `_brand.md` file in the content root controls branding for the entire site. All fields are optional — a missing `_brand.md` produces a clean, unbranded f0 instance.
+The `_brand.md` file in the content root controls branding for the entire site. All fields are optional - a missing `_brand.md` produces a clean, unbranded f0 instance.
 
 ```yaml
 ---
@@ -129,15 +129,15 @@ og_image: ./assets/images/og-default.png
 
 | Field | Type | Default | Purpose |
 |-------|------|---------|---------|
-| `logo` | string | — | Path to logo image (relative to content dir) |
+| `logo` | string | - | Path to logo image (relative to content dir) |
 | `logo_dark` | string | (falls back to `logo`) | Logo for dark mode |
-| `favicon` | string | — | Browser favicon |
-| `accent_color` | string | — | Hex color for links, buttons, active states (e.g. `"#2563eb"`) |
+| `favicon` | string | - | Browser favicon |
+| `accent_color` | string | - | Hex color for links, buttons, active states (e.g. `"#2563eb"`) |
 | `header_style` | string | `text_only` | One of: `logo_only`, `logo_and_text`, `text_only` |
-| `footer_text` | string | — | Copyright or footer text |
+| `footer_text` | string | - | Copyright or footer text |
 | `footer_links` | array | `[]` | Footer navigation links (`label` + `url` pairs) |
-| `custom_css` | string | — | Path to custom CSS file for style overrides |
-| `og_image` | string | — | Default OpenGraph image for social sharing |
+| `custom_css` | string | - | Path to custom CSS file for style overrides |
+| `og_image` | string | - | Default OpenGraph image for social sharing |
 
 ### Design Principle
 
@@ -163,7 +163,7 @@ draft: false
 | Field | Type | Required | Default | Purpose |
 |-------|------|----------|---------|---------|
 | `title` | string | No | First H1 in content | Page title (browser tab, sidebar, SEO, OG) |
-| `description` | string | No | — | Meta description for SEO and social sharing |
+| `description` | string | No | - | Meta description for SEO and social sharing |
 | `order` | number | No | 999 | Sort position within its directory |
 | `draft` | boolean | No | false | If `true`, page is hidden from navigation |
 
@@ -189,10 +189,10 @@ pinned: false
 | Field | Type | Default | Purpose |
 |-------|------|---------|---------|
 | `date` | string | Extracted from filename | ISO date for sorting and display |
-| `author` | string | — | Author name |
+| `author` | string | - | Author name |
 | `tags` | array | `[]` | Tags for filtering and categorization |
-| `cover_image` | string | — | Cover image path (used for OG image and blog listing) |
-| `excerpt` | string | — | Short summary for listings and social previews |
+| `cover_image` | string | - | Cover image path (used for OG image and blog listing) |
+| `excerpt` | string | - | Short summary for listings and social previews |
 | `pinned` | boolean | false | Pinned posts appear first in blog listings |
 
 ### Title Resolution Order
@@ -207,10 +207,10 @@ pinned: false
 
 Files within a directory are sorted by the following priority:
 
-1. **Frontmatter `order` value** — Lowest number appears first.
-2. **Filename numeric prefix** — Files starting with `01-`, `02-`, etc.
-3. **Date prefix for blog** — Files like `2026-02-11-post-title.md` sort by date (newest first).
-4. **Alphabetical by title** — Final fallback.
+1. **Frontmatter `order` value** - Lowest number appears first.
+2. **Filename numeric prefix** - Files starting with `01-`, `02-`, etc.
+3. **Date prefix for blog** - Files like `2026-02-11-post-title.md` sort by date (newest first).
+4. **Alphabetical by title** - Final fallback.
 
 ### Example
 
@@ -252,10 +252,10 @@ f0 supports **GitHub Flavored Markdown (GFM)** plus custom extensions.
 ### Headings
 
 ```markdown
-# H1 — Page Title (use exactly ONE per page)
-## H2 — Major Section (appears in right-side TOC)
-### H3 — Subsection (appears in right-side TOC)
-#### H4 — Minor heading (does NOT appear in TOC)
+# H1 - Page Title (use exactly ONE per page)
+## H2 - Major Section (appears in right-side TOC)
+### H3 - Subsection (appears in right-side TOC)
+#### H4 - Minor heading (does NOT appear in TOC)
 ```
 
 **Best Practice:** Structure every page with a single H1, then H2s for major sections, and H3s for subsections. The right-side Table of Contents is auto-generated from H2 and H3 headings only.
@@ -274,7 +274,7 @@ Supported languages include: JavaScript, TypeScript, Python, Bash, JSON, YAML, S
 
 Every code block automatically gets a **copy button** in the rendered UI.
 
-**Warning:** Avoid Unicode box-drawing characters (┌─│└→) inside code blocks — they can cause the syntax highlighter to fail. Use ASCII alternatives instead.
+**Warning:** Avoid Unicode box-drawing characters (┌─│└→) inside code blocks - they can cause the syntax highlighter to fail. Use ASCII alternatives instead.
 
 ### Tables
 
@@ -338,7 +338,7 @@ This is a danger callout (alias for error).
 :::
 ```
 
-Callout blocks support full Markdown inside them — paragraphs, code, links, lists, etc.
+Callout blocks support full Markdown inside them - paragraphs, code, links, lists, etc.
 
 ### YouTube Embeds
 
@@ -369,7 +369,7 @@ Embed content from supported platforms using the `::embed` directive:
 | GitHub Gist | gist.github.com | Styled link card with icon |
 | Any other URL | * | Styled link card with domain |
 
-Unknown URLs are never silently dropped — they render as a styled link card with the title and a clickable URL.
+Unknown URLs are never silently dropped - they render as a styled link card with the title and a clickable URL.
 
 #### Tri-brid Behavior
 
@@ -391,7 +391,7 @@ graph TD
 
 Mermaid blocks render as styled code blocks. The diagram source code is preserved in `/llms.txt` output as `[Mermaid Diagram]` followed by the raw source, so AI agents can understand the diagram structure.
 
-To enable client-side rendering of Mermaid diagrams into SVG, include the mermaid.js library in your `custom_css` or add it via a custom script — the `.mermaid` CSS class is already on the element.
+To enable client-side rendering of Mermaid diagrams into SVG, include the mermaid.js library in your `custom_css` or add it via a custom script - the `.mermaid` CSS class is already on the element.
 
 ### API Endpoint Blocks
 
@@ -442,7 +442,7 @@ Store images in `content/assets/images/` (or any subfolder under `content/assets
 ### Usage
 
 ```markdown
-<!-- Relative path (portable — works in GitHub, VS Code, AND f0) -->
+<!-- Relative path (portable - works in GitHub, VS Code, AND f0) -->
 ![Architecture Diagram](./assets/images/architecture.png)
 
 <!-- Absolute path from content root -->
@@ -484,7 +484,7 @@ Images are converted to `[Image: alt-text]` in the `/llms.txt` output, so always
 
 ### Asset Validation
 
-When content files are parsed, all image references are validated against the filesystem. Missing assets produce structured log warnings with the exact image path and the file that references it. Pages still render — validation is warnings-only, never blocking.
+When content files are parsed, all image references are validated against the filesystem. Missing assets produce structured log warnings with the exact image path and the file that references it. Pages still render - validation is warnings-only, never blocking.
 
 ---
 
@@ -557,8 +557,8 @@ The Users API provides endpoints for managing user accounts...
 ### Structure
 
 - **One H1 per page.** Use it as the page title or rely on frontmatter `title`.
-- **Use H2 for major sections** — these become TOC entries and LLM section markers.
-- **Use H3 for subsections** — these also appear in the TOC.
+- **Use H2 for major sections** - these become TOC entries and LLM section markers.
+- **Use H3 for subsections** - these also appear in the TOC.
 - **Keep pages focused.** One concept per page. Link between pages for cross-references.
 
 ### Naming
@@ -571,11 +571,11 @@ The Users API provides endpoints for managing user accounts...
 ### Content Quality for AI
 
 - Write clear, self-contained sections. LLMs read the `/llms.txt` stream without visual context.
-- Use descriptive alt text on images — it's the only thing AI agents see.
+- Use descriptive alt text on images - it's the only thing AI agents see.
 - Avoid relying on visual formatting (colors, layout) to convey meaning.
-- Use explicit language: "see the section below" is meaningless to an LLM — use "see the Authentication Setup section" instead.
-- Mermaid diagrams are preserved as source code in `/llms.txt` — AI agents can understand them.
-- Embeds become text references — always provide a meaningful title in the `::embed` directive.
+- Use explicit language: "see the section below" is meaningless to an LLM - use "see the Authentication Setup section" instead.
+- Mermaid diagrams are preserved as source code in `/llms.txt` - AI agents can understand them.
+- Embeds become text references - always provide a meaningful title in the `::embed` directive.
 
 ### API Documentation
 
@@ -596,7 +596,7 @@ f0 exposes APIs for AI agents and retrieval systems:
 GET /llms.txt
 ```
 
-Returns all public documentation concatenated as plain text, optimized for LLM ingestion. Cached and pre-computed at startup — serves in ~3ms.
+Returns all public documentation concatenated as plain text, optimized for LLM ingestion. Cached and pre-computed at startup - serves in ~3ms.
 
 ### Scoped LLM Context
 
@@ -614,19 +614,19 @@ Section filtering lets agents fetch only what they need, staying within context 
 GET /llms-index.txt
 ```
 
-Returns a table of contents of available sections with page counts and token estimates. This is the f0 equivalent of `robots.txt` for AI — agents read it first, then decide which section(s) to fetch.
+Returns a table of contents of available sections with page counts and token estimates. This is the f0 equivalent of `robots.txt` for AI - agents read it first, then decide which section(s) to fetch.
 
 Example output:
 
 ```
-# Acme Docs — Documentation Index
+# Acme Docs - Documentation Index
 > Generated: 2026-02-11T12:00:00Z
 
 ## Available Sections
 
-/api          — 1 page, ~81 tokens
-/blog         — 3 pages, ~1,144 tokens
-/guides       — 4 pages, ~1,663 tokens
+/api          - 1 page, ~81 tokens
+/blog         - 3 pages, ~1,144 tokens
+/guides       - 4 pages, ~1,663 tokens
 
 ## Full Site: 9 pages, ~3,225 tokens
 
@@ -703,9 +703,9 @@ npm run validate -- ./content
 
 ### Exit Codes
 
-- `0` — All checks passed (warnings are OK)
-- `1` — Errors found (broken deployment)
-- `2` — Invalid arguments
+- `0` - All checks passed (warnings are OK)
+- `1` - Errors found (broken deployment)
+- `2` - Invalid arguments
 
 Example output:
 
@@ -739,7 +739,7 @@ Integrate into CI/CD to gate deployments on content quality.
 |----------|---------|---------|
 | `NUXT_PUBLIC_SITE_NAME` | `f0` | Site name (header, OG tags, RSS) |
 | `NUXT_PUBLIC_SITE_DESCRIPTION` | `Documentation` | Default meta description |
-| `NUXT_PUBLIC_SITE_URL` | — | Base URL for sitemap, canonical links, OG (e.g. `https://docs.acme.com`) |
+| `NUXT_PUBLIC_SITE_URL` | - | Base URL for sitemap, canonical links, OG (e.g. `https://docs.acme.com`) |
 | `CONTENT_DIR` | `./content` | Path to content directory |
 | `AUTH_MODE` | `public` | `public` or `private` (email OTP auth) |
 
@@ -849,9 +849,9 @@ Creates a new user account.
 
 | Status | Description |
 |--------|-------------|
-| 400 | Bad Request — Invalid parameters |
-| 401 | Unauthorized — Missing or invalid token |
-| 404 | Not Found — User doesn't exist |
+| 400 | Bad Request - Invalid parameters |
+| 401 | Unauthorized - Missing or invalid token |
+| 404 | Not Found - User doesn't exist |
 
 ## Rate Limiting
 

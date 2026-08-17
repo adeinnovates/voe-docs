@@ -1,6 +1,6 @@
 ---
 title: Deploy
-description: Run a cell — services, environment, database, storage, workers, models, backup, observability.
+description: Run a cell - services, environment, database, storage, workers, models, backup, observability.
 ---
 
 # Deploy

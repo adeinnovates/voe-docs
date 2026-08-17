@@ -1,6 +1,6 @@
 ---
 title: Concepts
-description: The system model — workspaces, capture, the record, evidence, reads, gaps, tiers, grants, checked writes.
+description: The system model - workspaces, capture, the record, evidence, reads, gaps, tiers, grants, checked writes.
 ---
 
 # Concepts

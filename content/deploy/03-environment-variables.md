@@ -9,19 +9,19 @@ description: The variables a cell reads, grouped by what they configure.
 
 | Variable | Purpose |
 |---|---|
-| `VOE_PUBLIC_BASE_URL` | The cell's public origin — links, setup URLs, and the [OAuth](/mcp/oauth-connections) issuer |
+| `VOE_PUBLIC_BASE_URL` | The cell's public origin - links, setup URLs, and the [OAuth](/mcp/oauth-connections) issuer |
 | `VOE_INBOUND_EMAIL_DOMAIN` | The domain provisioned addresses live under |
 | `VOE_MCP_HTTP_URL` | Published to clients via `/v1/config` (e.g. `https://mcp.your-voe-cell.example/`); also the [OAuth](/mcp/oauth-connections) resource every access token is bound to |
 
 ## Database
 
-`DATABASE_URL`-style pairs for the two roles: the migrator (owns tables, applies migrations) and the app role (row-level security applies). The app role's password is managed by the migrator at boot — never stored in a migration.
+`DATABASE_URL`-style pairs for the two roles: the migrator, which applies migrations, and the app role, which serves workspace-scoped requests. The app role's password is managed by the migrator at boot, never stored in a migration.
 
 ## Capture
 
 | Variable | Purpose |
 |---|---|
-| `VOE_MAIL_SIDECAR_QUEUE_KEY` | 32-byte key (hex/base64) for the mail queue — **required in production** |
+| `VOE_MAIL_SIDECAR_QUEUE_KEY` | 32-byte key (hex/base64) for the inbound mail queue - **required in production** |
 | Twilio credentials | Number provisioning and webhook validation, if telephony is on |
 
 ## Models
@@ -38,4 +38,4 @@ description: The variables a cell reads, grouped by what they configure.
 
 ## Postgres tuning
 
-`POSTGRES_SHARED_BUFFERS`, `POSTGRES_MAX_CONNECTIONS`, `POSTGRES_WORK_MEM`, `POSTGRES_MAINTENANCE_WORK_MEM`, `POSTGRES_MAX_LOCKS_PER_TRANSACTION` (default 4096 — sized for the per-workspace partitioned chunks table), `POSTGRES_ARCHIVE_TIMEOUT`.
+`POSTGRES_SHARED_BUFFERS`, `POSTGRES_MAX_CONNECTIONS`, `POSTGRES_WORK_MEM`, `POSTGRES_MAINTENANCE_WORK_MEM`, `POSTGRES_MAX_LOCKS_PER_TRANSACTION`, `POSTGRES_ARCHIVE_TIMEOUT`.

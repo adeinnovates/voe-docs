@@ -7,12 +7,12 @@
  * on the filesystem. Reports missing assets via structured logging.
  * 
  * Used in two contexts:
- * 1. During content cache build (runtime) — logs warnings
- * 2. During CLI validation (pre-deploy) — returns structured results
+ * 1. During content cache build (runtime) - logs warnings
+ * 2. During CLI validation (pre-deploy) - returns structured results
  * 
  * CONSTRAINT COMPLIANCE:
  * - C-MEDIA-PROGRESSIVE-012: Missing assets produce warnings, never errors.
- *   Pages still render — broken images get a styled placeholder.
+ *   Pages still render - broken images get a styled placeholder.
  */
 
 import { existsSync } from 'fs'
@@ -102,7 +102,7 @@ export function resolveAssetPath(
     return join(contentDir, imageSrc.replace(/^\.\//, ''))
   }
 
-  // Other relative paths — resolve from the markdown file's directory
+  // Other relative paths - resolve from the markdown file's directory
   const mdDir = dirname(resolve(markdownFilePath))
   return resolve(mdDir, imageSrc)
 }

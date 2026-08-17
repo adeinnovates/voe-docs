@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * F0 - SEO COMPOSABLE
+ * VOE DOCS - SEO COMPOSABLE
  * =============================================================================
  * 
  * Handles OpenGraph, Twitter Card, and standard meta tags for pages.
@@ -15,7 +15,7 @@
  * // Static options:
  * useSeo({ title: 'Page Title', description: 'Page description' })
  *
- * // Reactive options (recommended when the values depend on async data) —
+ * // Reactive options (recommended when the values depend on async data) -
  * // pass a getter and call useSeo ONCE in setup; the head stays in sync
  * // without re-invoking the composable:
  * useSeo(() => ({
@@ -41,19 +41,21 @@ interface SeoOptions {
 }
 
 /**
- * SEO composable — injects OG, Twitter, and standard meta tags.
+ * SEO composable - injects OG, Twitter, and standard meta tags.
  */
 export function useSeo(input: SeoOptions | (() => SeoOptions) = {}) {
   const config = useRuntimeConfig()
   const route = useRoute()
+  const requestUrl = useRequestURL()
+  const { data: brand } = useFetch<{ ogImage?: string }>('/api/brand', { key: 'brand' })
 
-  const siteName = config.public.siteName || 'f0'
-  const siteDescription = config.public.siteDescription || 'Documentation'
-  const siteUrl = config.public.siteUrl || ''
+  const siteName = config.public.siteName || 'Voe Docs'
+  const siteDescription = config.public.siteDescription || 'Voe builder documentation'
+  const siteUrl = computed(() => String(config.public.siteUrl || requestUrl.origin || '').replace(/\/$/, ''))
 
   // Accept either a static options object or a reactive getter. Normalising to
   // a getter lets every derived value be a `computed`, so useHead can be
-  // registered ONCE and stay reactive — no need to re-invoke useSeo when async
+  // registered ONCE and stay reactive - no need to re-invoke useSeo when async
   // content arrives (which previously caused duplicate head registrations).
   const getOptions = typeof input === 'function' ? input : () => input
 
@@ -71,16 +73,13 @@ export function useSeo(input: SeoOptions | (() => SeoOptions) = {}) {
 
   // Canonical URL
   const canonicalUrl = computed(() => {
-    if (!siteUrl) return ''
-    return `${siteUrl}${route.path}`
+    if (!siteUrl.value) return ''
+    return `${siteUrl.value}${route.path}`
   })
 
   // Resolve OG image: explicit → brand default
   const ogImage = computed(() => {
-    // Brand default is fetched by the layout; we can't access it here without
-    // an extra fetch, so we leave it empty — the layout's useHead will inject
-    // the brand og_image if available.
-    return getOptions().image || ''
+    return getOptions().image || brand.value?.ogImage || ''
   })
 
   // Build meta array
@@ -110,7 +109,7 @@ export function useSeo(input: SeoOptions | (() => SeoOptions) = {}) {
     if (ogImage.value) {
       const imageUrl = ogImage.value.startsWith('http')
         ? ogImage.value
-        : siteUrl ? `${siteUrl}${ogImage.value}` : ogImage.value
+        : siteUrl.value ? `${siteUrl.value}${ogImage.value}` : ogImage.value
       tags.push({ property: 'og:image', content: imageUrl })
       tags.push({ name: 'twitter:image', content: imageUrl })
     }

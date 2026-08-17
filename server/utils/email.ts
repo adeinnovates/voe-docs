@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * F0 - EMAIL UTILITY (AWS SES)
+ * VOE DOCS - EMAIL UTILITY (AWS SES)
  * =============================================================================
  * 
  * This module handles email sending via AWS SES for OTP delivery.
@@ -186,7 +186,7 @@ This is an automated message from ${siteName}.
  */
 export async function sendOtpEmail(to: string, otp: string): Promise<void> {
   const config = useRuntimeConfig()
-  const siteName = config.public.siteName || 'f0'
+  const siteName = config.public.siteName || 'Voe Docs'
   const fromEmail = config.emailFrom
   
   if (!fromEmail) {

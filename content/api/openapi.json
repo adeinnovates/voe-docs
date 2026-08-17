@@ -60,7 +60,7 @@
     },
     "/v1/search": {
       "get": {
-        "summary": "Hybrid search with per-hit evidence",
+        "summary": "Search with per-hit evidence",
         "responses": {
           "200": {
             "description": "OK"
@@ -93,7 +93,7 @@
             "schema": {
               "type": "boolean"
             },
-            "description": "Include the scoring breakdown."
+            "description": "Include diagnostic match data."
           },
           {
             "name": "includeDerived",
@@ -295,7 +295,7 @@
             "schema": {
               "type": "integer"
             },
-            "description": "1\u2013500, default 200"
+            "description": "1-500, default 200"
           }
         ]
       }
@@ -366,7 +366,7 @@
                   },
                   "baseBodySha256": {
                     "type": "string",
-                    "description": "Current body hash precondition \u2014 stale is refused."
+                    "description": "Current body hash precondition - stale is refused."
                   }
                 }
               }
@@ -726,7 +726,7 @@
         "description": "Scope: `admin`."
       },
       "post": {
-        "summary": "Support access only \u2014 operator principals, time-boxed",
+        "summary": "Support access only - operator principals, time-boxed",
         "responses": {
           "200": {
             "description": "OK"
@@ -927,7 +927,7 @@
         "description": "Scope: `admin`."
       },
       "post": {
-        "summary": "Connect an assistant \u2014 grant and key in one transaction",
+        "summary": "Connect an assistant with workspace access and a one-time key",
         "responses": {
           "200": {
             "description": "OK"
@@ -1095,7 +1095,7 @@
     },
     "/v1/tokens": {
       "get": {
-        "summary": "Issued token metadata \u2014 never plaintext",
+        "summary": "Issued token metadata - never plaintext",
         "responses": {
           "200": {
             "description": "OK"
@@ -1175,7 +1175,7 @@
     },
     "/v1/statements/sealed": {
       "get": {
-        "summary": "Sealed monthly statements \u2014 immutable once sealed",
+        "summary": "Sealed monthly statements - immutable once sealed",
         "responses": {
           "200": {
             "description": "OK"

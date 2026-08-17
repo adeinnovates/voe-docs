@@ -70,7 +70,7 @@ async function getSharp(): Promise<typeof import('sharp') | null> {
     sharpModule = (await import('sharp')).default as unknown as typeof import('sharp')
     return sharpModule
   } catch {
-    logger.warn('sharp not available — image processing disabled, serving originals')
+    logger.warn('sharp not available - image processing disabled, serving originals')
     sharpAvailable = false
     return null
   }
@@ -156,7 +156,7 @@ async function processImageBuffer(
     } else if (format === 'png') {
       pipeline = pipeline.png()
     }
-    // 'original' — no format conversion
+    // 'original' - no format conversion
 
     const { data, info } = await pipeline.toBuffer({ resolveWithObject: true })
 
@@ -196,7 +196,7 @@ export function parseImageOptions(query: Record<string, unknown>): ImageOptions 
   const f = query.f || query.format
   const q = query.q || query.quality
 
-  // No processing params — serve original
+  // No processing params - serve original
   if (!w && !h && !f && !q) return null
 
   const options: ImageOptions = {}
@@ -262,7 +262,7 @@ export async function getProcessedImage(
       }
     }
   } catch {
-    // Cache miss or read error — continue to process
+    // Cache miss or read error - continue to process
   }
 
   // Process the image

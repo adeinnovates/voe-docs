@@ -1,8 +1,8 @@
 # =============================================================================
-# LITEDOCS - DOCKER COMPOSE (LOCAL DEVELOPMENT)
+# VOE DOCS - DOCKER COMPOSE (LOCAL DEVELOPMENT)
 # =============================================================================
 #
-# This file sets up LiteDocs for local development and testing.
+# This file sets up the Voe docs site for local development and testing.
 #
 # Usage:
 #   docker-compose up        # Start in foreground
@@ -21,8 +21,9 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        NUXT_PUBLIC_SITE_NAME: LiteDocs
-        NUXT_PUBLIC_SITE_DESCRIPTION: Documentation Platform
+        NUXT_PUBLIC_SITE_NAME: Voe Docs
+        NUXT_PUBLIC_SITE_DESCRIPTION: Voe builder documentation
+        NUXT_PUBLIC_SITE_URL: http://localhost:3000
     
     ports:
       - "3000:3000"
@@ -47,8 +48,9 @@ services:
       # - EMAIL_FROM=no-reply@example.com
       
       # Site metadata
-      - NUXT_PUBLIC_SITE_NAME=LiteDocs
-      - NUXT_PUBLIC_SITE_DESCRIPTION=Documentation Platform
+      - NUXT_PUBLIC_SITE_NAME=Voe Docs
+      - NUXT_PUBLIC_SITE_DESCRIPTION=Voe builder documentation
+      - NUXT_PUBLIC_SITE_URL=http://localhost:3000
       
       # Google Analytics (optional)
       # - NUXT_PUBLIC_GTAG_ID=G-XXXXXXXXXX

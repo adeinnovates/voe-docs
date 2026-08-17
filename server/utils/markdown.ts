@@ -459,7 +459,7 @@ function preprocessApiBlocks(markdown: string): string {
     }
 
     if (!found) {
-      // No closing ::: found — output original text unchanged
+      // No closing ::: found - output original text unchanged
       result.push(line)
       result.push(...contentLines)
       continue
@@ -473,7 +473,7 @@ function preprocessApiBlocks(markdown: string): string {
     const bodyLines = firstNonEmptyIdx >= 0 ? contentLines.slice(firstNonEmptyIdx + 1) : contentLines
     const body = bodyLines.join('\n').trim()
 
-    // Emit HTML wrapper — blank lines around body content ensure remark parses it as markdown
+    // Emit HTML wrapper - blank lines around body content ensure remark parses it as markdown
     result.push(`<div class="api-endpoint api-endpoint-${methodLower}">`)
     result.push(`<div class="api-endpoint-header"><span class="api-method api-method-${methodLower}">${method.toUpperCase()}</span><code class="api-path">${escapeHtml(path.trim())}</code></div>`)
     if (summary) {
@@ -617,7 +617,7 @@ const RESPONSIVE_WIDTHS = [400, 800, 1200]
 /**
  * Rehype plugin to transform images for responsive delivery.
  * 
- * Phase 2.1 — Handles two concerns:
+ * Phase 2.1 - Handles two concerns:
  * 1. Path portability: Resolves relative paths (./assets/images/x.png) to
  *    API URLs (/api/content/assets/images/x.png). This means Markdown files
  *    can be previewed in GitHub, VS Code, or any standard viewer.
@@ -642,7 +642,7 @@ function rehypeResponsiveImages() {
       if (src.startsWith('./assets/') || src.startsWith('assets/')) {
         apiSrc = '/api/content/' + src.replace(/^\.\//, '')
       } else if (src.startsWith('./') || !src.startsWith('/')) {
-        // Other relative paths — prefix with API
+        // Other relative paths - prefix with API
         apiSrc = '/api/content/assets/' + src.replace(/^\.\//, '')
       }
 
@@ -882,6 +882,17 @@ export function markdownToPlainText(content: string): string {
   const { content: mdContent } = extractFrontmatter(content)
   
   let text = mdContent
+  const codeSegments: string[] = []
+  const stashCode = (segment: string) => {
+    const token = `@@VOECODE${codeSegments.length}@@`
+    codeSegments.push(segment)
+    return token
+  }
+
+  // Preserve code literally before stripping markdown markers. Identifiers such
+  // as VOE_TOKEN and get_context must survive /llms.txt unchanged.
+  text = text.replace(/```[^\n]*\n[\s\S]*?```/g, (match) => stashCode(match.trimEnd()))
+  text = text.replace(/`[^`\n]+`/g, (match) => stashCode(match))
   
   // Convert YouTube embeds to text reference
   text = text.replace(
@@ -906,18 +917,11 @@ export function markdownToPlainText(content: string): string {
   // Convert images to text description
   text = text.replace(/!\[([^\]]*)\]\([^)]+\)/g, '[Image: $1]')
   
-  // Remove inline code backticks (keep content)
-  text = text.replace(/`([^`]+)`/g, '$1')
-  
-  // Remove code block markers (keep content)
-  text = text.replace(/```[\w]*\n/g, '\n')
-  text = text.replace(/```/g, '')
-  
   // Remove bold/italic markers
   text = text.replace(/\*\*([^*]+)\*\*/g, '$1')
   text = text.replace(/\*([^*]+)\*/g, '$1')
-  text = text.replace(/__([^_]+)__/g, '$1')
-  text = text.replace(/_([^_]+)_/g, '$1')
+  text = text.replace(/(^|[^\w])__([^_\n]+)__([^\w]|$)/g, '$1$2$3')
+  text = text.replace(/(^|[^\w])_([^_\n]+)_([^\w]|$)/g, '$1$2$3')
   
   // Remove horizontal rules
   text = text.replace(/^---+$/gm, '')
@@ -926,6 +930,10 @@ export function markdownToPlainText(content: string): string {
   // Clean up excessive whitespace
   text = text.replace(/\n{3,}/g, '\n\n')
   text = text.trim()
+
+  for (let i = 0; i < codeSegments.length; i++) {
+    text = text.replaceAll(`@@VOECODE${i}@@`, codeSegments[i])
+  }
   
   return text
 }
@@ -1016,7 +1024,7 @@ export async function parseMarkdown(content: string): Promise<ParsedMarkdown> {
 
 /**
  * Generate an excerpt from markdown body content
- * Strips all markdown syntax, takes the first N characters, truncates at word boundary
+ * Strips all markdown syntax, takes the first N characters, truncates at a word break
  */
 export function generateExcerpt(markdownBody: string, maxLength: number = 160): string {
   let text = markdownBody
@@ -1066,7 +1074,7 @@ export function generateExcerpt(markdownBody: string, maxLength: number = 160): 
 
   if (text.length <= maxLength) return text
 
-  // Truncate at last word boundary
+  // Truncate at the last word break
   const truncated = text.slice(0, maxLength)
   const lastSpace = truncated.lastIndexOf(' ')
   const result = lastSpace > 0 ? truncated.slice(0, lastSpace) : truncated
@@ -1127,7 +1135,7 @@ export function slugify(text: string): string {
 const MAX_PARSE_SIZE = 1_048_576
 
 /**
- * Safely extract frontmatter — returns empty object on any failure.
+ * Safely extract frontmatter - returns empty object on any failure.
  * Never throws.
  */
 export function extractFrontmatterSafe(content: string): MarkdownFrontmatter {
@@ -1140,7 +1148,7 @@ export function extractFrontmatterSafe(content: string): MarkdownFrontmatter {
 }
 
 /**
- * Safely extract a title from content — returns the file path as fallback.
+ * Safely extract a title from content - returns the file path as fallback.
  * Never throws.
  */
 export function extractTitleSafe(content: string, fallback: string = 'Untitled'): string {
@@ -1162,7 +1170,7 @@ export function extractTitleSafe(content: string, fallback: string = 'Untitled')
 /**
  * Error-resilient markdown parser.
  * 
- * Wraps the full remark/rehype pipeline in an error boundary. If parsing
+ * Wraps the full remark/rehype pipeline in an error fallback. If parsing
  * fails for any reason (malformed YAML, Unicode issues in code blocks,
  * deeply nested lists causing stack overflow, etc.), returns a graceful
  * fallback that shows the raw markdown in a <pre> block with an error notice.
@@ -1172,7 +1180,7 @@ export function extractTitleSafe(content: string, fallback: string = 'Untitled')
  * 
  * @param content - Raw markdown content including frontmatter
  * @param filePath - File path for error reporting (optional)
- * @returns ParsedMarkdown — always succeeds, never throws
+ * @returns ParsedMarkdown - always succeeds, never throws
  */
 export async function parseMarkdownSafe(content: string, filePath: string = 'unknown'): Promise<ParsedMarkdown> {
   // Guard: reject files over MAX_PARSE_SIZE

@@ -1,25 +1,25 @@
 /**
  * =============================================================================
- * F0 - /llms-index.txt ROUTE
+ * VOE DOCS - /llms-index.txt ROUTE
  * =============================================================================
  * 
  * GET /llms-index.txt
  * 
  * Returns a table of contents of available documentation sections with
- * page counts and token estimates. This is the f0 equivalent of a robots.txt
- * for AI — it tells agents what's available and how large each section is
+ * page counts and token estimates. This is the docs equivalent of a robots.txt
+ * for AI - it tells agents what's available and how large each section is
  * so they can make smart decisions about what to fetch.
  * 
  * OUTPUT:
  * ```
- * # Acme Docs — Documentation Index
+ * # Acme Docs - Documentation Index
  * > Generated: 2026-02-11T15:00:00Z
  * 
  * ## Available Sections
  * 
- * /guides          — 15 pages, ~12,000 tokens
- * /guides/auth     — 4 pages, ~3,200 tokens
- * /api             — 8 pages, ~6,500 tokens
+ * /guides          - 15 pages, ~12,000 tokens
+ * /guides/auth     - 4 pages, ~3,200 tokens
+ * /api             - 8 pages, ~6,500 tokens
  * 
  * ## Full Site: 29 pages, ~23,500 tokens
  * 
@@ -205,7 +205,7 @@ async function computeIndexHash(contentDir: string): Promise<string> {
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const contentDir = resolve(process.cwd(), config.contentDir)
-  const siteName = config.public.siteName || 'f0'
+  const siteName = config.public.siteName || 'Voe Docs'
 
   try {
     // Check cache
@@ -231,7 +231,7 @@ export default defineEventHandler(async (event) => {
 
     // Build output
     const lines: string[] = []
-    lines.push(`# ${siteName} — Documentation Index`)
+    lines.push(`# ${siteName} - Documentation Index`)
     lines.push(`> Generated: ${new Date().toISOString()}`)
     lines.push('')
     lines.push('## Available Sections')
@@ -247,14 +247,14 @@ export default defineEventHandler(async (event) => {
 
     for (const [path, info] of sortedSections) {
       const padding = ' '.repeat(Math.max(1, maxLen - path.length + 2))
-      lines.push(`${path}${padding}— ${info.pages} page${info.pages !== 1 ? 's' : ''}, ~${info.estimatedTokens.toLocaleString()} tokens`)
+      lines.push(`${path}${padding}- ${info.pages} page${info.pages !== 1 ? 's' : ''}, ~${info.estimatedTokens.toLocaleString()} tokens`)
     }
 
     // Root pages
     const rootSection = sections.get('/')
     if (rootSection) {
       const padding = ' '.repeat(Math.max(1, maxLen - 1))
-      lines.push(`/${padding}— ${rootSection.pages} root page${rootSection.pages !== 1 ? 's' : ''}, ~${rootSection.estimatedTokens.toLocaleString()} tokens`)
+      lines.push(`/${padding}- ${rootSection.pages} root page${rootSection.pages !== 1 ? 's' : ''}, ~${rootSection.estimatedTokens.toLocaleString()} tokens`)
     }
 
     lines.push('')

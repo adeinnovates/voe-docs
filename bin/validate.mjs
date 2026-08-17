@@ -6,7 +6,7 @@
  * =============================================================================
  * 
  * Standalone CLI tool for validating f0 content directories before deployment.
- * Runs without a server — no Nuxt, no Nitro, just filesystem checks.
+ * Runs without a server - no Nuxt, no Nitro, just filesystem checks.
  * 
  * USAGE:
  *   node bin/validate.mjs ./content
@@ -23,11 +23,13 @@
  * | Duplicate slugs         | Error    | Two files resolving to the same URL        |
  * | File size               | Warning  | Files over 500KB (slow to parse)           |
  * | Character encoding      | Warning  | Non-UTF-8 files                            |
+ * | Brand language          | Error    | Refused punctuation and words              |
+ * | LLM plain text          | Error    | Code identifiers and fences survive        |
  * 
  * EXIT CODES:
- *   0 — All checks passed (warnings allowed)
- *   1 — Errors found
- *   2 — Invalid arguments
+ *   0 - All checks passed (warnings allowed)
+ *   1 - Errors found
+ *   2 - Invalid arguments
  */
 
 import { readdir, readFile, stat } from 'fs/promises'
@@ -170,6 +172,28 @@ async function scanMarkdownFiles(dir) {
   return files
 }
 
+async function scanTextContentFiles(dir) {
+  const files = []
+  async function walk(d) {
+    try {
+      const entries = await readdir(d, { withFileTypes: true })
+      for (const entry of entries) {
+        if (entry.name.startsWith('.') || entry.name.startsWith('_')) continue
+        if (entry.name === 'assets' || entry.name === 'images') continue
+
+        const full = join(d, entry.name)
+        if (entry.isDirectory()) {
+          await walk(full)
+        } else if (entry.name.endsWith('.md') || entry.name.endsWith('.json')) {
+          files.push(full)
+        }
+      }
+    } catch {}
+  }
+  await walk(dir)
+  return files
+}
+
 async function scanImages(dir) {
   const images = []
   const assetsDir = join(dir, 'assets')
@@ -209,7 +233,7 @@ async function validateNavMd(contentDir) {
       file: 'nav.md',
       severity: 'warning',
       check: 'nav.md exists',
-      message: 'nav.md not found — top navigation will be empty',
+      message: 'nav.md not found - top navigation will be empty',
     })
     return { issues, sections: 0 }
   }
@@ -251,6 +275,129 @@ async function validateNavMd(contentDir) {
 }
 
 // =============================================================================
+// BRAND AND LLM OUTPUT CONTRACTS
+// =============================================================================
+
+const refusedWords = [
+  'trust' + 'worthy',
+  'guard' + 'rail',
+  'bound' + 'ary',
+  'determin' + 'istic',
+  'load' + '-bearing',
+  'memory ' + 'layer',
+]
+
+function validateBrandLanguage(content, relPath, issues) {
+  const emDash = String.fromCharCode(0x2014)
+  const enDash = String.fromCharCode(0x2013)
+  const escapedEmDash = '\\' + 'u20' + '14'
+  const escapedEnDash = '\\' + 'u20' + '13'
+
+  for (const marker of [emDash, enDash, escapedEmDash, escapedEnDash]) {
+    let index = content.indexOf(marker)
+    while (index !== -1) {
+      issues.push({
+        file: relPath,
+        line: lineNumber(content, index),
+        severity: 'error',
+        check: 'brand language',
+        message: 'Refused dash punctuation found. Use a comma, colon, semicolon, period, or plain hyphen.',
+      })
+      index = content.indexOf(marker, index + marker.length)
+    }
+  }
+
+  for (const word of refusedWords) {
+    const pattern = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i')
+    const match = pattern.exec(content)
+    if (match) {
+      issues.push({
+        file: relPath,
+        line: lineNumber(content, match.index),
+        severity: 'error',
+        check: 'brand language',
+        message: `Refused word or phrase found: "${word}".`,
+      })
+    }
+  }
+}
+
+function renderLlmsPlainTextFixture(markdown) {
+  const codeSegments = []
+  const stashCode = (segment) => {
+    const token = `@@VOECODE${codeSegments.length}@@`
+    codeSegments.push(segment)
+    return token
+  }
+
+  let text = markdown.replace(/^---\n[\s\S]*?\n---\n?/, '')
+  text = text.replace(/```[^\n]*\n[\s\S]*?```/g, (match) => stashCode(match.trimEnd()))
+  text = text.replace(/`[^`\n]+`/g, (match) => stashCode(match))
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+  text = text.replace(/\*\*([^*]+)\*\*/g, '$1')
+  text = text.replace(/\*([^*]+)\*/g, '$1')
+  text = text.replace(/(^|[^\w])__([^_\n]+)__([^\w]|$)/g, '$1$2$3')
+  text = text.replace(/(^|[^\w])_([^_\n]+)_([^\w]|$)/g, '$1$2$3')
+  text = text.trim()
+
+  for (let i = 0; i < codeSegments.length; i++) {
+    text = text.replaceAll(`@@VOECODE${i}@@`, codeSegments[i])
+  }
+
+  return text
+}
+
+function validateLlmsPlainTextContract(issues) {
+  const sample = [
+    'Use `VOE_TOKEN`, `email_local`, `get_context`, `graph_query`, `entity_timeline`, `create_page`, and `patch_page`.',
+    '',
+    '```bash',
+    'export VOE_PUBLIC_BASE_URL=https://docs.example',
+    'export VOE_MAIL_SIDECAR_QUEUE_KEY=hex',
+    'export ANTHROPIC_API_KEY=sk_test',
+    '```',
+  ].join('\n')
+
+  const rendered = renderLlmsPlainTextFixture(sample)
+  const required = [
+    '`VOE_TOKEN`',
+    '`email_local`',
+    '`get_context`',
+    '`graph_query`',
+    '`entity_timeline`',
+    '`create_page`',
+    '`patch_page`',
+    '```bash',
+    'VOE_PUBLIC_BASE_URL',
+    'VOE_MAIL_SIDECAR_QUEUE_KEY',
+    'ANTHROPIC_API_KEY',
+    '```',
+  ]
+  const forbidden = [
+    'VOETOKEN',
+    'emaillocal',
+    'getcontext',
+    'graphquery',
+    'entitytimeline',
+    'createpage',
+    'patchpage',
+    'VOEPUBLICBASEURL',
+    'VOEMAILSIDECARQUEUEKEY',
+    'ANTHROPICAPIKEY',
+  ]
+
+  const failed = required.some((item) => !rendered.includes(item)) || forbidden.some((item) => rendered.includes(item))
+  if (failed) {
+    issues.push({
+      file: '(llms.txt contract)',
+      severity: 'error',
+      check: 'LLM plain text',
+      message: 'Inline code, snake_case identifiers, env vars, and fenced code blocks must survive plain-text rendering.',
+    })
+  }
+}
+
+// =============================================================================
 // MAIN VALIDATION
 // =============================================================================
 
@@ -275,6 +422,9 @@ async function validate(contentDir) {
   const mdFiles = await scanMarkdownFiles(contentDir)
   console.log(`${c.green}✓${c.reset} ${mdFiles.length} markdown files found`)
 
+  const textFiles = await scanTextContentFiles(contentDir)
+  console.log(`${c.green}✓${c.reset} ${textFiles.length} text content files found`)
+
   const images = await scanImages(contentDir)
   console.log(`${c.green}✓${c.reset} ${images.length} images found`)
   console.log()
@@ -288,12 +438,21 @@ async function validate(contentDir) {
         file: relative(contentDir, file),
         severity: 'error',
         check: 'duplicate slugs',
-        message: `Duplicate URL slug "${slug}" — conflicts with ${relative(contentDir, slugMap.get(slug))}`,
+        message: `Duplicate URL slug "${slug}" - conflicts with ${relative(contentDir, slugMap.get(slug))}`,
       })
     } else {
       slugMap.set(slug, file)
     }
   }
+
+  // Brand and LLM-output contracts
+  for (const file of textFiles) {
+    try {
+      const content = await readFile(file, 'utf-8')
+      validateBrandLanguage(content, relative(contentDir, file), issues)
+    } catch {}
+  }
+  validateLlmsPlainTextContract(issues)
 
   // 4. Validate each file
   for (const file of mdFiles) {
@@ -308,7 +467,7 @@ async function validate(contentDir) {
           file: relPath,
           severity: 'warning',
           check: 'file size',
-          message: `File is ${Math.round(stats.size / 1024)}KB — files over 500KB are slow to parse`,
+          message: `File is ${Math.round(stats.size / 1024)}KB - files over 500KB are slow to parse`,
         })
       }
     } catch {}
@@ -450,11 +609,13 @@ ${c.bold}Checks:${c.reset}
   • Duplicate URL slugs
   • File size (>500KB warning)
   • Character encoding (UTF-8)
+  • Brand language and punctuation
+  • LLM plain-text rendering contract
 
 ${c.bold}Exit codes:${c.reset}
-  0 — All checks passed
-  1 — Errors found
-  2 — Invalid arguments
+  0 - All checks passed
+  1 - Errors found
+  2 - Invalid arguments
 `)
   process.exit(args.includes('--help') || args.includes('-h') ? 0 : 2)
 }

@@ -4,10 +4,10 @@ This guide walks you through setting up f0 for local development and production 
 
 ## Prerequisites
 
-- **Node.js 20+** — Required for running the application
-- **npm** — Comes with Node.js
-- **Git** — For version control
-- **AWS Account** — Required only for private mode (email authentication)
+- **Node.js 20+** - Required for running the application
+- **npm** - Comes with Node.js
+- **Git** - For version control
+- **AWS Account** - Required only for private mode (email authentication)
 
 ## Quick Start (Public Mode)
 

@@ -73,9 +73,9 @@ draft: false
 
 Files are sorted by:
 
-1. **Frontmatter `order`** — Highest priority
-2. **Filename prefix** — Numbers like `01-`, `02-`
-3. **Alphabetical** — By title
+1. **Frontmatter `order`** - Highest priority
+2. **Filename prefix** - Numbers like `01-`, `02-`
+3. **Alphabetical** - By title
 
 Examples:
 ```
@@ -206,11 +206,11 @@ Permanently removes a user account.
 Supported methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `OPTIONS`, `HEAD`
 
 Each method gets a colored badge:
-- **GET** — Green
-- **POST** — Blue
-- **PUT** — Orange
-- **PATCH** — Purple
-- **DELETE** — Red
+- **GET** - Green
+- **POST** - Blue
+- **PUT** - Orange
+- **PATCH** - Purple
+- **DELETE** - Red
 
 You can include full markdown content inside the block, including code examples and tables.
 
@@ -230,14 +230,14 @@ flowchart LR
 ````
 
 Supported diagram types:
-- **Flowcharts** — Process flows, decision trees
-- **Sequence Diagrams** — API interactions, message flows
-- **Class Diagrams** — Object relationships
-- **State Diagrams** — State machines
-- **Entity Relationship** — Database schemas
-- **Gantt Charts** — Project timelines
-- **Pie Charts** — Data distribution
-- **Git Graphs** — Branch visualizations
+- **Flowcharts** - Process flows, decision trees
+- **Sequence Diagrams** - API interactions, message flows
+- **Class Diagrams** - Object relationships
+- **State Diagrams** - State machines
+- **Entity Relationship** - Database schemas
+- **Gantt Charts** - Project timelines
+- **Pie Charts** - Data distribution
+- **Git Graphs** - Branch visualizations
 
 Example sequence diagram:
 
@@ -503,9 +503,9 @@ import { something } from 'my-package';
 
 Remember f0 serves three audiences:
 
-1. **Humans** — Need clear, well-formatted content
-2. **Search Engines** — Need good headings, descriptions, semantic HTML
-3. **AI Agents** — Need structured, context-dense content
+1. **Humans** - Need clear, well-formatted content
+2. **Search Engines** - Need good headings, descriptions, semantic HTML
+3. **AI Agents** - Need structured, context-dense content
 
 ## Content Lifecycle
 

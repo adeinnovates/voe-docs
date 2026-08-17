@@ -1,6 +1,6 @@
 <!--
   =============================================================================
-  F0 - HOME PAGE
+  VOE DOCS - HOME PAGE
   =============================================================================
   
   The landing page for the documentation site.
@@ -49,8 +49,8 @@
 // ---------------------------------------------------------------------------
 
 const config = useRuntimeConfig()
-const siteName = config.public.siteName || 'f0'
-const siteDescription = config.public.siteDescription || 'Documentation'
+const siteName = config.public.siteName || 'Voe Docs'
+const siteDescription = config.public.siteDescription || 'Voe builder documentation'
 
 // ---------------------------------------------------------------------------
 // BLOG MODE DETECTION

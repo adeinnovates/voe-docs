@@ -17,17 +17,17 @@ curl -s -X POST "$VOE/v1/addresses" \
   -d '{"kind":"phone","country":"US","areaCode":"604"}'
 ```
 
-Availability is regional; `number-regions` is the truth for your cell. The number receives — Voe never texts or calls out.
+Availability is regional; `number-regions` is the truth for your cell. The number receives - Voe never texts or calls out.
 
 ## What capture looks like
 
 - **SMS** → a message page per text, sender identity resolved like email.
 - **Missed call** → a stub page recording that someone called.
-- **Voicemail** → the recording is stored raw (hash kept as proof), transcribed as **derived-grade** text, and the voicemail page supersedes the missed-call stub for that call — exactly one page survives per call.
+- **Voicemail** → the recording is stored raw (hash kept as proof), transcribed as **derived-grade** text, and the voicemail page supersedes the missed-call stub for that call - exactly one page survives per call.
 
 ## Test it
 
-Text the number; call it and leave a voicemail. Within moments: `GET /v1/search?q=<something you said>&includeDerived=true` — the transcript is derived, so it needs the flag; the recording hash rides the evidence.
+Text the number; call it and leave a voicemail. Within moments: `GET /v1/search?q=<something you said>&includeDerived=true` - the transcript is derived, so it needs the flag; the recording hash rides the evidence.
 
 :::warning
 Transcripts are readings of the recording, not the recording. They enter retrieval only with `includeDerived=true` and always carry the `derived` grade in evidence.

@@ -1,6 +1,6 @@
 ---
 title: Examples
-description: Eight working shapes — what flows in, what you call, what the agent sees, what the user can inspect.
+description: Eight working shapes - what flows in, what you call, what the agent sees, what the user can inspect.
 ---
 
 # Examples

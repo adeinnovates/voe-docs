@@ -1,6 +1,6 @@
 <!--
 =============================================================================
-F0 - HEADER COMPONENT
+VOE DOCS - HEADER COMPONENT
 =============================================================================
 
 The main site header with:
@@ -91,7 +91,7 @@ USAGE:
 
 <script setup lang="ts">
 const config = useRuntimeConfig()
-const siteName = config.public.siteName || 'f0'
+const siteName = config.public.siteName || 'Voe Docs'
 
 const { topNav, isActive } = useNavigation()
 const { isAuthenticated, logout } = useAuth()
@@ -102,7 +102,7 @@ const { resolvedTheme } = useTheme()
 const { data: brand } = await useFetch('/api/brand', { key: 'brand' })
 
 // Computed logo based on the ACTUAL applied theme (resolvedTheme), not the
-// preference — otherwise 'system' + dark would never use the dark logo.
+// preference - otherwise 'system' + dark would never use the dark logo.
 const currentLogo = computed(() => {
   if (!brand.value) return ''
   if (resolvedTheme.value === 'dark' && brand.value.logoDark) {

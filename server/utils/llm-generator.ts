@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * F0 - LLM TEXT GENERATOR
+ * VOE DOCS - LLM TEXT GENERATOR
  * =============================================================================
  * 
  * This module generates the /llms.txt output - a plain text stream optimized
@@ -13,7 +13,7 @@
  * 
  * OUTPUT FORMAT:
  * ```
- * # f0 - Documentation Context
+ * # Voe Docs - Documentation Context
  * > SYSTEM INFO: Optimized for LLM ingestion.
  * > GENERATED: 2026-01-24T12:00:00Z
  * 
@@ -117,7 +117,7 @@ async function collectContent(
         const subItems = await collectContent(entryPath, contentDir, entryUrlPath)
         items.push(...subItems)
       } else if (isMarkdownFile(entry.name)) {
-        // Process markdown file — skip on failure rather than crashing
+        // Process markdown file - skip on failure rather than crashing
         try {
           const rawContent = await readFile(entryPath, 'utf-8')
           
@@ -186,7 +186,7 @@ async function collectContent(
           })(),
         })
         } catch (fileError) {
-          // Skip this file but log the error — don't crash the entire endpoint
+          // Skip this file but log the error - don't crash the entire endpoint
           logger.warn('Skipping file in llms.txt generation', {
             path: entryPath,
             error: fileError instanceof Error ? fileError.message : String(fileError),
@@ -260,7 +260,7 @@ function pathToBreadcrumb(urlPath: string): string {
  */
 export async function generateLlmText(
   contentDir: string,
-  siteName: string = 'f0',
+  siteName: string = 'Voe Docs',
   options: LlmGeneratorOptions = {}
 ): Promise<string> {
   const {

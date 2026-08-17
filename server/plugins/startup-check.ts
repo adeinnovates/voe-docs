@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * F0 - STARTUP VALIDATION PLUGIN
+ * VOE DOCS - STARTUP VALIDATION PLUGIN
  * =============================================================================
  * 
  * Nitro plugin that runs before the server accepts requests.
@@ -63,7 +63,7 @@ async function scanContentFiles(dir: string): Promise<string[]> {
 
 export default defineNitroPlugin(async () => {
   const startTime = performance.now()
-  logger.info('f0 startup validation starting')
+  logger.info('voe-docs startup validation starting')
 
   // Access runtime config
   const config = useRuntimeConfig()
@@ -82,12 +82,12 @@ export default defineNitroPlugin(async () => {
   logger.info('Content directory found', { path: contentDir })
 
   // =========================================================================
-  // CHECK 2: nav.md exists (WARN — zero-config principle)
+  // CHECK 2: nav.md exists (WARN - zero-config principle)
   // =========================================================================
 
   const navPath = join(contentDir, 'nav.md')
   if (!existsSync(navPath)) {
-    logger.warn('nav.md not found — top navigation will be empty', { path: contentDir })
+    logger.warn('nav.md not found - top navigation will be empty', { path: contentDir })
   }
 
   // =========================================================================
@@ -122,7 +122,7 @@ export default defineNitroPlugin(async () => {
   // =========================================================================
 
   try {
-    const siteName = config.public?.siteName || 'f0'
+    const siteName = config.public?.siteName || 'Voe Docs'
     await getCachedLlmsTxt(contentDir, siteName)
     logger.info('/llms.txt pre-computed')
   } catch (error) {
@@ -136,7 +136,7 @@ export default defineNitroPlugin(async () => {
   // =========================================================================
 
   const duration = Math.round(performance.now() - startTime)
-  logger.info('f0 startup validation complete', {
+  logger.info('voe-docs startup validation complete', {
     duration,
     pages: cached,
     errors,

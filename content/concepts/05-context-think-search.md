@@ -1,6 +1,6 @@
 ---
 title: Context, Think, Search
-description: The read side as one mental model — retrieve, pack, synthesize.
+description: The read side as one mental model - retrieve, pack, synthesize.
 ---
 
 # Context, think, search
@@ -15,15 +15,15 @@ One engine, three read surfaces. Choose by who does the reasoning.
 
 ## search
 
-Hybrid retrieval: vector similarity and keyword rank fused, then boosted by graph adjacency (results connected to other results rank up) and title match. Tier-aware by default — suspicious senders are excluded, unknown senders downweighted — with explicit overrides. `explain=true` returns the full scoring breakdown per hit.
+`search` returns ranked hits with evidence for each result. Ranking considers meaning, keywords, titles, source tier, and related records. Suspicious senders are excluded by default, unknown senders are treated cautiously, and explicit options can widen the search. `explain=true` returns a readable reason for each hit.
 
 ## context
 
-`context` runs retrieval, then packs sections into a token budget you set: entity pages first, then timeline highlights, then search results — dropping (never truncating mid-passage) what does not fit, and saying so in `droppedCandidates`. The bundle ends with a gap report for the question asked. Feed the sections to your own model and keep the citations.
+`context` packs the best supporting sections into a token budget you set. Sections keep their citations, omitted material is named in `droppedCandidates`, and the bundle ends with a gap report for the question asked. Feed the sections to your own model and keep the citations.
 
 ## think
 
-`think` builds the same bundle, streams model synthesis over it, and enforces the [citation check](/concepts/evidence). Events arrive in order: `sources`, then `text` chunks, then `citation-warning` (annotate) or `withheld` (strict), then always `gaps` — the gap report is not optional garnish.
+`think` builds the same bundle, streams model synthesis over it, and enforces the [citation check](/concepts/evidence). Events arrive in order: `sources`, `text`, grounding events when needed, and always `gaps`. The gap report is part of the answer.
 
 An empty memory answers honestly: *"I do not hold a record that answers that yet."*
 

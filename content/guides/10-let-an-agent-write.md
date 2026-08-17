@@ -19,11 +19,11 @@ Narrow on purpose: types, slug prefixes, tier, mode, and a mandatory expiry. `GE
 
 ## 2. Create
 
-`POST /v1/pages` (or MCP `create_page`) with `slug`, `type`, `body`, optional `frontmatter` — the slug must fall under a granted prefix, the type under the grant.
+`POST /v1/pages` (or MCP `create_page`) with `slug`, `type`, `body`, and optional `frontmatter`. The slug must fall under a granted prefix, and the type must be covered by the grant.
 
 ## 3. Patch
 
-`PATCH /v1/pages/:slug` (or MCP `patch_page`) must present the page's **current body hash** as its precondition. A stale hash is refused — fetch, re-derive, retry. Two writers cannot silently clobber each other.
+`PATCH /v1/pages/:slug` (or MCP `patch_page`) must present the page's **current body hash** as its precondition. A stale hash is refused. Two writers cannot silently clobber each other.
 
 ## Handling denials
 
@@ -34,6 +34,6 @@ Narrow on purpose: types, slug prefixes, tier, mode, and a mandatory expiry. `GE
 | Secret detected | Body carries credentials | Remove the secret; it will never land |
 | Stale precondition | Page changed underneath | Re-fetch and re-patch |
 
-Every decision — allow or deny — is recorded. When the write authority expires, the agent keeps reading; only the write stops, with a message saying exactly that.
+Every allow or deny decision is recorded. When the write authority expires, the agent keeps reading; only the write stops, with a message saying exactly that.
 
 **Next:** [Checked writes](/concepts/checked-writes)

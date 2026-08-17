@@ -99,7 +99,7 @@
                   </td>
                   <td>{{ param.location }}</td>
                   <td><code>{{ param.type }}{{ param.format ? ` (${param.format})` : '' }}</code></td>
-                  <td>{{ param.description || '—' }}</td>
+                  <td>{{ param.description || '-' }}</td>
                 </tr>
               </tbody>
             </table>

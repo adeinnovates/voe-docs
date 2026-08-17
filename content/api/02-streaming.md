@@ -1,6 +1,6 @@
 ---
 title: Streaming
-description: Server-sent events on /v1/think — framing, event order, client handling.
+description: Server-sent events on /v1/think - framing, event order, client handling.
 ---
 
 # Streaming
@@ -20,13 +20,13 @@ data: {"gaps":{"missingEntities":[],"unreadableAttachments":[]}}
 
 ## Order and guarantees
 
-1. `sources` first — the citation allowlist for everything that follows.
-2. `text` chunks (annotate mode only; strict buffers and sends the checked text at the end).
+1. `sources` first - the citation allowlist for everything that follows.
+2. `text` events (annotate mode only; strict buffers and sends the checked text at the end).
 3. `citation-warning` (annotate) with the exact unverifiable sentences, or `withheld` (strict) with the count.
-4. `gaps` — always emitted, even when empty, even on the empty-memory reply.
+4. `gaps` - always emitted, even when empty, even on the empty-memory reply.
 
 `error` events carry the same JSON error shape as non-streaming routes.
 
 ## Client notes
 
-Use `curl -N` or any SSE/fetch-reader client; buffer on the blank-line frame separator, not on read chunks. Do not resolve citations against anything but this response's `sources` — that allowlist is what makes a bracketed slug evidence rather than decoration.
+Use `curl -N` or any SSE/fetch-reader client; buffer on the blank-line frame separator, not on partial reads. Do not resolve citations against anything but this response's `sources`. That allowlist is what makes a bracketed slug evidence rather than decoration.

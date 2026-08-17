@@ -23,7 +23,7 @@ Voe captures addressed channels, builds a cited memory, and serves context, sear
 
 ::mermaid
 flowchart LR
-  A["Channels in<br/>email · texts · voicemail<br/>calendar · webhooks"] --> B["The record<br/>raw bytes kept first<br/>pages · edges · gaps"]
+  A["Channels in<br/>email · texts · voicemail<br/>calendar · webhooks"] --> B["The record<br/>raw bytes kept first<br/>pages · relationships · gaps"]
   B --> C["Read side<br/>context · think · search"]
   C --> D["Surfaces out<br/>MCP · API · your assistant"]
 ::

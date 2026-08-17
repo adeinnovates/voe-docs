@@ -5,7 +5,7 @@ description: Markdown capture through API or MCP for events, incidents, notes, a
 
 # Capture app events
 
-**For:** putting your application's own signal — events, incidents, decisions, tool output — into the same cited memory. **Scope:** `write`.
+**For:** putting your application's own signal - events, incidents, decisions, tool output - into the same cited memory. **Scope:** `write`.
 
 ## Minimal example
 
@@ -16,13 +16,13 @@ curl -s -X POST "$VOE/ingest" \
   --data-binary $'# Deploy 2026-08-16\nRolled out v41. Error rate flat. [[services/checkout]] unaffected.'
 ```
 
-The body becomes a page; the first heading becomes its title; `[[wikilinks]]` become graph edges (creating stub pages for new entities, so the graph never dangles). Over MCP, the `capture` tool does the same.
+The body becomes a page; the first heading becomes its title; `[[wikilinks]]` become relationships in the workspace. Unresolved references stay visible until later evidence enriches them. Over MCP, the `capture` tool does the same.
 
-**Response shape:** the capture result with the new page's slug — cite it back in your own UI immediately.
+**Response shape:** the capture result with the new page's slug for citation in your own UI.
 
 ## Structured envelopes
 
-`POST /ingest` with `Content-Type: application/json` accepts a full envelope (channel, sender, thread, attachments by raw ref) — the path adapters use. For app events, markdown is usually enough.
+`POST /ingest` with `Content-Type: application/json` accepts a full envelope (channel, sender, thread, attachments by raw ref) - the path adapters use. For app events, markdown is usually enough.
 
 ## Evidence behavior
 

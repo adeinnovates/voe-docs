@@ -9,7 +9,7 @@ All tools are workspace-scoped by the session's token. Read tools need a live gr
 
 | Tool | Does | Key arguments |
 |---|---|---|
-| `search` | Hybrid search with evidence | `query`, `limit`, `explain`, `includeDerived`, tier overrides |
+| `search` | Ranked search with evidence | `query`, `limit`, `explain`, `includeDerived`, tier overrides |
 | `get_context` | Token-budgeted cited bundle + gaps | `query`, `entities[]`, `tokens`, `includeDerived` |
 | `think` | Cited synthesis + mandatory gap report | `query`, `mode` (default **strict**) |
 | `graph_query` | Bounded graph walk | `start[]`, `edgeTypes[]`, `depth`, `direction` |
@@ -21,8 +21,8 @@ All tools are workspace-scoped by the session's token. Read tools need a live gr
 
 ## Return discipline
 
-Tools return raw JSON data, not prose. `think` returns `{ answer, sources, citationWarning, withheld, gaps }` — `sources` is the citation allowlist; verify every bracketed slug in `answer` against it before treating the bracket as evidence.
+Tools return raw JSON data, not prose. `think` returns `{ answer, sources, citationWarning, withheld, gaps }` - `sources` is the citation allowlist; verify every bracketed slug in `answer` against it before treating the bracket as evidence.
 
 ## Denials
 
-Write tools answer with the authority decision's reason (no grant, scope mismatch, expired, secret detected, stale precondition). A read tool on a revoked connection answers that the key is no longer connected — an agent should stop, not retry.
+Write tools answer with the authority decision's reason (no grant, scope mismatch, expired, secret detected, stale precondition). A read tool on a revoked connection answers that the key is no longer connected; that is a non-retryable state.

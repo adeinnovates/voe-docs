@@ -20,7 +20,7 @@
       <p>Loading content...</p>
     </div>
     
-    <!-- Error state (404) — or Blog Index -->
+    <!-- Error state (404) - or Blog Index -->
     <div v-else-if="error && !isBlogIndex" class="error-page">
       <h1>Page Not Found</h1>
       <p>The requested documentation page could not be found.</p>
@@ -114,7 +114,7 @@ const { data: content, pending, error } = await useFetch<ContentResponse>(
   () => `/api/content/${slug.value}`,
   {
     watch: [slug],
-    // Suppress 404 console noise — blog directories legitimately 404 here
+    // Suppress 404 console noise - blog directories legitimately 404 here
     onResponseError({ response }) {
       if (response.status !== 404) {
         console.error('[f0] Content fetch error:', response.status)

@@ -1,25 +1,25 @@
 ---
 title: The Record
-description: Original bytes first; pages, edges, chunks, attachments, and gaps are built from them.
+description: Original bytes first; pages, relationships, searchable passages, attachments, and gaps are built from them.
 ---
 
 # The record
 
-The record is what Voe holds, in three strictly ordered layers. Each layer can be rebuilt from the one before it; nothing above the raw layer is load-bearing for truth.
+The record is what Voe holds, in three strictly ordered layers. Each layer can be rebuilt from the one before it; nothing above the raw layer carries the truth.
 
 ## 1. Raw
 
-Every captured item's original bytes land in a content-addressed store (`sha256`), fsynced at write. Attachments are stored the same way. This layer is append-only in spirit: redaction is an explicit, recorded act, never a side effect.
+Every captured item's original bytes land in durable storage under a content hash. Attachments are stored the same way. This layer is append-only in spirit: redaction is an explicit, recorded act, never a side effect.
 
 ## 2. Pages
 
-From the raw material Voe writes **pages** — plain markdown files with frontmatter, one per captured message, event, voicemail, or note, in a per-workspace git repository. Frontmatter carries provenance: the `raw_ref` pointing back at the bytes, sender identity, extraction method and confidence. Wikilinks in page bodies become graph edges.
+From the raw material Voe writes **pages**: plain markdown files, one per captured message, event, voicemail, or note. Page metadata carries provenance: the `raw_ref` pointing back at the bytes, sender identity, extraction method, and confidence. Links in page bodies become relationships.
 
-The files are canonical. You can read the whole memory with `cat`.
+The files are canonical. The memory stays legible outside the application.
 
 ## 3. Index
 
-Postgres holds what queries need: page rows, **edges** (the graph), searchable passages, **gaps**, and review state. The index is fully derived: it can be rebuilt from the files, and the rebuild reports if the index no longer matches the record.
+The database holds what queries need: page rows, relationships, searchable passages, gaps, and review state. The index is fully derived: it can be rebuilt from the files, and the rebuild reports if the index no longer matches the record.
 
 ## Why this shape
 

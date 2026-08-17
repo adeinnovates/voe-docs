@@ -209,7 +209,7 @@ Image paths in Markdown (`./assets/images/x.png`) preview correctly in GitHub an
 
 f0 treats AI agents as first-class consumers.
 
-### `/llms.txt` — Full Context
+### `/llms.txt` - Full Context
 
 ```
 GET /llms.txt                        → All documentation (~3ms cached)
@@ -219,23 +219,23 @@ GET /llms.txt?section=api            → Only /api content
 
 Output is plain text with hierarchical path headers, stripped of all UI chrome. Pre-computed at startup and cached with content-hash invalidation.
 
-### `/llms-index.txt` — Discovery
+### `/llms-index.txt` - Discovery
 
 ```
-# Acme Docs — Documentation Index
+# Acme Docs - Documentation Index
 
 ## Available Sections
 
-/api          — 1 page, ~81 tokens
-/blog         — 3 pages, ~1,144 tokens
-/guides       — 4 pages, ~1,663 tokens
+/api          - 1 page, ~81 tokens
+/blog         - 3 pages, ~1,144 tokens
+/guides       - 4 pages, ~1,663 tokens
 
 ## Full Site: 9 pages, ~3,225 tokens
 ```
 
 Agents read the index first, then fetch only the sections they need.
 
-### `/api/agents/search` — Semantic Search
+### `/api/agents/search` - Semantic Search
 
 ```
 GET /api/agents/search?q=authentication&limit=5&include_content=true
@@ -247,18 +247,18 @@ GET /api/agents/search?q=authentication&limit=5&include_content=true
 
 Auto-generated for every deployment:
 
-- **`/sitemap.xml`** — All pages with `lastmod`, `changefreq`, `priority`
-- **OpenGraph meta** — `og:title`, `og:description`, `og:image`, `og:url` on every page
-- **Twitter Cards** — `summary_large_image` when cover image present
-- **Canonical URLs** — `<link rel="canonical">` from `NUXT_PUBLIC_SITE_URL`
-- **`/feed.xml`** — RSS feed for blog content
+- **`/sitemap.xml`** - All pages with `lastmod`, `changefreq`, `priority`
+- **OpenGraph meta** - `og:title`, `og:description`, `og:image`, `og:url` on every page
+- **Twitter Cards** - `summary_large_image` when cover image present
+- **Canonical URLs** - `<link rel="canonical">` from `NUXT_PUBLIC_SITE_URL`
+- **`/feed.xml`** - RSS feed for blog content
 - **`Server-Timing`** header on every response
 
 ---
 
 ## Private Mode (Lite-Auth)
 
-Secure internal documentation with email OTP — no Identity Provider required.
+Secure internal documentation with email OTP - no Identity Provider required.
 
 ```bash
 AUTH_MODE=private
@@ -300,11 +300,11 @@ On boot, f0 validates the deployment environment before accepting traffic:
 
 ### Performance
 
-- **Content cache** — mtime-based invalidation, ~1ms cached responses
-- **Navigation cache** — mtime + directory structure hash
-- **`/llms.txt` cache** — content-hash invalidation, ~3ms cached
-- **Image cache** — disk-based, mtime invalidation against source
-- **Structured JSON logs** — all server output, zero `console.log`
+- **Content cache** - mtime-based invalidation, ~1ms cached responses
+- **Navigation cache** - mtime + directory structure hash
+- **`/llms.txt` cache** - content-hash invalidation, ~3ms cached
+- **Image cache** - disk-based, mtime invalidation against source
+- **Structured JSON logs** - all server output, zero `console.log`
 
 ### Content Validation CLI
 
@@ -368,15 +368,15 @@ node .output/server/index.mjs
 |----------|---------|-------------|
 | `NUXT_PUBLIC_SITE_NAME` | `f0` | Site name (header, OG, RSS) |
 | `NUXT_PUBLIC_SITE_DESCRIPTION` | `Documentation` | Default meta description |
-| `NUXT_PUBLIC_SITE_URL` | — | Base URL for sitemap, canonical links, OG |
+| `NUXT_PUBLIC_SITE_URL` | - | Base URL for sitemap, canonical links, OG |
 | `CONTENT_DIR` | `./content` | Path to content directory |
 | `AUTH_MODE` | `public` | `public` or `private` |
-| `JWT_SECRET` | — | Secret for signing tokens (required in private mode) |
+| `JWT_SECRET` | - | Secret for signing tokens (required in private mode) |
 | `AWS_REGION` | `us-east-1` | AWS region for SES |
-| `AWS_ACCESS_KEY_ID` | — | AWS credentials for email |
-| `AWS_SECRET_ACCESS_KEY` | — | AWS credentials for email |
-| `EMAIL_FROM` | — | Sender email address |
-| `GITHUB_WEBHOOK_SECRET` | — | Secret for webhook signature verification |
+| `AWS_ACCESS_KEY_ID` | - | AWS credentials for email |
+| `AWS_SECRET_ACCESS_KEY` | - | AWS credentials for email |
+| `EMAIL_FROM` | - | Sender email address |
+| `GITHUB_WEBHOOK_SECRET` | - | Secret for webhook signature verification |
 
 ---
 

@@ -1,16 +1,13 @@
 ---
 title: Attachment Extraction
-description: The reading pipeline — document text, OCR, transcripts, and its failure modes.
+description: Attachment reading states, readable text, and recovery.
 ---
 
 # Attachment extraction
 
-Attachments are read out-of-band by workers, never inline with capture:
+Attachments are read after capture, never inline with capture. The parent message can land while files move through their own states: **stored**, **reading**, **readable**, **failed reading**, or **not readable**.
 
-1. Capture stores the bytes and records the attachment as **stored**.
-2. A job queues it: **reading**.
-3. The extractor produces text — document parsing for PDFs and office formats, OCR for images, transcription for audio — all marked **derived** grade.
-4. The text is embedded and indexed under the attachment's own citation: **readable**.
+Readable files can contribute derived-grade text to search, context, and think. A readable attachment is cited as itself, not as a hidden part of its parent email.
 
 ## Failure modes
 
@@ -22,4 +19,4 @@ Attachments are read out-of-band by workers, never inline with capture:
 
 ## Limits
 
-Extraction output is capped per attachment; oversized results fail explicitly rather than flooding the index. Transcription draws on the account's repair budget.
+Extraction output is capped per attachment; oversized results fail explicitly rather than flooding search. Transcription availability follows the workspace's model settings.

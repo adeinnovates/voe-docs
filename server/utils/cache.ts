@@ -101,7 +101,7 @@ export async function getCachedContent(filePath: string): Promise<CacheEntry> {
     return cached
   }
 
-  // 3. Cache miss — read and parse
+  // 3. Cache miss - read and parse
   cacheMisses++
   const rawMarkdown = await readFile(absPath, 'utf-8')
   const parsed = await parseMarkdownSafe(rawMarkdown, absPath)
@@ -112,7 +112,7 @@ export async function getCachedContent(filePath: string): Promise<CacheEntry> {
     const contentDir = resolve(process.cwd(), config.contentDir || './content')
     validateAndLogAssets(rawMarkdown, absPath, contentDir)
   } catch {
-    // Validation is non-blocking — skip if config not available
+    // Validation is non-blocking - skip if config not available
   }
 
   const entry: CacheEntry = {

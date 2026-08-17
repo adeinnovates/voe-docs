@@ -1,5 +1,5 @@
 # =============================================================================
-# LITEDOCS - PRODUCTION DOCKERFILE
+# VOE DOCS - PRODUCTION DOCKERFILE
 # =============================================================================
 #
 # Multi-stage build for optimal image size:
@@ -8,8 +8,8 @@
 # 3. runner  - Minimal production image
 #
 # Usage:
-#   docker build -t f0 .
-#   docker run -p 3000:3000 -v ./content:/app/content f0
+#   docker build -t voe-docs .
+#   docker run -p 3000:3000 -v ./content:/app/content voe-docs
 #
 # For Coolify:
 #   - Set build context to repository root
@@ -40,12 +40,14 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build arguments (can be overridden at build time)
-ARG NUXT_PUBLIC_SITE_NAME=LiteDocs
-ARG NUXT_PUBLIC_SITE_DESCRIPTION=Documentation
+ARG NUXT_PUBLIC_SITE_NAME="Voe Docs"
+ARG NUXT_PUBLIC_SITE_DESCRIPTION="Voe builder documentation"
+ARG NUXT_PUBLIC_SITE_URL=""
 
 # Set build-time environment variables
 ENV NUXT_PUBLIC_SITE_NAME=$NUXT_PUBLIC_SITE_NAME
 ENV NUXT_PUBLIC_SITE_DESCRIPTION=$NUXT_PUBLIC_SITE_DESCRIPTION
+ENV NUXT_PUBLIC_SITE_URL=$NUXT_PUBLIC_SITE_URL
 
 # Build the application
 RUN npm run build
@@ -83,7 +85,7 @@ ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-# Health check — a REAL, passing probe (not omitted, not a comment).
+# Health check - a REAL, passing probe (not omitted, not a comment).
 # Two things this gets right, both learned the hard way:
 #  1. IPv4, not `localhost`. The server binds IPv4 (HOST=0.0.0.0); inside the
 #     container `localhost` resolves to the IPv6 loopback [::1], where nothing
@@ -92,7 +94,7 @@ ENV PORT=3000
 #     `.State.Health`, and Coolify's post-deploy `docker inspect
 #     '{{.State.Health.Status}}'` then fails with "map has no entry for key
 #     Health" and rolls the deploy back. (Merely *commenting out* the directive
-#     didn't help — Coolify greps the Dockerfile for the word HEALTHCHECK and
+#     didn't help - Coolify greps the Dockerfile for the word HEALTHCHECK and
 #     tried to read a status that wasn't there.) A real, green probe gives it a
 #     status to read.
 # /_health is auth-exempt and answers in <5ms. Uses GET (-O /dev/null) rather

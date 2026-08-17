@@ -153,7 +153,7 @@ onMounted(() => {
   font-size: var(--font-size-sm);
 }
 
-/* Collapsed state — thin bar with expand button */
+/* Collapsed state - thin bar with expand button */
 .sidebar.collapsed {
   width: 40px;
   min-width: 40px;

@@ -5,7 +5,7 @@
  * 
  * GET /_ready
  * 
- * Returns 200 only if the instance can serve content — meaning:
+ * Returns 200 only if the instance can serve content - meaning:
  * 1. The content directory exists and is readable
  * 2. nav.md is present and parseable (if it exists)
  * 
@@ -50,7 +50,7 @@ export default defineEventHandler(async () => {
   }
 
   try {
-    // Check 2: nav.md exists (non-fatal — zero-config principle)
+    // Check 2: nav.md exists (non-fatal - zero-config principle)
     await stat(join(contentDir, 'nav.md'))
     checks.navMd = 'ok'
   } catch {

@@ -136,7 +136,7 @@ function markdownToHtml(text: string | undefined): string | undefined {
   html = html.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, '<em>$1</em>')
   html = html.replace(/(?<!_)_([^_\n]+)_(?!_)/g, '<em>$1</em>')
   
-  // Convert links [text](url) — sanitize the href (block javascript:/data:) and
+  // Convert links [text](url) - sanitize the href (block javascript:/data:) and
   // escape quotes so a crafted URL can't break out of the attribute.
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, textPart, urlPart) => {
     const safeHref = sanitizeUrl(urlPart).replace(/"/g, '&quot;').replace(/'/g, '&#39;')

@@ -19,4 +19,4 @@ curl -s -N -X POST "$VOE/v1/think" -H "Authorization: Bearer $TOKEN" \
 
 **The user can inspect:** each brief item cites the event page and the correspondence behind the "unresolved" claims.
 
-**Gaps surfaced:** if the feed has gone unreachable, the feed row says so and briefs degrade visibly — never silently stale. Voe never writes to the calendar; scheduling actions belong to tools you connect.
+**Gaps surfaced:** if the feed has gone unreachable, the feed row says so and briefs degrade visibly - never silently stale. Voe never writes to the calendar; scheduling actions belong to tools you connect.

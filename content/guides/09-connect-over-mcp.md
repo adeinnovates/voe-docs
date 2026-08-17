@@ -1,6 +1,6 @@
 ---
 title: Connect Over MCP
-description: Connect an assistant — the connection writes the grant and key together.
+description: Connect an assistant with workspace access and a one-time key.
 ---
 
 # Connect over MCP
@@ -15,7 +15,7 @@ curl -s -X POST "$VOE/v1/agent-connections" \
   -d '{"label":"Claude Desktop"}'
 ```
 
-**Response:** the connection with its `agent:` principal and a `tok_…` key, shown once. Grant and key are written in one transaction — an assistant can never exist as a bare token that authenticates and reads nothing. The dashboard's Connect page does this in one paste.
+**Response:** the connection with its `agent:` principal and a `tok_…` key, shown once. Workspace access and key issuance are created together, so a connected assistant is always listed, revocable, and scoped to its live grant. The dashboard's Connect page does this in one paste.
 
 Optionally attach write authority at connection time (`writeAuthority: { pageTypes, prefixes, tier, mode, expiresInSeconds }`) so capability is visible from the moment it exists.
 
@@ -33,7 +33,7 @@ HTTP (where the cell exposes it): point the client at the MCP URL with `Authoriz
 
 ## What the assistant can do
 
-Read tools always; `capture`/`create_page`/`patch_page` only under live write authority. Every tool call revalidates the key against the live grant — revoke the connection and the assistant stops at its next call, mid-session, on both transports.
+Read tools always; `capture`/`create_page`/`patch_page` only under live write authority. Every tool call revalidates the key against the live grant - revoke the connection and the assistant stops at its next call, mid-session, on both transports.
 
 :::info
 Disconnecting (`DELETE /v1/agent-connections/:principal`) removes the grant, the key, and any write authority together.

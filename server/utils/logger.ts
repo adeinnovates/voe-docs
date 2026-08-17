@@ -7,7 +7,7 @@
  * and human-readable messages in development. No external dependencies.
  * 
  * DESIGN DECISIONS:
- * - No Winston, Pino, or Bunyan — f0 doesn't need a logging framework.
+ * - No Winston, Pino, or Bunyan - f0 doesn't need a logging framework.
  * - JSON output in production for log aggregators (Datadog, Loki, CloudWatch).
  * - Pretty output in development for developer readability.
  * - Consistent format across the entire codebase.

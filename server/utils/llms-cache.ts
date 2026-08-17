@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * F0 - /llms.txt CACHE
+ * VOE DOCS - /llms.txt CACHE
  * =============================================================================
  * 
  * Pre-computes and caches the /llms.txt output. Invalidation uses a content
@@ -12,7 +12,7 @@
  * 
  * CONSTRAINT COMPLIANCE:
  * - C-PERF-CACHE-MTIME-010: Uses mtime-derived content hash, never TTL
- * - C-AI-LLMS-NO-UI-NOISE-004: Output is identical — caching the result, not changing generation
+ * - C-AI-LLMS-NO-UI-NOISE-004: Output is identical - caching the result, not changing generation
  * - C-AI-TRIBRID-CONSISTENCY-003: Same source, same output, just faster
  */
 
@@ -39,7 +39,7 @@ const sectionCache = new Map<string, { text: string; hash: string }>()
 
 /**
  * Compute a lightweight hash of all content files' paths and mtimes.
- * This is much cheaper than reading file contents — walking 100 files
+ * This is much cheaper than reading file contents - walking 100 files
  * and stat()-ing them takes <5ms.
  * 
  * The hash changes when any file is added, removed, renamed, or modified.
@@ -77,7 +77,7 @@ async function computeContentHash(dir: string): Promise<string> {
 
   await walk(dir)
 
-  // Sort for deterministic hash regardless of filesystem ordering
+  // Sort for a stable hash regardless of filesystem ordering
   entries.sort()
 
   const hash = createHash('md5')
@@ -102,7 +102,7 @@ async function computeContentHash(dir: string): Promise<string> {
  */
 export async function getCachedLlmsTxt(
   contentDir: string,
-  siteName: string = 'f0',
+  siteName: string = 'Voe Docs',
   options: LlmGeneratorOptions = {}
 ): Promise<string> {
   const startTime = performance.now()
@@ -133,7 +133,7 @@ export async function getCachedLlmsTxt(
     return cachedLlmsTxt
   }
 
-  // Cache miss — regenerate
+  // Cache miss - regenerate
   cachedLlmsTxt = await generateLlmText(contentDir, siteName, options)
   cachedLlmsHash = currentHash
   cachedLlmsGeneratedAt = Date.now()

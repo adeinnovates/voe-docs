@@ -13,7 +13,7 @@
  * - C-OPS-ZERO-CONFIG-DEFAULT-008: Missing _brand.md produces a working site.
  * 
  * DESIGN:
- * - `_brand.md` follows the same convention as `_config.md` — frontmatter-only.
+ * - `_brand.md` follows the same convention as `_config.md` - frontmatter-only.
  * - Brand config is per-deployment, not per-environment. A studio might run
  *   the same Docker image for 10 clients, each with a different content volume.
  * - Cached using mtime comparison, same pattern as content cache.

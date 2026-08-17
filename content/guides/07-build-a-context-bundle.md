@@ -1,6 +1,6 @@
 ---
 title: Build A Context Bundle
-description: GET /v1/context — entities, query, token budget, dropped candidates, gaps.
+description: GET /v1/context - entities, query, token budget, dropped candidates, gaps.
 ---
 
 # Build a context bundle
@@ -34,10 +34,10 @@ curl -s "$VOE/v1/context?entities=people/amara-obi&query=wire+details&tokens=300
 }
 ```
 
-Packing order: requested entities' own pages, then their timeline highlights, then search results for the query — highest value first, because the budget can run out. Candidates that do not fit are **dropped whole, never truncated mid-passage**, and named in `droppedCandidates`.
+The bundle favors directly requested records and the strongest supporting material for the query. Candidates that do not fit are **dropped whole, never truncated mid-passage**, and named in `droppedCandidates`.
 
 ## Using it well
 
-Pass `sections[].content` to your model with the citations; render `gaps` to the user. If `truncated` is true and the answer feels thin, raise `tokens` — the bundle never silently under-fills without saying so.
+Pass `sections[].content` to your model with the citations; render `gaps` to the user. If `truncated` is true, a larger `tokens` budget can return more material. The bundle never silently under-fills without saying so.
 
 **Next:** [Ask with think](/guides/ask-with-think)

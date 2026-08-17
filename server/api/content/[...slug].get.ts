@@ -8,7 +8,7 @@
  * Fetches and renders content for a given URL path.
  * Supports markdown files and API spec files (OpenAPI/Postman).
  * 
- * ENHANCEMENT: Phase 1.1 — Uses mtime-based content cache to avoid
+ * ENHANCEMENT: Phase 1.1 - Uses mtime-based content cache to avoid
  * re-parsing unchanged Markdown files. Cache hit serves in <2ms vs
  * 50-200ms for a full pipeline run.
  * 
@@ -54,7 +54,7 @@ export default defineEventHandler(async (event) => {
     }
     
     if (isMarkdownFile(filePath)) {
-      // Use mtime-based cache — stat() + Map lookup on hit, full pipeline on miss
+      // Use mtime-based cache - stat() + Map lookup on hit, full pipeline on miss
       const cached = await getCachedContent(filePath)
       
       // Determine layout
@@ -112,7 +112,7 @@ export default defineEventHandler(async (event) => {
     }
     
     if (isJsonSpecFile(filePath)) {
-      // Parse API spec (not cached — specs are infrequently accessed)
+      // Parse API spec (not cached - specs are infrequently accessed)
       const spec = await parseApiSpec(filePath)
       
       return {

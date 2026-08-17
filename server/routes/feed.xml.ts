@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * F0 - RSS/ATOM FEED ROUTE
+ * VOE DOCS - RSS/ATOM FEED ROUTE
  * =============================================================================
  * 
  * GET /feed.xml
@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
   const dirConfig = resolveDirectoryConfig(config.contentDir, dirPath)
   const fullPath = dirPath ? join(config.contentDir, dirPath) : config.contentDir
 
-  const siteName = config.public.siteName || 'f0'
+  const siteName = config.public.siteName || 'Voe Docs'
   const siteDescription = dirConfig.description || config.public.siteDescription || ''
   const feedTitle = dirConfig.title || siteName
   

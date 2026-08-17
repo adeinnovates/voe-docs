@@ -15,15 +15,15 @@ One shape everywhere:
 
 | Code | Used for |
 |---|---|
-| `400` | A request the caller can fix — the message states the rule that refused it |
+| `400` | A request the caller can fix - the message states the rule that refused it |
 | `401` | No valid key |
-| `403` | Valid key, insufficient or lapsed authority — the message says which |
+| `403` | Valid key, insufficient or lapsed authority - the message says which |
 | `404` | No such route or record in this workspace's view |
 | `409` | A concurrent action already holds the lock (for example a feed sync in progress) |
 | `413` | Body over the route's size cap |
-| `429` | Rate limit — capture and auth routes are limited per workspace or address |
+| `429` | Rate limit - capture and auth routes are limited per workspace or address |
 | `500` | Voe's fault, logged with a request id; never used for rules |
 
 ## How refusals speak
 
-Refusals name the rule, not the implementation: *"Connect an assistant from the Connect page so its access is granted with its key."* — *"This assistant's write authority has ended, so it can still read but no longer write."* Treat `4xx` messages as stable, user-showable prose; treat authority denials as facts, not retryable transients.
+Refusals name the rule, not the implementation: *"Connect an assistant from the Connect page so its access is granted with its key."* and *"This assistant's write authority has ended, so it can still read but no longer write."* `4xx` messages are stable, user-showable prose; authority denials are facts, not retryable transients.

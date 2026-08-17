@@ -542,7 +542,7 @@
     border: none;
   }
   
-  /* Embed system (Phase 2.2) — responsive containers for all embed types */
+  /* Embed system (Phase 2.2) - responsive containers for all embed types */
   .embed-container {
     position: relative;
     width: 100%;
@@ -812,7 +812,7 @@
     max-width: 100%;
   }
   
-  /* Sidebar collapsed — reading mode */
+  /* Sidebar collapsed - reading mode */
   .sidebar-collapsed .main-content {
     margin-left: 40px;
     max-width: calc(100% - 40px - var(--toc-width));

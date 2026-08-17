@@ -1,9 +1,9 @@
 /**
  * =============================================================================
- * LITEDOCS - NUXT CONFIGURATION
+ * VOE DOCS - NUXT CONFIGURATION
  * =============================================================================
  * 
- * This configuration file sets up Nuxt 3 for the f0 documentation platform.
+ * This configuration file sets up Nuxt 3 for the Voe documentation site.
  * 
  * Key decisions:
  * - SSR enabled for SEO and fast initial page loads
@@ -62,8 +62,8 @@ export default defineNuxtConfig({
       gtagId: process.env.NUXT_PUBLIC_GTAG_ID || '',
       
       // Site metadata
-      siteName: process.env.NUXT_PUBLIC_SITE_NAME || 'f0',
-      siteDescription: process.env.NUXT_PUBLIC_SITE_DESCRIPTION || 'Documentation',
+      siteName: process.env.NUXT_PUBLIC_SITE_NAME || 'Voe Docs',
+      siteDescription: process.env.NUXT_PUBLIC_SITE_DESCRIPTION || 'Voe builder documentation',
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || '',
     }
   },
