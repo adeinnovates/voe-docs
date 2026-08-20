@@ -19,21 +19,22 @@ The token a connector receives is not a second kind of workspace relationship. A
 
 This is Voe issuing OAuth for its own memory. It is not Voe logging into anything of the user's - no mailbox OAuth, no account custody. Voe [holds no logins](/start/what-is-voe); becoming an authorization server for connecting agents does not change that.
 
-## What a deployer configures
+## What the connector discovers
 
-The flow rides configuration the cell already has:
+The hosted cell publishes the authorization service and MCP resource through standard OAuth discovery. The MCP URL shown on the Voe Connect page is the value a user pastes into the connector.
 
-| Variable | Role in OAuth |
-|---|---|
-| `VOE_PUBLIC_BASE_URL` | The issuer - serves the authorization, token, and registration endpoints and the consent screen |
-| `VOE_MCP_HTTP_URL` | The canonical resource every access token is bound to (`/v1/config` publishes it) |
-
-OAuth discovery and consent routes are served without auth. If a CDN or WAF fronts the cell, let the `/.well-known/*` and `/oauth/*` paths through unchallenged.
+OAuth discovery and consent must remain reachable through any network service in front of the cell.
 
 ## How a user connects
 
 1. In the connector screen, paste the cell's MCP URL (`https://mcp.your-voe-cell.example/`). Leave authentication on OAuth; there is no client secret to enter.
 2. The connector opens Voe's consent screen. The user signs in with an email code - the same login the dashboard uses - and picks a workspace they own.
 3. Approve. The connector receives its tokens and lists the tools. The connection appears in Sharing, named for the client, revocable like any other.
+
+## Start using the connection
+
+Enable Voe for a conversation and ask in ordinary language. For example: "Search my Voe memory for the latest Loci discussion" or "Use Voe's cited synthesis to prepare me for my next meeting."
+
+The client chooses the matching tool and may ask for approval before the call. See the [MCP tool reference](/mcp/tool-reference) for all nine tools and examples that name each one directly.
 
 Bearer over [HTTP MCP](/mcp/http-mcp) and stdio remain supported. OAuth is an added door for clients that require browser sign-in.

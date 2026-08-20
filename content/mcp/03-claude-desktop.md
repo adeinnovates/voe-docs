@@ -1,11 +1,39 @@
 ---
 title: Claude Desktop
-description: Connect Claude Desktop over stdio.
+description: Connect Claude to Voe, approve workspace access, and start using the tools.
 ---
 
 # Claude Desktop
 
-Add to `claude_desktop_config.json` (Settings → Developer → Edit Config):
+## Connect the hosted workspace
+
+1. Open **Settings**, then **Connectors**.
+2. Choose **Add custom connector**.
+3. Name the connector and paste the MCP URL shown on the Voe Connect page.
+4. Add the connector. Claude opens Voe's approval page in your browser.
+5. Sign in, choose the workspace, and approve read access.
+
+Return to Claude. The connector should list nine Voe tools.
+
+## Use Voe in a conversation
+
+Enable the Voe connector for the conversation, then ask in ordinary language:
+
+> Search my Voe memory for the latest discussion about Loci.
+
+> Use Voe's cited synthesis to prepare me for my meeting with Philip. Cite the record and name anything missing.
+
+> Use Voe's entity timeline for `people/philip-fuller`.
+
+Claude chooses the matching tool. Name a tool when you want a specific read. If its permission is set to **Needs approval**, Claude asks before each call.
+
+The initial connection is read-only. Claude may display all nine tools, including the three write tools, but Voe refuses a write until the workspace owner grants write authority.
+
+See [MCP tool reference](/mcp/tool-reference) for every tool, argument, result, and request pattern.
+
+## Local stdio option
+
+For a local checkout, add this to `claude_desktop_config.json` through **Settings**, **Developer**, **Edit Config**:
 
 ```json
 {
@@ -19,26 +47,4 @@ Add to `claude_desktop_config.json` (Settings → Developer → Edit Config):
 }
 ```
 
-Restart the client. The server resolves the token at startup - a revoked or ungranted key is refused immediately with a message saying to reconnect, never a silent empty memory - and then revalidates on every tool call.
-
-Ask Claude to `search` for something you know the workspace holds; then ask something it does not and read the gap report. Both behaviors are the product working.
-
-## Reaching the hosted endpoint
-
-Desktop's config file speaks stdio only - a `"type": "http"` block is Claude Code's schema and Desktop ignores it. To use [HTTP MCP](/mcp/http-mcp) without a local checkout, bridge it through `mcp-remote`, which is still a paste-one-JSON setup:
-
-```json
-{
-  "mcpServers": {
-    "voe": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote", "https://mcp.your-voe-cell.example/", "--header", "Authorization:${VOE_AUTH}", "--transport", "http-only"],
-      "env": { "VOE_AUTH": "Bearer tok_your_assistant_token" }
-    }
-  }
-}
-```
-
-The header value rides in through `env` because Desktop's argument parsing breaks on spaces inside `args`. `--transport http-only` matches the server, which speaks streamable HTTP without the SSE half.
-
-Claude's **Add custom connector** screen (Desktop, web, and mobile) is a different door: it takes the server URL and authenticates by OAuth, not a header. Where the deployment exposes the Voe OAuth MCP path, the screen can work with a URL and a browser approval. See [OAuth connections](/mcp/oauth-connections).
+Restart Claude Desktop after changing the file. A disconnected or ungranted key is refused when the local server starts and on later tool calls.

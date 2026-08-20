@@ -5,4 +5,5 @@
 - [MCP](/mcp)
 - [Deploy](/deploy)
 - [Examples](/examples)
+- [Notes](/blog)
 - [runvoe.com](https://runvoe.com)

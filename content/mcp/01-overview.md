@@ -11,12 +11,12 @@ Voe's MCP server exposes the same product contract as the HTTP API: search, cont
 
 ## Transports
 
-- **stdio** - a local subprocess with `VOE_TOKEN` in its environment. The current path for Claude Desktop and Claude Code.
+- **OAuth** - the hosted connection for Claude and ChatGPT. Paste the Voe MCP URL, approve the workspace in a browser, and return to the client.
 - **HTTP** - bearer-token authenticated, where the deployment exposes it. Sessions are bound to the exact key that opened them.
-- **OAuth** - for Claude and ChatGPT connector flows where the deployment exposes the Voe OAuth MCP path. A connector token maps back to an agent connection. See [OAuth connections](/mcp/oauth-connections).
+- **stdio** - a local subprocess with `VOE_TOKEN` in its environment. Available for local Claude Desktop and Claude Code setups.
 
 ## Grounding posture
 
-Over MCP, `think` defaults to **strict**: sentences the citation check cannot tie to a real source are withheld, invented co-citations are scrubbed, and the result carries the `sources` allowlist for bracket verification. An agent has no eyes on a UI's warning marks, so the text it receives is already checked.
+Over MCP, `think` defaults to **strict**: sentences the citation check cannot tie to a real source are withheld, and invented co-citations are scrubbed. An agent has no eyes on a UI's warning marks, so the text it receives is already checked.
 
-Start: [Bearer token setup](/mcp/bearer-token-setup) · [Tool reference](/mcp/tool-reference)
+Start: [OAuth connections](/mcp/oauth-connections) · [Tool reference](/mcp/tool-reference)

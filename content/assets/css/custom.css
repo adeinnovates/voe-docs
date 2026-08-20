@@ -77,6 +77,7 @@
 /* Type */
 html{-webkit-font-smoothing:antialiased}
 body{font-family:var(--voe-sans);color:var(--voe-ink);background:var(--color-bg-primary);line-height:1.6}
+.main-content{box-sizing:border-box}
 h1,h2{font-family:var(--voe-serif);font-weight:600;letter-spacing:-.01em;line-height:1.12;color:var(--voe-ink)}
 h1{font-size:2.1rem;margin-bottom:.4em}
 h2{font-size:1.5rem;font-weight:400;margin-top:2.2em}
@@ -117,8 +118,8 @@ nav a:hover,aside a:hover,[class*="sidebar"] a:hover{color:var(--voe-ink);border
 [class*="sidebar"] .active,[class*="sidebar"] [aria-current="page"]{color:var(--voe-ink);font-weight:600}
 header,[class*="header"]{border-bottom:1px solid var(--voe-line);background:var(--color-bg-primary)}
 
-/* Restraint: no card grids, no colored section fills, no drop shadows on content */
-[class*="card"]{box-shadow:none;border:1px solid var(--voe-line);border-radius:10px;background:transparent}
+/* Restraint: keep framed account surfaces quiet. Editorial lists supply their own rules. */
+.login-card{box-shadow:none;border:1px solid var(--voe-line);border-radius:10px;background:transparent}
 
 /* Mermaid: keep the system diagram in brand */
 .mermaid .node rect,.mermaid .node polygon{fill:#fff;stroke:var(--voe-line)}
@@ -158,3 +159,14 @@ svg[id^="mermaid"] .nodeLabel,svg[id^="mermaid"] .nodeLabel *,svg[id^="mermaid"]
 svg[id^="mermaid"] .edgeLabel,svg[id^="mermaid"] .edgeLabel *{background:var(--color-bg-primary)!important;color:var(--voe-ink-soft)!important}
 svg[id^="mermaid"] .cluster rect{fill:transparent!important;stroke:var(--voe-line)!important}
 [data-theme="dark"] svg[id^="mermaid"] .node rect,[data-theme="dark"] .mermaid .node rect{fill:rgba(47,109,100,.25)!important;stroke:rgba(236,241,239,.2)!important}
+
+/* Retrieval chart: Tideglass bars, Buoy threshold, and one quiet plotting field. */
+.blog-post-body .mermaid-wrapper:has(svg[aria-roledescription="xychart"]){background:transparent;padding:16px}
+.blog-post-body svg[aria-roledescription="xychart"] .background{fill:transparent!important}
+.blog-post-body svg[aria-roledescription="xychart"] .bar-plot-0 rect{fill:var(--voe-tide)!important;stroke:none!important;opacity:.88}
+.blog-post-body svg[aria-roledescription="xychart"] .line-plot-1 path{stroke:var(--voe-buoy)!important;stroke-width:3px!important}
+.blog-post-body svg[aria-roledescription="xychart"] .axis-line path,
+.blog-post-body svg[aria-roledescription="xychart"] .axisl-line path,
+.blog-post-body svg[aria-roledescription="xychart"] .ticks path{stroke:var(--voe-line)!important;stroke-width:1px!important}
+.blog-post-body svg[aria-roledescription="xychart"] text{fill:var(--voe-ink-soft)!important;font-family:var(--voe-sans)!important;font-size:13px!important}
+@media (max-width:640px){.blog-post-body svg[aria-roledescription="xychart"]{min-width:560px}}

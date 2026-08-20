@@ -10,12 +10,12 @@ A human surface can mark a doubtful sentence in place. An agent consuming `think
 - A factual sentence with no citation from the answer's own source list is **withheld**, replaced by `[withheld: ungrounded sentence]`.
 - A derived-grade source stated as unhedged fact is withheld the same way.
 - A grounded sentence carrying an *extra invented* bracket has that bracket scrubbed to `[citation removed: not among this answer's sources]`.
-- The result includes `withheld` (a count) and the full `sources` allowlist.
+- The result includes `withheld` and `gaps` beside the completed answer.
 
 ## Client handling
 
 1. `[withheld: …]` markers are holes, not noise. The memory had no proof for something the model wanted to say.
-2. Brackets resolve only against `sources`; anything else is not evidence.
+2. Citation slugs in the answer identify the records used as evidence.
 3. `gaps` is part of answer completeness. "The record does not hold this" is an actionable state.
 4. `mode: "annotate"` is for human surfaces where warnings are rendered.
 

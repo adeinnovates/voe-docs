@@ -12,6 +12,6 @@ MCP is an access surface, not the definition of Voe. Anything that can call HTTP
 - [Overview](/mcp/overview) · [Bearer token setup](/mcp/bearer-token-setup)
 - Clients: [Claude Desktop](/mcp/claude-desktop) · [Claude Code](/mcp/claude-code) · [HTTP MCP](/mcp/http-mcp)
 - [OAuth connections](/mcp/oauth-connections) - how the Claude and ChatGPT connectors sign in.
-- [Tool reference](/mcp/tool-reference) - all nine tools.
+- [Tool reference](/mcp/tool-reference) - what all nine tools do and how to start a call.
 - [Strict grounding](/mcp/strict-grounding-for-machine-callers) - why machine callers get withheld sentences, not warnings.
 - [Compatibility matrix](/mcp/compatibility-matrix)

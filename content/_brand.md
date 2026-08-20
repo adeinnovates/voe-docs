@@ -12,6 +12,6 @@ footer_links:
     url: /llms.txt
   - label: Status
     url: /start/status-and-compatibility
-custom_css: ./assets/css/custom.css?v=1
+custom_css: ./assets/css/custom.css?v=4
 og_image: ./assets/images/og-docs.png
 ---
