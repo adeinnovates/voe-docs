@@ -30,11 +30,16 @@ curl -s "$VOE/v1/context?entities=people/amara-obi&query=wire+details&tokens=300
   "tokenBudget": 3000, "estimatedTokensUsed": 2731,
   "truncated": true,
   "droppedCandidates": [{ "slug": "messages/…", "reason": "budget" }],
-  "gaps": { "missingEntities": [], "staleEntities": [], "unreadableAttachments": [] }
+  "gaps": {
+    "missingEntities": [], "staleEntities": [],
+    "staleSyntheses": [], "unreadableAttachments": []
+  }
 }
 ```
 
 The bundle favors directly requested records and the strongest supporting material for the query. Candidates that do not fit are **dropped whole, never truncated mid-passage**, and named in `droppedCandidates`.
+
+Some bundles can include a maintained summary. Its section carries `recordCitations`, a list of the live records beneath it. Your model may read the summary, but its final citations should come from those records.
 
 ## Using it well
 

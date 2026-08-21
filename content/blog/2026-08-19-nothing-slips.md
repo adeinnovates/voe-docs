@@ -13,53 +13,15 @@ pinned: true
 
 # Don't Ask AI to Search Your Mess: Why Context Needs Structure Before the Query
 
-*Why a founder's memory has to be resolved before the question arrives.*
+It is Tuesday, and Amara calls in ten minutes about the term sheet. You ask the assistant you already use: what is still open with Amara, and what did I promise Dele this week? The answer comes back clean and immediate, and part of it is true. You are out of time, and you cannot tell which part.
 
-**The short version**
+The trouble started before you asked. Amara moved a close date by email. You promised Dele the revised numbers by text. A voicemail came in while you slept. Harbor 12 moved a date in a message from a domain one character off from theirs. The same people keep showing up across channels, one company turns out to use two domains and sit under a parent, and a promise hides inside a sentence that also carries a suggestion, a joke, or a thought said too early. Before anything can answer *what did I promise*, something has to work out who a message concerns, which company it belongs to, and whether the sentence records a commitment at all. Where that work happens is what decides whether you can trust the answer.
 
-**The problem:** Asking an AI to search raw emails and texts under a deadline forces it to guess identities, connect scattered threads, and infer promises on the fly. You get a fluent answer, but you can't tell what's true.
+## Search finds messages. It does not settle what they mean.
 
-**The fix:** Move the work from query time to capture time. Resolve who's who and record commitments with direct receipts as messages arrive.
+Inbox search will find every message that mentions Amara. What it cannot do on its own is tell you that a text replaced the date in an earlier email, or that a second address belongs to the same person. Handing an assistant raw access does not make that work disappear; it just moves the work into the moment the answer is being written. Now the model is searching, joining identities, guessing relationships, and deciding what counts as a commitment, all at once, all under your deadline. Every question runs the reconstruction again from the beginning, and a slightly different question can hand you a different version of the same week.
 
-**The takeaway:** AI reasoning is only as good as the record it stands on. Don't ask an LLM to reconstruct your week from scratch; give it a pre-resolved, verifiable record.
-
----
-
-## Your week did not arrive as a database
-
-It is Tuesday. Amara calls in ten minutes about the term sheet.
-
-You ask the assistant you already use: *what is still open with Amara, and what did I promise Dele this week?*
-
-The answer comes back clean and immediate. Part of it is true. You are out of time, and you cannot tell which part.
-
-The problem began before you asked.
-
-Amara moved a close date by email.
-
-You promised Dele the revised numbers by text.
-
-A voicemail came in while you slept.
-
-Harbor 12 moved a date in a message from a domain one character away from theirs.
-
-The same people repeat across channels. One company may use two domains and sit beneath a parent. A promise is buried inside a sentence that may also contain a suggestion, a joke, or a thought spoken too early.
-
-Before anything can answer *what did I promise?*, something has to decide who the message concerns, which company it belongs to, and whether the sentence records a commitment at all.
-
-Where that decision happens changes the answer.
-
----
-
-## Search finds messages. Memory settles what they mean.
-
-Inbox search can find every message that mentions Amara. It cannot tell you, by itself, that a text replaced the date in an earlier email or that a second address belongs to the same person.
-
-Giving an assistant raw access does not remove that work. It asks the model to search, connect identities, infer relationships, and decide what counts as a commitment while it is composing the answer. Every question repeats the reconstruction. A different query can produce a different version of the same week.
-
-The other path is to decide when the material arrives.
-
-Resolve the message to the person and company it concerns when the source supports the match. Record a commitment when the words support one. Link that record to the exact message and keep the original beside it. When the question arrives, the assistant retrieves a record that already carries its evidence.
+There is another place to do the work, which is when the material arrives. Resolve a message to the person and company it concerns, when the source supports the match. Record a commitment when the words actually support one. Tie that record to the exact message and keep the original sitting beside it. Then, when the question comes, the assistant is reading a record that already carries its own evidence rather than assembling one on the spot.
 
 ```text
 SEARCH AND INFER             RESOLVE AND RECORD
@@ -70,67 +32,35 @@ raw messages                 incoming material
 live reconstruction           cited record
 ```
 
-Voe takes the second path. Resolve on the way in. Keep the receipt. Answer from the record.
+Voe takes the second path: resolve on the way in, keep the receipt, answer from the record.
 
----
+## Four ways the first path goes wrong
 
-## Four quiet failures
+Consider the same person arriving by email, text, and voicemail. A system that resolves at question time might read them as three strangers, or fuse two different people who happen to share a first name. Search one of a company's domains and you undercount its messages; guess at the parent and you may drag in a subsidiary that has nothing to do with the question. A meeting transcript says "we should introduce Northbank," and whether that was a commitment, a live possibility, or a thought spoken aloud gets decided inside the answer, with no settled reading left behind to check later. And the timeline everyone agreed to was agreed on a call: the record holds the voicemail that came before it and nothing of the call itself, so there is simply no way to recover what was said.
 
-**One person, three addresses.** The same person arrives by email, text, and voicemail. A question-time system may treat them as three strangers, or join two people who happen to share a name.
-
-**One company, two domains.** Search one domain and you undercount. Guess the parent and you may pull in a subsidiary that is not part of the question.
-
-**A suggestion that sounds like a promise.** A transcript says, "we should introduce Northbank." Is that a commitment, a possibility, or a thought out loud? If the model decides while writing the answer, there is no settled reading to inspect later.
-
-**A call that never reached the record.** The timeline was agreed on a call. The memory has the voicemail before it, but not the call itself. Nothing in the captured material can recover what happened next.
-
-These failures do not look like database errors. They arrive as ordinary prose. The answer is smooth enough to carry into the meeting, which is exactly the problem.
-
----
+None of these read like database errors. They arrive as ordinary, fluent prose, smooth enough to carry straight into the meeting, which is exactly what makes them dangerous.
 
 ## A resolved record answers differently
 
-Voe moves the first decision to capture, where it happens once and remains open to inspection.
+Voe moves that first decision to capture, where it happens once and stays open to inspection. When the source supports the match, it connects a message to the people and companies it concerns across the channels it can hear. When the match is uncertain, it leaves the uncertainty visible instead of quietly resolving it inside an answer. A commitment the words support becomes part of the record and stays linked to the message it came from, and the original stays beside every reading taken from it.
 
-When the source supports the match, Voe connects a message to the people and companies it concerns across the channels it can hear. When the match is uncertain, Voe keeps that uncertainty visible instead of silently completing it inside an answer.
-
-A supported commitment becomes part of the record and stays linked to the message it came from. The original remains beside every reading derived from it.
-
-Now *what did I promise Dele?* is not asking the model to reconstruct the week from scratch. The assistant can retrieve the promise, the message, and the time, then reason over them. Each claim can point back to its receipt.
-
-And when the record does not contain the answer, Voe names the missing thing:
+So *what did I promise Dele* stops being a request to rebuild the week from nothing. The assistant retrieves the promise, the message, and the time, and reasons over them, and every claim can point back to its receipt. When the record does not hold the answer, Voe says so plainly rather than filling the gap:
 
 > I do not hold the call itself. I only hold the voicemail before it.
 
-That sentence changes what you do next. You can ask for the notes, forward the thread, or walk into the meeting knowing exactly where memory stops.
-
-None of this makes a model infallible. A model can still misread a question, reason badly, or answer too broadly. A resolved record removes a different class of failure: asking the model to invent identities, relationships, and missing events under deadline.
-
-The promise is simple: the record is resolved before the answer, and every supported reading remains tied to what arrived.
-
----
+That one sentence changes your next move. You can go ask for the notes, forward the thread, or walk into the meeting knowing exactly where your memory runs out. None of this makes the model infallible; it can still misread the question, reason poorly, or answer too broadly. What a resolved record removes is a narrower and nastier class of failure, the model inventing identities, relationships, and missing events while it is under pressure to answer. The record is resolved before the answer, and every reading stays tied to what actually arrived.
 
 ## What the evidence says
 
-Answer quality begins with the record a model receives.
+How good an answer can be starts with the record the model is handed. One outside result speaks to this directly, with a limit worth stating.
 
-One external result is relevant, with an important limit.
+Sequeda, Allemang, and Jacob tested GPT-4 on zero-shot question answering over an enterprise insurance database. Pointed straight at the SQL tables, it answered 16 percent of the questions correctly. Pointed at a semantic representation built from the same database, with the business meaning expressed through an ontology and mappings, it reached 54 percent. Same model, same underlying facts, different representation.
 
-Sequeda, Allemang, and Jacob tested GPT-4 on zero-shot question answering over an enterprise insurance database. Asked directly against the SQL tables, it reached 16% accuracy. Asked over a semantic representation built from the same database, with business meaning expressed through an ontology and mappings, it reached 54%.
-
-Same model. Same underlying database. Different representation.
-
-This was not a Voe evaluation, and it was not a test over inboxes, texts, or voicemail. It does not prove that every resolved record produces a correct answer. It does show that the structure presented to a model can move answer accuracy substantially, even when the model and the underlying facts stay the same.
-
-The useful lesson is simpler: representation matters. Reasoning can navigate relationships that were recorded. It cannot recover a relationship the record never made explicit.
-
-More compute over unresolved material may produce a better reading of the pile. It does not turn the pile into a settled record.
+That was not a Voe evaluation, and it was not run over inboxes, texts, or voicemail, so it does not prove that a resolved record yields a correct answer. What it does show is that the structure you put in front of a model can move accuracy a long way while the model and the facts underneath stay fixed. Reasoning can travel the relationships that were recorded; it cannot recover one the record never made explicit. More compute over an unresolved pile may buy you a better reading of the pile, but it does not turn the pile into a settled record.
 
 ### A smaller check inside Voe
 
-Voe also runs a small, curated retrieval regression gate. It asks whether the correct page appears among content designed to be confusing. This is not answer accuracy, not a production traffic study, and not comparable to the external benchmark above.
-
-In this run, the suite cleared all 56 retrieval challenges across five families. The bars show pass rate. The line shows the minimum release threshold for each family.
+Voe also runs a small, curated retrieval regression gate, which asks a narrower question: does the right page surface out of a set built to be confusing? This is not answer accuracy, not a study of production traffic, and not comparable to the benchmark above. In this run it cleared all 56 challenges across five families. The bars are pass rate; the line is the minimum release threshold for each family.
 
 ```mermaid
 xychart-beta
@@ -148,49 +78,19 @@ xychart-beta
 | Multi-hop | 10 of 10 | 100% | 90% |
 | Dilution | 8 of 8 | 100% | 75% |
 
-The result means a retrieval change did not lose any of the known hard cases in this suite. It does not mean Voe answers real-world questions with 100% accuracy.
-
----
+All it means is that a retrieval change did not drop any of the known hard cases in this suite. It does not mean Voe answers real questions with perfect accuracy, and the page says as much.
 
 ## What connecting your tools should mean
 
-A connection can give an assistant more material without giving it a settled record. More sources also mean more identities, aliases, contradictions, and missing relationships to infer while answering.
-
-Voe sits before that moment. It gives the assistant a cited record built from what arrived, with the original still one tap away and the missing parts named.
-
-The assistant still does the thinking and the talking. Voe gives it memory with receipts.
-
-You do not get a perfect answer by definition. You get an answer that can be checked, and a record that does not have to be reconstructed every time you ask.
-
----
+Connecting more sources gives an assistant more material without giving it a settled record, and it also brings more identities, aliases, contradictions, and missing links for the model to guess at while it answers. Voe sits in front of that moment. It hands the assistant a cited record built from what arrived, with the original a tap away and the missing parts named. The assistant still does the thinking and the talking; Voe supplies the memory and the receipts. You do not get a guaranteed-correct answer out of this. You get one you can check, and a record you are not rebuilding every single time you ask.
 
 ## Where Voe stops
 
-Voe never sends a word on your behalf.
-
-A connected agent can add or amend records only when the workspace owner has separately allowed it. That changes the record; it does not give Voe a hand in the outside world.
-
-Voe knows only what has been passed to it. A call that was never captured remains a call it does not have.
-
-It keeps the original material beside what was read from it. When an answer matters, you can inspect the source instead of taking the prose on faith.
-
-Those limits are part of the product. A memory that names where it stops is more useful than one that fills the silence.
-
----
+Voe never sends a word on your behalf. A connected agent can add to or amend the record only when the workspace owner has separately allowed it, and even then that changes the record, not the outside world. Voe knows only what has been passed to it; a call nobody captured stays a call it does not have. And it keeps the original material beside whatever was read from it, so when an answer matters you can go look at the source instead of taking the prose on faith. These are not gaps waiting to be closed. A memory that tells you where it stops is worth more than one that fills the silence.
 
 ## Back to Tuesday
 
-The model was not the first problem.
-
-Before the assistant can reason well, the record has to know that three messages concern the same Dele, that two domains belong to Harbor 12, that a sentence was a commitment, and that the call after the voicemail is missing.
-
-With a resolved, cited record, the assistant can tell you what Amara changed, what you promised Dele, why the Harbor 12 message needs a closer look, and which part of the week never arrived.
-
-That does not make the answer perfect. It makes the claims inspectable and the silence explicit.
-
-**What is held has a receipt. What is missing is named.**
-
----
+The model was never the first problem. Before an assistant can reason well about your week, the record has to already know that three messages concern the same Dele, that two domains both belong to Harbor 12, that one sentence was a commitment and another only sounded like one, and that the call after the voicemail is missing. Give it that, and it can tell you what Amara changed, what you owe Dele, why the Harbor 12 message deserves a second look, and which part of the week never made it in. The answer still is not perfect. But the claims are inspectable and the silence is explicit, and on a Tuesday with ten minutes on the clock, that is the difference between an answer you can act on and one you can only hope is right.
 
 ## Source
 

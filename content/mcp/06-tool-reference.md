@@ -127,8 +127,29 @@ Builds context and returns a cited answer over the workspace. It also reports mi
 
 - `query` is required.
 - `mode` accepts `strict` or `annotate`. MCP defaults to `strict`, which withholds sentences that cannot be tied to the record.
+- `entities` accepts up to eight page slugs that anchor the question to known people, companies, or records.
+- `conversation` accepts up to eight prior `user` or `assistant` turns for follow-up continuity.
 
-The result contains `answer`, `citationWarning`, `withheld`, and `gaps`. It returns as one completed response rather than a token stream.
+Prior turns guide retrieval and wording. They are not evidence. Think can cite only the records returned in `sources`.
+
+The result contains `answer`, a structured `sources` array, `citationWarning`, `withheld`, and `gaps`. Each source names the citation slug, parent page, label, grade, kind, and source reference. The result returns as one completed response rather than a token stream.
+
+```json
+{
+  "answer": "Meridian sent revised terms Friday [messages/2026/08/15/email-53eff616].",
+  "sources": [{
+    "slug": "messages/2026/08/15/email-53eff616",
+    "pageSlug": "messages/2026/08/15/email-53eff616",
+    "label": "Revised terms",
+    "type": "message",
+    "reason": "search",
+    "grade": "record",
+    "sourceKind": "page",
+    "sourceRef": "messages/2026/08/15/email-53eff616"
+  }],
+  "gaps": { "missingEntities": [], "staleEntities": [] }
+}
+```
 
 ## Write tools
 

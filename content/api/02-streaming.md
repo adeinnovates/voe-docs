@@ -15,12 +15,12 @@ event: text
 data: {"text":"Meridian's revised terms arrived Friday "}
 
 event: gaps
-data: {"gaps":{"missingEntities":[],"unreadableAttachments":[]}}
+data: {"gaps":{"missingEntities":[],"staleSyntheses":[],"unreadableAttachments":[]}}
 ```
 
 ## Order and guarantees
 
-1. `sources` first - the citation allowlist for everything that follows.
+1. `sources` first - the citation allowlist for everything that follows. It is an empty array when no record answers the question.
 2. `text` events (annotate mode only; strict buffers and sends the checked text at the end).
 3. `citation-warning` (annotate) with the exact unverifiable sentences, or `withheld` (strict) with the count.
 4. `gaps` - always emitted, even when empty, even on the empty-memory reply.

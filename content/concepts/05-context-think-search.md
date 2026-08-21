@@ -23,13 +23,14 @@ One engine, three read surfaces. Choose by who does the reasoning.
 
 ## think
 
-`think` builds the same bundle, streams model synthesis over it, and enforces the [citation check](/concepts/evidence). Events arrive in order: `sources`, `text`, grounding events when needed, and always `gaps`. The gap report is part of the answer.
+`think` builds a question-shaped bundle, includes readable attachment and transcript text with its grade, and enforces the [citation check](/concepts/evidence). A maintained summary may help Voe read, but the answer's `sources` list names the records beneath it. Events arrive in order: `sources`, `text`, grounding events when needed, and always `gaps`. MCP returns the same source list as a structured array beside the completed answer.
 
 An empty memory answers honestly: *"I do not hold a record that answers that yet."*
 
 ## Defaults that matter
 
-- `includeDerived=false` everywhere by default; opt in to OCR/transcript text.
+- `search` and `context` exclude derived text by default; opt in when you want OCR or transcript text.
+- `think` includes readable derived text and keeps its grade visible to the citation check.
 - Tier-aware reads by default; `tier=all` opts into suspicious and full-weight unknown.
 - Strict mode for machine callers; annotate with in-place warnings for human surfaces.
 

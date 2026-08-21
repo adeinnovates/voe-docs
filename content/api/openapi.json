@@ -47,6 +47,67 @@
         "description": "Scope: `read`."
       }
     },
+    "/v1/workspace-substance": {
+      "get": {
+        "summary": "Workspace record coverage",
+        "responses": {
+          "200": {
+            "description": "Counts, contributing channels, date span, and a short list of connected entities."
+          }
+        },
+        "description": "Scope: `read`."
+      }
+    },
+    "/v1/pages-door": {
+      "get": {
+        "summary": "Paged records beneath a workspace count",
+        "responses": {
+          "200": {
+            "description": "Exact total, a bounded result slice, and nextOffset when more records remain."
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "held",
+                "heard_today"
+              ],
+              "default": "held"
+            },
+            "description": "All held records or records heard today."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 100
+            },
+            "description": "Maximum records to return."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            },
+            "description": "Result offset. Responses include nextOffset when more records remain."
+          }
+        ]
+      }
+    },
     "/ingest": {
       "post": {
         "summary": "Capture markdown or an envelope",
@@ -203,8 +264,44 @@
                       "strict"
                     ],
                     "default": "annotate"
+                  },
+                  "entities": {
+                    "type": "array",
+                    "maxItems": 8,
+                    "uniqueItems": true,
+                    "description": "Page slugs that anchor the question to known people, companies, or records.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "conversation": {
+                    "type": "array",
+                    "maxItems": 8,
+                    "description": "Prior turns for follow-up continuity. Conversation text is not evidence and cannot support a citation.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "assistant"
+                          ]
+                        },
+                        "content": {
+                          "type": "string",
+                          "maxLength": 2000
+                        }
+                      },
+                      "additionalProperties": false
+                    }
                   }
-                }
+                },
+                "additionalProperties": false
               }
             }
           }
@@ -275,18 +372,27 @@
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "person",
+                "company"
+              ]
             },
-            "description": "person, company, thread, \u2026"
+            "description": "Entity type to list."
           },
           {
             "name": "sort",
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "name",
+                "connections",
+                "recent"
+              ]
             },
-            "description": "name (default) or recency"
+            "description": "Sort by name (default), connection count, or most recent contact."
           },
           {
             "name": "limit",
@@ -296,6 +402,17 @@
               "type": "integer"
             },
             "description": "1-500, default 200"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            },
+            "description": "Result offset. Responses include nextOffset when more records remain."
           }
         ]
       }
@@ -318,6 +435,57 @@
               "type": "string"
             },
             "description": "Path parameter."
+          }
+        ]
+      }
+    },
+    "/v1/entities/{slug}/neighborhood": {
+      "get": {
+        "summary": "Bounded neighborhood around one entity",
+        "responses": {
+          "200": {
+            "description": "The center, selected neighboring records, typed connections, and whether more neighbors remain."
+          },
+          "404": {
+            "description": "Entity not found."
+          }
+        },
+        "description": "Scope: `read`. Returns one or two hops around one entity; it never returns a whole-workspace graph.",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Entity page slug."
+          },
+          {
+            "name": "depth",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "enum": [
+                1,
+                2
+              ],
+              "default": 1
+            },
+            "description": "One or two hops from the center."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 60,
+              "default": 12
+            },
+            "description": "Maximum neighboring records to return."
           }
         ]
       }

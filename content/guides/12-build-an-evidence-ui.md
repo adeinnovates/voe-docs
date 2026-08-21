@@ -23,7 +23,13 @@ In annotate mode, `citation-warning` names the exact failing sentences. Mark tho
 
 ## Gaps as content
 
-Render the `gaps` event as part of the answer: missing entities, stale records, unreadable attachments by name, answer limits. The empty-memory reply, *"I do not hold a record that answers that yet"*, deserves the same dignity as an answer, because it is one.
+Render the `gaps` event as part of the answer: missing entities, stale records or summaries, unreadable attachments by name, answer limits. The empty-memory reply, *"I do not hold a record that answers that yet"*, deserves the same dignity as an answer, because it is one.
+
+## Browse what sits beneath a count
+
+Use `GET /v1/pages-door` for a paged record list and `GET /v1/entities/roster` for people or companies. Both responses return an exact `total`, a bounded `results` slice, and `nextOffset` when more records remain. Every result carries a slug that opens through `GET /v1/pages/{slug}`.
+
+For one entity's connections, use `GET /v1/entities/{slug}/neighborhood`. The response is limited to one or two hops and names whether more neighbors remain. Render each node as a door to its page. Show a connection's evidence only when a person opens it.
 
 ## Proof depth
 

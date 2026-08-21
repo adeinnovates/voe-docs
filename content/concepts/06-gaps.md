@@ -13,6 +13,7 @@ Every `context` bundle and `think` answer ends with a gap report scoped to the q
 
 - **Missing entities** - you asked about a slug that has no live page.
 - **Stale entities** - the entity and everything connected to it predate a staleness window.
+- **Stale summaries** - a summary used for the request trails newer records; the answer cites those records directly.
 - **Unreadable attachments** - relevant records carry attachments that are still being read, failed reading, unsupported, or held; the report names each file and state.
 - **Answer limits** - sentences in the answer that name what would be needed ("I would need the meeting transcript to confirm").
 

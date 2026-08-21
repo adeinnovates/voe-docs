@@ -17,7 +17,7 @@
 -->
 
 <template>
-  <div class="layout" :data-theme="theme" :class="{ 'sidebar-collapsed': sidebarIsCollapsed }">
+  <div class="layout" :class="{ 'sidebar-collapsed': sidebarIsCollapsed }">
     <!-- Header -->
     <LayoutHeader 
       @toggle-sidebar="sidebarOpen = !sidebarOpen"
@@ -120,7 +120,9 @@ useHead(computed(() => {
 // THEME
 // ---------------------------------------------------------------------------
 
-const { theme } = useTheme()
+// The document root owns data-theme. A nested theme attribute creates a
+// second variable scope and can override brand colors after a manual toggle.
+useTheme()
 
 // ---------------------------------------------------------------------------
 // TABLE OF CONTENTS
