@@ -19,6 +19,8 @@ Do not begin by connecting every source you have. Start with a small set of curr
 
 Set aside 15 minutes. Bring the inbox that received the invitation, three current email threads, and the private iCal subscription address for your main calendar.
 
+Before adding customer, financial, or personal material, read [Privacy and data use](/start/privacy-and-data-use). It explains hosted and self-hosted operation, when an external service can process selected material, and what changes when Claude or ChatGPT connects.
+
 By the end, you should have:
 
 - a Voe email address
@@ -31,7 +33,7 @@ By the end, you should have:
 
 Open the setup link in the invitation email. Confirm that the workspace name is the one you expect, then select **Send code**.
 
-Voe sends a six-digit code to the invited email address. Enter it and select **Open Voe**.
+A six-digit code arrives at the invited email address. Enter it and select **Open Voe**.
 
 The setup link works once. If it has expired or has already been claimed, ask the person who invited you for a replacement.
 

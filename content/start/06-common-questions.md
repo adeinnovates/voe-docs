@@ -53,6 +53,20 @@ No. MCP is a convenience layer for assistant clients. The HTTP API exposes the s
 
 Capture, search, context, grants, review, and the graph run without a model connection. Model-backed features receive only the context needed for that request, and only when the workspace invokes them.
 
+Hard-to-parse captures and audio transcription can also use configured external services. [Privacy and data use](/start/privacy-and-data-use) names the dashboard, API, MCP, hosted, and self-hosted data paths.
+
+## Does Voe train on workspace content?
+
+No. Voe does not use workspace material to train a Voe model. Model-backed features send the material needed for that operation to the configured provider. People using hosted Voe should confirm the provider's retention and data-use terms in their Voe account terms. Self-hosted deployments choose their own providers.
+
+## What does connecting an assistant share?
+
+Connecting creates read access to one workspace; it does not copy the workspace into the assistant. The assistant receives material when it calls a Voe tool. Write access requires a separate, expiring grant. Disconnecting removes the connection and its access together.
+
+## Can a workspace owner remove material?
+
+An admin-scoped redaction removes a record's content and derived search material while preserving the signed fact that a redaction occurred. Removing a channel stops future capture but does not erase records already received. Whole-workspace erasure is not currently a self-service dashboard action.
+
 ## Does search require a model connection?
 
 No. `search` and `context` work without a model key. `think` needs a configured model because it synthesizes an answer over the context bundle.

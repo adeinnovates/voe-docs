@@ -17,6 +17,16 @@ curl -s -X POST "$VOE/v1/write-grants" \
 
 Narrow on purpose: types, slug prefixes, tier, mode, and a mandatory expiry. `GET /v1/write-grants` lists; `DELETE /v1/write-grants/:id` revokes early.
 
+For structured semantic writes, add the exact `vocabularyVersions`, `relationshipTypes`, and `assertionTypes` the assistant may use. A page grant alone does not authorize an assertion or relationship write.
+
+```json
+{
+  "vocabularyVersions": ["com.example.sales@1"],
+  "relationshipTypes": ["com.example.sales/introduced_by@1"],
+  "assertionTypes": ["com.example.sales/account_stage@1"]
+}
+```
+
 ## 2. Create
 
 `POST /v1/pages` (or MCP `create_page`) with `slug`, `type`, `body`, and optional `frontmatter`. The slug must fall under a granted prefix, and the type must be covered by the grant.

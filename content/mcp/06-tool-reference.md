@@ -5,7 +5,7 @@ description: What each Voe tool does, when an assistant should use it, and how t
 
 # MCP tool reference
 
-A connected assistant sees nine Voe tools. Six read from the workspace. Three can add or amend records when the connection has write authority.
+A connected assistant sees 15 Voe tools. Ten read from the workspace. Five can add or amend records when the connection has write authority.
 
 ## Start a tool call
 
@@ -47,10 +47,16 @@ After session initialization, a direct MCP client starts a call with `tools/call
 | Hybrid search | `search` | Read | You need the records most relevant to a query |
 | Walk the graph | `graph_query` | Read | You need records connected to known pages |
 | Fetch one page | `get_page` | Read | You know a page slug and need the complete record |
+| Vocabulary list | `vocabulary_list` | Read | You need the active domain types accepted by the workspace |
 | Entity timeline | `entity_timeline` | Read | You need the history connected to one person, company, or other entity |
 | Token-budgeted context bundle | `get_context` | Read | You need prompt-ready context within a size limit |
 | Cited synthesis | `think` | Read | You need a cited answer and a report of what the workspace does not hold |
+| List assertions | `list_assertions` | Read | You need qualified statements and their current evidence state |
+| List structured relationships | `list_relationships` | Read | You need qualified connections and their current evidence state |
+| List record gaps | `list_gaps` | Read | You need open or resolved built-in and domain gaps |
 | Capture a page | `capture` | Write | You need to submit a complete markdown record |
+| Create an assertion | `create_assertion` | Write | You need to add a qualified statement with direct support |
+| Create a structured relationship | `create_relationship` | Write | You need to connect two pages under an active vocabulary |
 | Create a page (agent write path) | `create_page` | Write | An agent needs to create a page under its write authority |
 | Amend a page (agent write path) | `patch_page` | Write | An agent needs to amend a page it has already read |
 
@@ -82,6 +88,7 @@ Follows recorded connections from one or more known pages. It returns connected 
 - `edgeTypes` can limit the call to named connection types.
 - `depth` accepts 1 to 3. The default is 3.
 - `direction` accepts `out`, `in`, or `both`. The default is `out`.
+- `assertionStates` can restrict semantic relationships to `proposed`, `established`, `disputed`, or `superseded`.
 
 ### `get_page`
 
@@ -93,13 +100,26 @@ Fetches one complete page by slug, including its body, frontmatter, attachments,
 
 The returned `bodySha256` is also the version value required by `patch_page`.
 
+### `vocabulary_list`
+
+Lists installed vocabulary versions and shows which are active. It is how an assistant discovers the qualified page, assertion, relationship, clock, and gap types accepted by the workspace.
+
+**Ask:** "List the active Voe vocabularies before writing a structured relationship."
+
+This tool takes no input. Installation and activation are workspace administration tasks and are not available through MCP.
+
 ### `entity_timeline`
 
 Returns pages directly connected to one entity in time order.
 
 **Ask:** "Use Voe's entity timeline for `people/philip-fuller` and tell me what happened most recently."
 
-**Input:** `slug` is required and should name an entity page.
+**Input:**
+
+- `slug` is required and should name an entity page.
+- `clock` can order the timeline by `recordedAt`, `receivedAt`, `observedAt`, `occurredAt`, `effectiveAt`, `dueAt`, or `expiresAt`.
+
+When a requested domain clock is absent, the result names the fallback rather than inventing a date.
 
 ### `get_context`
 
@@ -114,6 +134,7 @@ Builds a prompt-ready context bundle from a query, named entities, or both. The 
 - `tokens` sets the size budget. The default is 8,000.
 - `includeDerived` includes readable attachment and transcript text.
 - `includeSuspicious` and `includeUnknownFull` widen the source admission defaults.
+- `graphScope` adds an explicit graph neighborhood with start pages, relationship filters, direction, depth, record and relationship caps, an optional time range, and state filters.
 
 Provide `query`, `entities`, or both.
 
@@ -129,6 +150,7 @@ Builds context and returns a cited answer over the workspace. It also reports mi
 - `mode` accepts `strict` or `annotate`. MCP defaults to `strict`, which withholds sentences that cannot be tied to the record.
 - `entities` accepts up to eight page slugs that anchor the question to known people, companies, or records.
 - `conversation` accepts up to eight prior `user` or `assistant` turns for follow-up continuity.
+- `graphScope` adds the same explicit, capped graph neighborhood available to `get_context`.
 
 Prior turns guide retrieval and wording. They are not evidence. Think can cite only the records returned in `sources`.
 
@@ -151,6 +173,45 @@ The result contains `answer`, a structured `sources` array, `citationWarning`, `
 }
 ```
 
+### `list_assertions`
+
+Lists qualified assertions and their evidence state. The default returns live, established assertions supported by record-grade material.
+
+**Ask:** "List established account-stage assertions for `companies/meridian`."
+
+**Input:**
+
+- `subject` filters by subject page slug.
+- `predicate` filters by fully qualified assertion type.
+- `includeAllStates` includes proposed, disputed, and superseded assertions.
+- `includeDerived` includes assertions supported only by derived material.
+- `limit` accepts 1 to 200.
+
+### `list_relationships`
+
+Lists qualified relationships and their evidence state.
+
+**Ask:** "List established relationships from `companies/meridian`."
+
+**Input:**
+
+- `source` and `target` filter by page slug.
+- `relationship` filters by fully qualified relationship type.
+- `includeAllStates` includes proposed, disputed, and superseded relationships.
+- `includeDerived` includes relationships supported only by derived material.
+- `limit` accepts 1 to 200.
+
+### `list_gaps`
+
+Lists built-in and vocabulary-qualified gaps.
+
+**Ask:** "List the open gaps for this workspace."
+
+**Input:**
+
+- `status` accepts `open`, `dismissed`, or `settled`.
+- `kind` filters by a built-in or fully qualified gap kind.
+
 ## Write tools
 
 OAuth connections begin with read access. The write tools still appear in the connector's tool list, but Voe refuses them until the workspace owner grants write authority. See [Let an agent write](/guides/let-an-agent-write).
@@ -165,6 +226,33 @@ Submits a complete markdown record through the general capture path.
 
 Use `capture` when the input is already a complete record. Use `create_page` when the agent needs to choose a page slug and type under its granted write path.
 
+### `create_assertion`
+
+Writes a qualified assertion with direct supporting records. The connection needs write authority for the exact vocabulary version and assertion type.
+
+**Ask:** "Record that Meridian's account stage is contracting, supported by the latest terms email."
+
+**Input:**
+
+- `subject`, `predicate`, and `object` are required.
+- `predicate` is a fully qualified assertion type.
+- `object` carries either a page `ref` or a value and optional `valueType`.
+- `statedIn` and `supportedBy` name the record material behind the assertion.
+- `qualifiers`, `clocks`, `confidence`, and `reason` add declared context without replacing evidence.
+
+### `create_relationship`
+
+Writes a qualified relationship between two pages with direct supporting records. The active vocabulary checks direction and allowed source and target types.
+
+**Ask:** "Connect Amara to Philip with the active `introduced_by` relationship, supported by the introduction email."
+
+**Input:**
+
+- `source`, `relationship`, `target`, and `statedIn` are required.
+- `relationship` is a fully qualified relationship type.
+- `supportedBy` lists the record pages that support the connection.
+- `clocks`, `confidence`, and `reason` add declared context.
+
 ### `create_page`
 
 Creates a page when the requested slug, type, mode, and source tier fit the connection's current write authority.
@@ -174,6 +262,8 @@ Creates a page when the requested slug, type, mode, and source tier fit the conn
 **Input:**
 
 - `slug`, `type`, and `body` are required.
+- `semanticType` names an active, fully qualified domain page type.
+- `semanticFields` supplies fields declared by that type, including any source fields used for domain clocks.
 - `frontmatter` adds structured fields.
 - `requestedTier` states the source tier requested for the page.
 
@@ -188,6 +278,7 @@ Amends an existing page without silently replacing a newer version.
 **Input:**
 
 - `slug` and `expectedSha256` are required.
+- `semanticType` and `semanticFields` can set or amend the page's qualified domain shape.
 - `body` replaces the body when supplied.
 - `frontmatter` merges structured fields when supplied.
 - `requestedTier` states the source tier requested for the amendment.

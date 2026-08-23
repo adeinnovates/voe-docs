@@ -17,6 +17,89 @@
         "scheme": "bearer",
         "bearerFormat": "tok_\u2026"
       }
+    },
+    "schemas": {
+      "GraphScope": {
+        "type": "object",
+        "required": [
+          "startSlugs"
+        ],
+        "properties": {
+          "startSlugs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "edgeTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "out",
+              "in",
+              "both"
+            ]
+          },
+          "depth": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3
+          },
+          "maxNodes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "maxRelations": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "timeRange": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "to": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "timeClock": {
+            "type": "string",
+            "enum": [
+              "recordedAt",
+              "receivedAt",
+              "observedAt",
+              "occurredAt",
+              "effectiveAt",
+              "dueAt",
+              "expiresAt"
+            ]
+          },
+          "assertionStates": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "proposed",
+                "established",
+                "disputed",
+                "superseded"
+              ]
+            }
+          }
+        }
+      }
     }
   },
   "security": [
@@ -233,6 +316,45 @@
             "description": "As in search."
           }
         ]
+      },
+      "post": {
+        "summary": "Structured context bundle with an optional graph scope",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`. Use POST when the request includes graphScope.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "entities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "tokens": {
+                    "type": "integer"
+                  },
+                  "includeDerived": {
+                    "type": "boolean"
+                  },
+                  "graphScope": {
+                    "$ref": "#/components/schemas/GraphScope"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/v1/think": {
@@ -299,6 +421,9 @@
                       },
                       "additionalProperties": false
                     }
+                  },
+                  "graphScope": {
+                    "$ref": "#/components/schemas/GraphScope"
                   }
                 },
                 "additionalProperties": false
@@ -435,6 +560,24 @@
               "type": "string"
             },
             "description": "Path parameter."
+          },
+          {
+            "name": "clock",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "recordedAt",
+                "receivedAt",
+                "observedAt",
+                "occurredAt",
+                "effectiveAt",
+                "dueAt",
+                "expiresAt"
+              ]
+            },
+            "description": "Clock used to order the timeline."
           }
         ]
       }
@@ -532,9 +675,17 @@
                   "frontmatter": {
                     "type": "object"
                   },
-                  "baseBodySha256": {
+                  "expectedSha256": {
                     "type": "string",
                     "description": "Current body hash precondition - stale is refused."
+                  },
+                  "semanticType": {
+                    "type": "string",
+                    "description": "Existing or replacement fully qualified domain page type."
+                  },
+                  "semanticFields": {
+                    "type": "object",
+                    "description": "Fields declared by semanticType."
                   }
                 }
               }
@@ -580,6 +731,14 @@
                   },
                   "type": {
                     "type": "string"
+                  },
+                  "semanticType": {
+                    "type": "string",
+                    "description": "Active, fully qualified domain page type."
+                  },
+                  "semanticFields": {
+                    "type": "object",
+                    "description": "Fields declared by semanticType."
                   },
                   "body": {
                     "type": "string"
@@ -872,6 +1031,522 @@
         "description": "Scope: `read`."
       }
     },
+    "/v1/vocabularies": {
+      "get": {
+        "summary": "Installed vocabulary versions and active state",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`."
+      },
+      "post": {
+        "summary": "Install a versioned vocabulary declaration",
+        "responses": {
+          "201": {
+            "description": "Installed"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "declaration"
+                ],
+                "properties": {
+                  "declaration": {
+                    "type": "string",
+                    "description": "A Voe vocabulary declaration encoded as JSON text."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/vocabularies/activate": {
+      "post": {
+        "summary": "Activate an installed vocabulary version",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "namespace",
+                  "version"
+                ],
+                "properties": {
+                  "namespace": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/vocabularies/deactivate": {
+      "post": {
+        "summary": "Deactivate a vocabulary version for new writes",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`. Existing records keep their qualified type.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "namespace",
+                  "version"
+                ],
+                "properties": {
+                  "namespace": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/assertions": {
+      "get": {
+        "summary": "List qualified assertions and evidence state",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`. Defaults to live, established, record-grade assertions.",
+        "parameters": [
+          {
+            "name": "subject",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "predicate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "includeAllStates",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeDerived",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create an evidence-backed assertion",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "description": "Scope: `write`. Connected assistants also need authority for the exact vocabulary version and assertion type.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "subject",
+                  "predicate",
+                  "object"
+                ],
+                "properties": {
+                  "subject": {
+                    "type": "string"
+                  },
+                  "predicate": {
+                    "type": "string"
+                  },
+                  "object": {
+                    "type": "object"
+                  },
+                  "statedIn": {
+                    "type": "string"
+                  },
+                  "supportedBy": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "qualifiers": {
+                    "type": "object"
+                  },
+                  "clocks": {
+                    "type": "object"
+                  },
+                  "confidence": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/assertions/{id}": {
+      "get": {
+        "summary": "Fetch one assertion",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/assertions/{id}/history": {
+      "get": {
+        "summary": "Read assertion history",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/assertions/{id}/{action}": {
+      "post": {
+        "summary": "Append an assertion state change",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "establish",
+                "dispute",
+                "supersede"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "supportedBy": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/relationships": {
+      "get": {
+        "summary": "List qualified relationships and evidence state",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`. Defaults to live, established relationships.",
+        "parameters": [
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "relationship",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "includeAllStates",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeDerived",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create an evidence-backed relationship",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "description": "Scope: `write`. Connected assistants also need authority for the exact vocabulary version and relationship type.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "source",
+                  "relationship",
+                  "target",
+                  "statedIn"
+                ],
+                "properties": {
+                  "source": {
+                    "type": "string"
+                  },
+                  "relationship": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "type": "string"
+                  },
+                  "statedIn": {
+                    "type": "string"
+                  },
+                  "supportedBy": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "clocks": {
+                    "type": "object"
+                  },
+                  "confidence": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/relationships/{id}": {
+      "get": {
+        "summary": "Fetch one structured relationship",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/relationships/{id}/{action}": {
+      "post": {
+        "summary": "Append a relationship state change",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `write`. State changes require supporting record slugs.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "establish",
+                "dispute",
+                "supersede"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "supportedBy"
+                ],
+                "properties": {
+                  "supportedBy": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/gaps": {
       "get": {
         "summary": "Standing gap rows for review",
@@ -881,6 +1556,272 @@
           }
         },
         "description": "Scope: `read`."
+      },
+      "post": {
+        "summary": "Open a vocabulary-declared gap",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "description": "Scope: `write`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "namespace",
+                  "version",
+                  "kind",
+                  "subjectSlug"
+                ],
+                "properties": {
+                  "namespace": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "kind": {
+                    "type": "string"
+                  },
+                  "subjectSlug": {
+                    "type": "string"
+                  },
+                  "openingEvidence": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/gaps/{id}/dismiss": {
+      "post": {
+        "summary": "Dismiss an open gap",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/gaps/{id}/settle": {
+      "post": {
+        "summary": "Settle an open gap with evidence",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "evidenceSlug"
+                ],
+                "properties": {
+                  "evidenceSlug": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/webhook-events": {
+      "get": {
+        "summary": "Webhook event catalog accepted by this deployment",
+        "responses": {
+          "200": {
+            "description": "Event names, categories, and descriptions"
+          }
+        },
+        "description": "Scope: `read`."
+      }
+    },
+    "/v1/subscriptions": {
+      "get": {
+        "summary": "Webhook subscriptions and delivery health",
+        "responses": {
+          "200": {
+            "description": "Subscription metadata without signing secrets"
+          }
+        },
+        "description": "Scope: `admin`."
+      },
+      "post": {
+        "summary": "Create a webhook subscription",
+        "responses": {
+          "201": {
+            "description": "Created. The signing secret is returned once."
+          }
+        },
+        "description": "Scope: `admin`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "url",
+                  "eventTypes"
+                ],
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "eventTypes": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ordered": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "replayFrom": {
+                    "type": "string",
+                    "enum": [
+                      "now",
+                      "retained"
+                    ],
+                    "default": "now"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/subscriptions/{id}": {
+      "patch": {
+        "summary": "Change a webhook subscription",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Scope: `admin`. Changing the endpoint or event selection preserves delivery position.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "eventTypes": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ordered": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Disable a webhook subscription",
+        "responses": {
+          "200": {
+            "description": "Disabled"
+          }
+        },
+        "description": "Scope: `admin`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/subscriptions/{id}/rotate-secret": {
+      "post": {
+        "summary": "Replace a webhook signing secret",
+        "responses": {
+          "200": {
+            "description": "The replacement secret is returned once."
+          }
+        },
+        "description": "Scope: `admin`. Rotation preserves delivery position.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
       }
     },
     "/v1/grants": {
@@ -1093,6 +2034,24 @@
                           "type": "string"
                         }
                       },
+                      "vocabularyVersions": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "relationshipTypes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "assertionTypes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
                       "tier": {
                         "type": "string"
                       },
@@ -1151,8 +2110,8 @@
       "post": {
         "summary": "Grant scoped, expiring write authority to a connected assistant",
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created"
           }
         },
         "description": "Scope: `admin`.",
@@ -1181,6 +2140,24 @@
                     }
                   },
                   "prefixes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "vocabularyVersions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "relationshipTypes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "assertionTypes": {
                     "type": "array",
                     "items": {
                       "type": "string"

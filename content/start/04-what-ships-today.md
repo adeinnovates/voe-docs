@@ -20,10 +20,13 @@ Present tense means shipped. Anything not shipped is marked plainly.
 | Search | Available - ranked results with per-hit evidence |
 | Context bundles | Available - token-budgeted sections with citations and gaps |
 | Think | Available - streamed cited synthesis with a mandatory gap report |
+| Structured records | Available - versioned vocabularies, evidence-backed assertions and relationships, declared gaps |
+| Workspace webhooks | Available - signed event delivery, event selection, retries, and subscription health |
 | Memory statements | Available - live current month, immutable sealed months, pull-only |
 | MCP over stdio | Available |
 | MCP over HTTP (bearer token) | Available where the deployment exposes it |
 | Checked writes | Available - write grants, `create`, `patch`, recorded decisions |
+| Scoped semantic writes | Available - write authority can name exact vocabulary versions, assertion types, and relationship types |
 | Invite links | Available - the normal member/guest sharing path |
 | OAuth MCP sign-in | Available where the deployment exposes the OAuth MCP path and the client accepts it |
 | Framework adapter packages | Later |

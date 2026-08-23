@@ -27,7 +27,7 @@ Enable the Voe connector for the conversation, then ask in ordinary language:
 
 Claude chooses the matching tool. Name a tool when you want a specific read. If its permission is set to **Needs approval**, Claude asks before each call.
 
-The initial connection is read-only. Claude may display all nine tools, including the three write tools, but Voe refuses a write until the workspace owner grants write authority.
+The initial connection is read-only. Claude may display all 15 tools, including the five write tools, but Voe refuses a write until the workspace owner grants write authority.
 
 See [MCP tool reference](/mcp/tool-reference) for every tool, argument, result, and request pattern.
 

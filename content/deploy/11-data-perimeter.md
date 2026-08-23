@@ -7,6 +7,8 @@ description: What enters, what never leaves, and who can see what.
 
 These are deployment guarantees, not positioning claims.
 
+For the hosted dashboard, API, and MCP data path, read [Privacy and data use](/start/privacy-and-data-use).
+
 **What enters.** Only addressed traffic (mail to provisioned addresses, texts and calls to provisioned numbers), deliberately subscribed calendar feeds, and authenticated captures. There are no provider logins to leak because none are held; calendar URLs are stored encrypted and are revocable at the provider.
 
 **What never leaves.** Voe originates no outbound messages on any channel. Model-backed features receive only the context needed for that request, and only when the workspace invokes them.

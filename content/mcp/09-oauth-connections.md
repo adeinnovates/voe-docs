@@ -35,6 +35,8 @@ OAuth discovery and consent must remain reachable through any network service in
 
 Enable Voe for a conversation and ask in ordinary language. For example: "Search my Voe memory for the latest Loci discussion" or "Use Voe's cited synthesis to prepare me for my next meeting."
 
-The client chooses the matching tool and may ask for approval before the call. See the [MCP tool reference](/mcp/tool-reference) for all nine tools and examples that name each one directly.
+The client chooses the matching tool and may ask for approval before the call. See the [MCP tool reference](/mcp/tool-reference) for all 15 tools and examples that name each one directly.
+
+Connecting does not copy the workspace into the client. Each tool call returns requested material, and the client processes that response under its own account terms. [Privacy and data use](/start/privacy-and-data-use) describes the full data path and revocation behavior.
 
 Bearer over [HTTP MCP](/mcp/http-mcp) and stdio remain supported. OAuth is an added door for clients that require browser sign-in.

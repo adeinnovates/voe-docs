@@ -1,5 +1,5 @@
 ---
-title: "How Voe decides what enters the record"
+title: "How material enters the record"
 description: A model can help read and answer from memory. It does not get to turn unsupported prose into the record.
 date: 2026-08-22
 author: Voe team
@@ -11,7 +11,7 @@ excerpt: Voe keeps the original, identifies derived readings, and admits writes 
 pinned: false
 ---
 
-# How Voe decides what enters the record
+# How material enters the record
 
 People notice when an agent takes the wrong action. A message reaches the wrong person. A payment has the wrong amount. A meeting appears on the wrong day. The mistake has an immediate consequence, so someone corrects it.
 

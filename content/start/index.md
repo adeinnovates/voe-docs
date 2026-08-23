@@ -13,4 +13,5 @@ Voe is capture, memory, and evidence infrastructure: addressed channels flow int
 - [Architecture in five minutes](/start/architecture-in-five-minutes) - the three layers and why they order that way.
 - [What ships today](/start/what-ships-today) - the capability matrix.
 - [Status and compatibility](/start/status-and-compatibility) - clients, transports, limits.
+- [Privacy and data use](/start/privacy-and-data-use) - hosted and self-hosted operation, access, encryption, external processing, and redaction.
 - [Common questions](/start/common-questions) - short answers for builders.

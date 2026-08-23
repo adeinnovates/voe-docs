@@ -29,4 +29,5 @@ Voe is not the agent, and it has no hands. It hears, remembers, and answers. It 
 - [Quickstart](/start/quickstart) - capture one record, search it, ask over it, connect MCP.
 - [Architecture in five minutes](/start/architecture-in-five-minutes) - the system model.
 - [What ships today](/start/what-ships-today) - the capability matrix.
+- [Privacy and data use](/start/privacy-and-data-use) - the Cloud, API, and MCP data path in plain terms.
 - [Common questions](/start/common-questions) - short answers for builders.
