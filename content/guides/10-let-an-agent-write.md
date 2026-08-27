@@ -21,9 +21,9 @@ For structured semantic writes, add the exact `vocabularyVersions`, `relationshi
 
 ```json
 {
-  "vocabularyVersions": ["com.example.sales@1"],
-  "relationshipTypes": ["com.example.sales/introduced_by@1"],
-  "assertionTypes": ["com.example.sales/account_stage@1"]
+  "vocabularyVersions": ["org.example.exhibition@1"],
+  "relationshipTypes": ["org.example.exhibition/inspected_in@1"],
+  "assertionTypes": ["org.example.exhibition/condition_cleared@1"]
 }
 ```
 

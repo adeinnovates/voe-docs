@@ -5,7 +5,7 @@ description: What each Voe tool does, when an assistant should use it, and how t
 
 # MCP tool reference
 
-A connected assistant sees 15 Voe tools. Ten read from the workspace. Five can add or amend records when the connection has write authority.
+A connected assistant sees tools for reading the workspace and, when granted, adding or amending records. The available set follows the connection's current server and access.
 
 ## Start a tool call
 
@@ -102,11 +102,13 @@ The returned `bodySha256` is also the version value required by `patch_page`.
 
 ### `vocabulary_list`
 
-Lists installed vocabulary versions and shows which are active. It is how an assistant discovers the qualified page, assertion, relationship, clock, and gap types accepted by the workspace.
+Lists installed vocabulary versions and shows which are active. Read the exact declaration through the Vocabulary API when a builder or application needs its accepted fields, enum values, clocks, relationships, assertions, and gaps.
 
 **Ask:** "List the active Voe vocabularies before writing a structured relationship."
 
 This tool takes no input. Installation and activation are workspace administration tasks and are not available through MCP.
+
+See [Domain vocabularies over MCP](/mcp/domain-vocabularies) for the discovery and write order.
 
 ### `entity_timeline`
 
@@ -230,7 +232,7 @@ Use `capture` when the input is already a complete record. Use `create_page` whe
 
 Writes a qualified assertion with direct supporting records. The connection needs write authority for the exact vocabulary version and assertion type.
 
-**Ask:** "Record that Meridian's account stage is contracting, supported by the latest terms email."
+**Ask:** "Record that Blue Horizon passed its arrival condition check, supported by the condition report."
 
 **Input:**
 
@@ -244,7 +246,7 @@ Writes a qualified assertion with direct supporting records. The connection need
 
 Writes a qualified relationship between two pages with direct supporting records. The active vocabulary checks direction and allowed source and target types.
 
-**Ask:** "Connect Amara to Philip with the active `introduced_by` relationship, supported by the introduction email."
+**Ask:** "Connect Blue Horizon to its arrival report with the active `inspected_in` relationship, supported by that report."
 
 **Input:**
 

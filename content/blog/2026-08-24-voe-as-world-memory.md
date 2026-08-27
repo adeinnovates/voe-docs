@@ -102,7 +102,7 @@ Voe includes a shared core vocabulary for common records such as messages, peopl
 
 A workspace can also install versioned domain vocabularies.
 
-A contract workspace may need agreements, obligations, invoices, approvals, and payments. A hiring workspace may need candidates, interviews, offers, and start dates. A property workspace may need buildings, leases, inspections, and repairs.
+An exhibition workspace may need artworks, loans, movements, condition reports, and installation dates. A hiring workspace may need candidates, interviews, offers, and start dates. A property workspace may need buildings, leases, inspections, and repairs.
 
 Domain vocabularies allow those records to carry their proper types, relationships, assertions, and meaningful dates without losing their route back to evidence.
 

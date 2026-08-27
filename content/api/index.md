@@ -15,5 +15,6 @@ Before sending private material, read [Privacy and data use](/start/privacy-and-
 - [Errors](/api/errors) - one shape, honest refusals.
 - [Streaming](/api/streaming) - the SSE contract on `/v1/think`.
 - [Structured records](/api/structured-records) - vocabularies, assertions, relationships, and domain gaps.
+- [Vocabularies](/api/vocabularies) - declaration fields, checks, installation, activation, and version changes.
 - [Webhooks](/api/webhooks) - signed workspace events and subscription health.
 - [Endpoint reference](/api/openapi) - the common workspace API surface. Provisioning routes are documented in the provisioning guide.

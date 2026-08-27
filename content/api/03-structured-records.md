@@ -5,11 +5,11 @@ description: Use active vocabularies to write qualified assertions, relationship
 
 # Structured records
 
-Voe can hold builder-defined record types without mixing their meaning with another domain. A versioned vocabulary names the available page types, assertion types, relationship types, clocks, and gap kinds. Every domain type is fully qualified, for example `com.example.sales/account_stage@1`.
+Voe can hold builder-defined record types without mixing their meaning with another domain. A versioned vocabulary names the available page types, assertion types, relationship types, clocks, and gap kinds. Every domain type is fully qualified, for example `org.example.exhibition/condition_cleared@1`.
 
 ## Discover what the workspace accepts
 
-`GET /v1/vocabularies` lists installed vocabulary versions and shows which are active. Over MCP, call `vocabulary_list`.
+`GET /v1/vocabularies` lists installed vocabulary versions and shows which are active. `GET /v1/vocabularies/declaration` returns one exact declaration. Over MCP, call `vocabulary_list` to discover installed versions.
 
 An inactive or unknown type is refused. Existing records keep the version they were written against, so a later vocabulary version does not silently change their meaning.
 
@@ -19,11 +19,11 @@ An inactive or unknown type is refused. Existing records keep the version they w
 
 ```json
 {
-  "subject": "companies/meridian",
-  "predicate": "com.example.sales/account_stage@1",
-  "object": { "value": "contracting" },
-  "statedIn": "messages/2026/08/22/email-7f41",
-  "supportedBy": ["messages/2026/08/22/email-7f41"]
+  "subject": "artworks/blue-horizon",
+  "predicate": "org.example.exhibition/condition_cleared@1",
+  "object": { "value": true },
+  "statedIn": "files/2026/09/28/blue-horizon-condition-report",
+  "supportedBy": ["files/2026/09/28/blue-horizon-condition-report"]
 }
 ```
 
@@ -35,11 +35,11 @@ The default list returns live, established assertions supported by record-grade 
 
 ```json
 {
-  "source": "people/amara-okafor",
-  "relationship": "com.example.sales/introduced_by@1",
-  "target": "people/philip-fuller",
-  "statedIn": "messages/2026/08/22/email-7f41",
-  "supportedBy": ["messages/2026/08/22/email-7f41"]
+  "source": "artworks/blue-horizon",
+  "relationship": "org.example.exhibition/inspected_in@1",
+  "target": "condition-reports/blue-horizon-arrival",
+  "statedIn": "files/2026/09/28/blue-horizon-condition-report",
+  "supportedBy": ["files/2026/09/28/blue-horizon-condition-report"]
 }
 ```
 
@@ -55,20 +55,22 @@ A vocabulary may name clocks such as `occurredAt`, `effectiveAt`, `dueAt`, or `e
 
 ```json
 {
-  "namespace": "com.example.sales",
+  "namespace": "org.example.exhibition",
   "version": 1,
-  "kind": "decision_missing",
-  "subjectSlug": "companies/meridian",
-  "openingEvidence": ["messages/2026/08/22/email-7f41"]
+  "kind": "condition_report_missing",
+  "subjectSlug": "artworks/blue-horizon",
+  "openingEvidence": ["files/2026/09/28/shipment-manifest-sh-204"]
 }
 ```
 
-Voe settles a gap only when the requested closing evidence exists and any declared condition is met. Dismissal remains a separate recorded decision.
+A gap settles only when the requested closing evidence exists and any declared condition is met. Dismissal remains a separate recorded decision.
 
 ## Authority
 
 Reads require `read`. Installing or activating a vocabulary requires `admin`. Assertion, relationship, and domain-gap writes require `write`.
 
 Connected assistants also need a live write grant naming the exact vocabulary version and assertion or relationship types they may use. See [Let an agent write](/guides/let-an-agent-write).
+
+Start with [Register a custom vocabulary](/guides/register-a-custom-vocabulary) or read the complete [Vocabulary API](/api/vocabularies).
 
 Next: [Webhooks](/api/webhooks) | [MCP tool reference](/mcp/tool-reference)

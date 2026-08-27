@@ -14,6 +14,7 @@ Connecting alone does not copy a workspace into the assistant. A tool call retur
 - [Overview](/mcp/overview) · [Bearer token setup](/mcp/bearer-token-setup)
 - Clients: [Claude Desktop](/mcp/claude-desktop) · [Claude Code](/mcp/claude-code) · [HTTP MCP](/mcp/http-mcp)
 - [OAuth connections](/mcp/oauth-connections) - how the Claude and ChatGPT connectors sign in.
-- [Tool reference](/mcp/tool-reference) - what all 15 tools do and how to start a call.
+- [Tool reference](/mcp/tool-reference) - common read and write tools, inputs, and refusals.
+- [Domain vocabularies](/mcp/domain-vocabularies) - discover active versions and use exact qualified types.
 - [Strict grounding](/mcp/strict-grounding-for-machine-callers) - why machine callers get withheld sentences, not warnings.
 - [Compatibility matrix](/mcp/compatibility-matrix)

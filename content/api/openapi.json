@@ -1070,6 +1070,75 @@
         }
       }
     },
+    "/v1/vocabularies/declaration": {
+      "get": {
+        "summary": "Read one exact vocabulary declaration",
+        "responses": {
+          "200": {
+            "description": "The installed declaration, active state, path, and content hash."
+          },
+          "400": {
+            "description": "A namespace and positive integer version are required."
+          },
+          "404": {
+            "description": "That namespace and version are not installed."
+          }
+        },
+        "description": "Scope: `read`.",
+        "parameters": [
+          {
+            "name": "namespace",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ]
+      }
+    },
+    "/v1/vocabularies/dry-run": {
+      "post": {
+        "summary": "Check a vocabulary declaration without changing the workspace",
+        "responses": {
+          "200": {
+            "description": "Install and activation readiness, qualified mappings, dependency state, conflicts, and active-version capacity."
+          },
+          "400": {
+            "description": "The declaration or request is invalid."
+          }
+        },
+        "description": "Scope: `admin`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "declaration"
+                ],
+                "properties": {
+                  "declaration": {
+                    "type": "string",
+                    "description": "A Voe vocabulary declaration encoded as JSON text."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/vocabularies/activate": {
       "post": {
         "summary": "Activate an installed vocabulary version",

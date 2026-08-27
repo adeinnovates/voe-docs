@@ -13,4 +13,6 @@ Each guide is one task: purpose, a minimal working example, the response shape, 
 
 **Agents:** [connect over MCP](/guides/connect-over-mcp) · [let an agent write](/guides/let-an-agent-write)
 
+**Domain semantics:** [register a custom vocabulary](/guides/register-a-custom-vocabulary) · [local vocabulary CLI](/guides/use-the-vocabulary-cli-locally)
+
 **Evidence and people:** [attachments](/guides/handle-attachments) · [evidence UI](/guides/build-an-evidence-ui) · [review held sources](/guides/review-held-sources) · [share a workspace](/guides/share-a-workspace)
