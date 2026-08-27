@@ -7,6 +7,8 @@ description: Why MCP think withholds by default, and how clients handle it.
 
 A human surface can mark a doubtful sentence in place. An agent consuming `think` output has no such marks - whatever text arrives is what it will treat as true. So over MCP, `think` runs **strict** by default:
 
+Grounding is not quotation. `think` may compare records and synthesize a new answer. Strict mode checks whether factual statements are supported by the answer's cited sources and whether derived readings are presented as derived.
+
 - A factual sentence with no citation from the answer's own source list is **withheld**, replaced by `[withheld: ungrounded sentence]`.
 - A derived-grade source stated as unhedged fact is withheld the same way.
 - A grounded sentence carrying an *extra invented* bracket has that bracket scrubbed to `[citation removed: not among this answer's sources]`.

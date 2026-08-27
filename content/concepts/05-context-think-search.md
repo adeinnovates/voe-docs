@@ -25,6 +25,8 @@ One engine, three read surfaces. Choose by who does the reasoning.
 
 `think` builds a question-shaped bundle, includes readable attachment and transcript text with its grade, and enforces the [citation check](/concepts/evidence). A maintained summary may help Voe read, but the answer's `sources` list names the records beneath it. Events arrive in order: `sources`, `text`, grounding events when needed, and always `gaps`. MCP returns the same source list as a structured array beside the completed answer.
 
+Grounding is not quotation. `think` can compare records and synthesize an answer that does not appear verbatim in any one source. The citation check asks whether factual statements are supported by the cited record and whether derived readings are presented with their grade.
+
 An empty memory answers honestly: *"I do not hold a record that answers that yet."*
 
 ## Defaults that matter

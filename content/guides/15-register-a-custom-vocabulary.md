@@ -7,6 +7,8 @@ description: Give a workspace domain-specific record types, relationships, asser
 
 A custom vocabulary gives a workspace the language of its domain. It names the records that matter, the relationships allowed between them, the statements the record may hold, the dates that carry meaning, and the evidence expected when something is missing.
 
+Custom vocabulary is optional. Every workspace can capture, search, build context, and answer through the core vocabulary. Register a custom vocabulary only when your product needs stable domain-specific types and relationships.
+
 This guide uses exhibition production. The same shape works for research, care coordination, manufacturing, property operations, and other domains.
 
 The primary journey uses the Vocabulary API. It is the same for hosted Voe and a private deployment. You need the Voe base URL and a workspace token with `admin` scope.

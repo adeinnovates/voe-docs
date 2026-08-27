@@ -94,6 +94,8 @@ Voe has no hands.
 
 It does not independently reply to messages, move money, schedule meetings, or operate external systems. It remembers and answers. External agents decide what to do with the context they receive, within the authority granted to them.
 
+This separation does not limit what intelligence may consider. An assistant can compare sources, synthesize across records, form inferences, and propose changes. Voe preserves the difference between observation, interpretation, and authorized change.
+
 ## A Vocabulary For Each World
 
 Memory needs the language of the world it describes.

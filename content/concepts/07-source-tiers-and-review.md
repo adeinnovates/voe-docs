@@ -7,6 +7,8 @@ description: Verified, known, unknown, suspicious - held mail, lookalike handlin
 
 Every sender identity carries a tier, and the tier follows the evidence into retrieval.
 
+Review is exceptional. A sender being new does not, by itself, place mail on hold unless the workspace owner has enabled first-contact review. Ordinary unknown sources can enter with reduced weight; suspicious material waits outside the record until reviewed.
+
 | Tier | Meaning | Retrieval default |
 |---|---|---|
 | `verified` | Confirmed by the owner | Full weight |

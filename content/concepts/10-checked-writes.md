@@ -27,6 +27,8 @@ A write grant is a scoped, expiring permission slip:
 - **Expiry**: mandatory. Authority ends on its own.
 - **Attachment**: only a *connected* assistant can receive one - a write grant never conjures an agent into existence.
 
+A live grant covers repeated writes within its scope until it expires. It is not a request for a person to approve each write.
+
 ## Write decisions
 
 `POST /v1/pages` (create) and `PATCH /v1/pages/:slug` (amend), plus the MCP `create_page` / `patch_page` tools, enforce the same contract:

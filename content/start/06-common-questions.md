@@ -9,6 +9,10 @@ description: Builder answers about capture, evidence, MCP, grants, writes, and d
 
 No. Voe is the memory an agent reads from. It hears, remembers, searches, packs context, answers when asked, and cites the record. It does not send, reply, book, post, or perform actions.
 
+## If Voe has no hands, can connected agents still act?
+
+Yes. Voe supplies memory and cited context. Connected agents can act in other systems under the authority those systems give them. Keeping memory and action separate means changing an assistant does not give it undeclared control over the record or another service.
+
 ## What can a builder build on top of Voe?
 
 Build the agent, workflow, app, or assistant experience. Voe supplies intake, memory, retrieval, context packing, cited answers, gaps, grants, and checked writes.
@@ -16,6 +20,10 @@ Build the agent, workflow, app, or assistant experience. Voe supplies intake, me
 ## How does material enter Voe?
 
 Through addressed or deliberately subscribed sources: provisioned email addresses, provisioned SMS and voice numbers, provider-issued read-only calendar feeds, authenticated app capture, and attachments on captured records.
+
+## Does every new email require approval?
+
+No. A new sender is ordinarily admitted as `unknown` and read cautiously. Mail is held when it is suspicious, or when the workspace owner has chosen first-contact review. Promoting a held source can establish it as known for later capture.
 
 ## Does Voe log into user accounts?
 
@@ -25,9 +33,17 @@ No. Voe receives what is addressed to it and fetches calendar feeds the user sub
 
 The record is the source material Voe received, kept before processing. Pages, relationships, searchable passages, summaries, and extracted attachment text are derived from it.
 
+## Are custom vocabularies required?
+
+No. Every workspace begins with Voe's core vocabulary for common records. Add a custom vocabulary only when the workspace needs stable domain-specific types, relationships, assertions, dates, or gaps.
+
 ## How is memory different from evidence?
 
 Memory is the organized workspace state: people, threads, timeline, relationships, source state, gaps, and records. Evidence is the material a reader can inspect to check a claim: original bytes, page text, attachment text, transcript text, and citations.
+
+## Does evidence-backed memory stop an assistant from reasoning?
+
+No. An assistant can compare sources, synthesize across records, and form inferences. Voe preserves the difference between what the record directly supports, what has been derived, and what remains unknown. Strict grounding prevents unsupported statements from being presented as established fact; it does not require answers to quote the source.
 
 ## What happens when Voe does not know?
 
@@ -35,7 +51,7 @@ It says what the memory does not hold. A gap can name a missing person, stale so
 
 ## Can agents write into Voe?
 
-Yes, with write authority. An agent write needs a live grant, an allowed write type, preconditions, and a recorded decision. A read grant never becomes write authority by accident.
+Yes, with write authority. A live grant covers repeated writes within its allowed types, paths, modes, and expiry. It does not require a person to approve each write. Amendments still carry preconditions, and a read grant never becomes write authority by accident.
 
 ## How are roles, grants, and tokens different?
 

@@ -59,6 +59,8 @@ Voe has no hands. It does not send, reply, book, post, remind, or notify. Tools 
 
 That split keeps the system legible: memory answers what happened; intelligence reasons over it; authority decides whether an action or write is allowed.
 
+These are separate decisions: whether material may enter the record, what intelligence may infer from it, what may be written back, and what an external agent may do. Evidence rules discipline shared memory without narrowing the assistant's reasoning.
+
 ## 6. Writes return through checks
 
 An agent can add or amend records only through a write grant. The write carries authority, preconditions, evidence, and a recorded decision. Workspace access is not write authority.
